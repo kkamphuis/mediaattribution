@@ -22,3 +22,6 @@ It's integration of Site Catalyst.
 
 ### scode.js
 This is Global scode which has already been cleaned up.
+
+### test_bw.html
+A test page for Esighten.
