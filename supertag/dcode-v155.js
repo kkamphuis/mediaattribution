@@ -813,7 +813,8 @@ d.triggerDataCollectorAdserver = function(conversion, event, premium, eVar61, pr
         "e.id": document.location.href,
         "eo.id": document.referrer,
         "so.at": s.eVar61,
-        "so.ca": s.campaign
+        "so.ca": s.campaign,
+        "so.intca": s.eVar2
     };
 
     if (s.eVar61) {
