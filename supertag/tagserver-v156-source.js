@@ -348,35 +348,7 @@ d.adserverTags = function() {
 				d.maTag();
 				break;
 			}
-		}
-        /** Adlen Tags **/
-        var adlens = {
-            "in:ami:mobile:travel-insurance": "//pixel.everesttech.net/2243/t?ev_AAMITravelMobileC2C=1",
-            "in:apa:apia:mobile:home-insurance": "//pixel.everesttech.net/2247/t?ev_APIAMobileHomeC2C=1",
-            "in:apa:apia:mobile:car-insurance": "//pixel.everesttech.net/2247/t?ev_APIAMobileCarC2C=1'",
-            "in:apa:apia:mobile:ctp-insurance": "//pixel.everesttech.net/2247/t?ev_APIAMobileCTPC2C=1",
-            "in:apa:apia:mobile:caravan-insurance": "//pixel.everesttech.net/2247/t?ev_APIAMobileOtherC2C=1",
-            "in:apa:apia:mobile:comprehensive-boat-insurance": "//pixel.everesttech.net/2247/t?ev_APIAMobileOtherC2C=1",
-            "in:apa:apia:mobile:funeral-insurance": "//pixel.everesttech.net/2247/t?ev_APIAMobileOtherC2C=1",
-            "in:apa:apia:mobile:travel-insurance": "//pixel.everesttech.net/2247/t?ev_APIAMobileOtherC2C=1",
-            "in:jci:mobile:get-a-quote:how-to-get-a-quote": "//pixel.everesttech.net/2246/t?ev_JCIMobC2C=1",
-            "in:jci:mobile:contact-us": "//pixel.everesttech.net/2246/t?ev_JCIMobileContactUsC2C=1",
-            "in:shn:homepage": "//pixel.everesttech.net/2219/t?ev_ShannonsMobileC2C=1",
-            "bk:sun:loans:business-loans:our-business-loans": "//pixel.everesttech.net/1589/t?ev_MobBizLClickToCall=1",
-            "bk:sun:bank-accounts": "//pixel.everesttech.net/1589/t?ev_MobTDClickToCall=1",
-            "bk:sun:savings:term-deposits" : "//pixel.everesttech.net/1589/t?ev_MobTDClickToCall=1",
-            "bk:sun:home-loans": "//pixel.everesttech.net/1589/t?ev_MobHLClickToCall=1",
-            "bk:sun:loans:personal-loans": "//pixel.everesttech.net/1589/t?ev_MobPLClickToCall=1",
-            "bk:sun:fixedrate": "//pixel.everesttech.net/1589/t?ev_MobTDClickToCall=1",
-            "bk:sun:campaign:carloans": "//pixel.everesttech.net/1589/t?ev_MobTDClickToCall=1"
-        };
-        if(adlens[s.pageName]){
-            d.imageTag(adlens[s.pageName]);
-        }
-        if(s.pageName == "bk:sun:agribusiness"){
-            d.imageTag("//pixel.everesttech.net/1589/t?ev_MobBizLClickToCall=1");
-            d.imageTag("//pixel.everesttech.net/1589/t?ev_MobTDClickToCall=1");
-        }
+		} 
 		/** AAMI Tags **/
 		if(d.shouldFireAgencyTagsFor('sunaami')) { /** AAMI Brochureware Tags **/
 			d.gRemarketing('1030522869', 'BgjiCI_atwMQ9Y-y6wM', window.google_tag_params, true);
@@ -674,13 +646,6 @@ d.adserverTags = function() {
 			if(s.pageName == 'in:ami:lp:comprehensive-car-insurance:safedriver') {
 				d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamio191;cat=aamis711;ord=1;num=' + cachebuster + '?');
 			}
-            if(s.pageName.indexOf('in:ami:carsguide-quote') > -1) {
-                d.imageTag('//ad.doubleclick.net/ad/N3197.125981.2410002385421/B7769710.108963499;sz=1x1;ord=' + cachebuster);
-                var btnEle = document.getElementById('btn-quote');
-                if (btnEle) {
-                    btnEle.href = 'https://ad.doubleclick.net/ddm/clk/282171928;108963499;y?' + btnEle.href;
-                }
-            }
 			if(/^in:ami:mobile:/i.test(s.pageName)){
                 var pages = {
                     "in:ami:mobile:homepage": {'visible-iphone': {
@@ -3291,6 +3256,17 @@ d.adserverTags = function() {
 			if(s.pageName == 'sg:biz2:wizard:checklist:continue') {
 				d.downStreamTag("transaction", "ev_BiziWhereToBuy=1", "4255", "4254", "1589");
 			}
+		}
+
+		/** Agency AD Tags **/
+		if(d.shouldFireAgencyTagsFor('suncontent')) {			
+            if(s.pageName.indexOf('in:ami:carsguide-quote') > -1) {
+                d.imageTag('//ad.doubleclick.net/ad/N3197.125981.2410002385421/B7769710.108963499;sz=1x1;ord=' + cachebuster);
+                var btnEle = document.getElementById('btn-quote');
+                if (btnEle) {
+                    btnEle.href = 'https://ad.doubleclick.net/ddm/clk/282171928;108963499;y?' + btnEle.href;
+                }
+            }
 		}
 
 
