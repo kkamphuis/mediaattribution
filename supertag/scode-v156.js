@@ -1,4 +1,3 @@
-
 /* SiteCatalyst code version: H.22.1.
 Copyright 1996-2011 Adobe, Inc. All Rights Reserved
 http://www.omniture.com */
@@ -253,14 +252,41 @@ scTackExitLink = function(currentElement) {
         s.eVar36="Click to Call: " + s.pageName;
         if(typeof d != undefined && typeof d.maTag === "function") d.maTag();
 
+        var adlens = {
+            "in:ami:mobile:travel-insurance": "//pixel.everesttech.net/2243/t?ev_AAMITravelMobileC2C=1",
+            "in:apa:apia:mobile:home-insurance": "//pixel.everesttech.net/2247/t?ev_APIAMobileHomeC2C=1",
+            "in:apa:apia:mobile:car-insurance": "//pixel.everesttech.net/2247/t?ev_APIAMobileCarC2C=1'",
+            "in:apa:apia:mobile:ctp-insurance": "//pixel.everesttech.net/2247/t?ev_APIAMobileCTPC2C=1",
+            "in:apa:apia:mobile:caravan-insurance": "//pixel.everesttech.net/2247/t?ev_APIAMobileOtherC2C=1",
+            "in:apa:apia:mobile:comprehensive-boat-insurance": "//pixel.everesttech.net/2247/t?ev_APIAMobileOtherC2C=1",
+            "in:apa:apia:mobile:funeral-insurance": "//pixel.everesttech.net/2247/t?ev_APIAMobileOtherC2C=1",
+            "in:apa:apia:mobile:travel-insurance": "//pixel.everesttech.net/2247/t?ev_APIAMobileOtherC2C=1",
+            "in:jci:mobile:get-a-quote:how-to-get-a-quote": "//pixel.everesttech.net/2246/t?ev_JCIMobC2C=1",
+            "in:jci:mobile:contact-us": "//pixel.everesttech.net/2246/t?ev_JCIMobileContactUsC2C=1",
+            "in:shn:homepage": "//pixel.everesttech.net/2219/t?ev_ShannonsMobileC2C=1",
+            "bk:sun:loans:business-loans:our-business-loans": "//pixel.everesttech.net/1589/t?ev_MobBizLClickToCall=1",
+            "bk:sun:bank-accounts": "//pixel.everesttech.net/1589/t?ev_MobTDClickToCall=1",
+            "bk:sun:investing:term-deposits" : "//pixel.everesttech.net/1589/t?ev_MobTDClickToCall=1",
+            "bk:sun:home-loans": "//pixel.everesttech.net/1589/t?ev_MobHLClickToCall=1",
+            "bk:sun:loans:personal-loans": "//pixel.everesttech.net/1589/t?ev_MobPLClickToCall=1",
+            "bk:sun:fixedrate": "//pixel.everesttech.net/1589/t?ev_MobTDClickToCall=1",
+            "bk:sun:campaign:carloans": "//pixel.everesttech.net/1589/t?ev_MobTDClickToCall=1"
+        };
+
         if(/^in:apa:apia:mobile/.test(s.pageName) && currentElement.className === 'ui-link'){
             var linktext = (currentElement.textContent || currentElement.innerText);
             if(/call|here/i.test(linktext)) {
                 var da_img = new Image();
                 da_img.src = "//pixel.everesttech.net/2247/t?ev_APIAMobileHeaderC2C=1";
             }
-        } else if(/^in:gio:mobile:get-insurance-quote/.test(s.pageName)){
+        } else if(adlens[s.pageName]){
+            var da_img = new Image();
+			da_img.src = adlens[s.pageName];
+		} else if(/^in:gio:mobile:get-insurance-quote/.test(s.pageName)){
             trackGIOClick2Call(currentElement);
+        } else if(s.pageName == "bk:sun:agribusiness"){
+        	d.imageTag("//pixel.everesttech.net/1589/t?ev_MobBizLClickToCall=1");
+        	d.imageTag("//pixel.everesttech.net/1589/t?ev_MobTDClickToCall=1");
         }
 		
 		// iframe tag
@@ -541,7 +567,11 @@ function s_doPlugins(s) {
 	}
 	
 	/* Automate events based on page names */
-	if(s.pageName == 'bk:sun:secapp:termdeposit_enquiry:form:form_started' || s.pageName == 'bk:sun:secapp:agribusiness_enquiry:form:form_started' || s.pageName == 'bk:sun:secapp:merchants_enquiry:form:form_started'
+    if(s.pageName == 'bk:sun:savings:term-deposits:enquiry'){
+        s.events=s.apl(s.events,s.serializeEvent("event3"),",",1);
+        s.products = ';termdeposit';
+    }
+	if(s.pageName == 'bk:sun:secapp:agribusiness_enquiry:form:form_started' || s.pageName == 'bk:sun:secapp:merchants_enquiry:form:form_started'
 		|| s.pageName == 'bk:sun:home-loans:enquiry' || s.pageName == 'bk:sun:business:enquire') {
 		s.events=s.apl(s.events,s.serializeEvent("event3"),",",1);
 	} else if(s.pageName == 'bk:sun:secapp:termdeposit_enquiry:form:form_completed' || s.pageName == 'bk:sun:secapp:agribusiness_enquiry:form:form_completed' || s.pageName == 'bk:sun:secapp:merchants_enquiry:form:form_completed'
@@ -564,7 +594,7 @@ function s_doPlugins(s) {
         s.eVar9="in_selfservice_trackclaim_excesspayment";
     }
     if(/in:(ami|sun):secapp:selfservice:claim:excess:payment_completed/i.test(s.pageName)){
-    	s.events=s.apl(s.events, s.serializeEvent('event1',100000,999999) + '_excess_payment',",",1);
+        s.events=s.apl(s.events, s.serializeEvent('event1',100000,999999) + '_excess_payment',",",1);
     }
 	if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:claimlodged:motor"){
 		s.events=s.apl(s.events,"event1",",",1);
@@ -699,7 +729,7 @@ function s_doPlugins(s) {
 		s.eVar26 = s.prop42 = s.getSessionID();
 	}	
 	//Fix payment type in LSP Apps
-	if(s.prop26) {
+	if(s.prop26 && s.products != ';business_market_stall_public_liability' && s.products != ';ami_business') {
 		s.prop26 = s.prop26.toLowerCase().indexOf('m') > -1 ? 'monthly' : 'annually';
 	}
 	if(s.eVar28) {
@@ -1112,9 +1142,9 @@ scCount=0;
 /* You may insert any plugins you wish to use here.                 */
 
 /* Plugin: Event ID Serialization */
-s.serializeEvent = function(sEvent, min, max) {
+s.serializeEvent = function(sEvent,min,max) {
 	if (sEvent != null && sEvent.indexOf(":") == -1) {
-		s.eVar26 = s.getSessionID(min, max);
+		s.eVar26 = s.getSessionID(min,max);
 		sEvent = sEvent + ":" + s.eVar26;
 	}
 	return sEvent;
@@ -1122,16 +1152,16 @@ s.serializeEvent = function(sEvent, min, max) {
 
 /* Plugin: Session ID */
 s.getSessionID = function(min, max) {
-	if (s.getAndPersistValue(null, "s_serialization_id") == "") {
-		var randomNumber;
-		if (typeof min == 'undefined' || typeof max == 'undefined') {
-			randomNumber = new Date().getTime() + Math.random();
-		} else {
-			randomNumber = Math.floor(Math.random() * (max - min) + min);
-		}
-		s.getAndPersistValue(randomNumber, "s_serialization_id");
-	}
-	return s.getAndPersistValue(null, "s_serialization_id");
+    if (s.getAndPersistValue(null, "s_serialization_id") == "") {
+        var randomNumber;
+        if (typeof min == 'undefined' || typeof max == 'undefined') {
+            randomNumber = new Date().getTime() + Math.random();
+        } else {
+            randomNumber = Math.random() * (max - min) + min;
+        }
+        s.getAndPersistValue(randomNumber, "s_serialization_id");
+    }
+    return s.getAndPersistValue(null, "s_serialization_id");
 }
 /* Plugin:Internal Search */
 function trackSearchTerm(e,t){if(s&&e&&e.length>0){s.usePlugins=false;var n=new Object;n.linkTrackEvents="event2";n.linkTrackVars="eVar3,prop5,prop6,events";n.events="event2";n.eVar3=n.prop5=e.toLowerCase();n.prop6=t;s.tl(this,"o","Internal Searches",n);s.usePlugins=true}}
