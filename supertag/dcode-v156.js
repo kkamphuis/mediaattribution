@@ -94,7 +94,7 @@ d.trim = function(string){
 
 d.include(d.Codebase+'mbox-v' + d.getCurrentVersion() + '.js');
 d.include(d.Codebase+'scode-v' + d.getCurrentVersion() + '.js');
-d.include(d.Codebase+'tagserver-v' + d.getCurrentVersion() + '-source.js');
+d.include(d.Codebase+'tagserver-v' + d.getCurrentVersion() + '.js');
 d.currentURL=location.href.toLowerCase();
 if(d.currentURL.indexOf('terrischeer') > -1){
 	if(checkEnv('')) {
@@ -239,7 +239,7 @@ d.b = function(){
 			delay = true;
 		}
 	    if((d.currentURL.indexOf('http://www.suncorp.com.au/') == 0 && s.pageName != 'in:sun:homepage') 
-		|| (d.currentURL.indexOf('https://insurance.suncorp.com.au/home') == 0 
+		|| (/insurance.suncorp.com.au\/home/i.test(d.currentURL)
 		&& (s.pageName.indexOf('in:sun:secapp:home_classic') == 0 || s.pageName.indexOf('in:sun:secapp:home_advantages') == 0|| s.pageName.indexOf('in:sun:secapp:home_extras') == 0))) {
 		    d.ClickTaleBottom("www02/ptc/8d43d9e9-72d8-40b2-a9ae-34e4cbe9d545.js");
 			delay = true;
@@ -750,20 +750,10 @@ d.adjustBrochureware = function(s) {
                     }
                 });
             }else if(s.pageName == 'in:ami:secapp:business:marketstalls:buy:confirmation'){
-                d.addEventListenerForElement('purchase','click',function(){
-                    s.usePlugins = false;
-                    var override = {};
-                    override.linkTrackVars = 'eVar31,eVar24,prop26,products';
-                    //cover limit
-                    override.eVar31 = s.getAndPersistValue(null, 'cover_limit');
-
-                    //policy Duration
-                    override.prop26 = s.getAndPersistValue(null, 'policy_duration');
-                    override.eVar24 = override.prop26;
-
-                    s.tl(this, 'o', 'Marketstall Purchases', override);
-                    s.usePlugins = true;
-                })
+                //Cover limit
+                s.eVar31 = s.getAndPersistValue(null, 'cover_limit');
+                //Policy Duration
+                s.prop26 = s.getAndPersistValue(null, 'policy_duration');
             }
         }
 
