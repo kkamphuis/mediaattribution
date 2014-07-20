@@ -854,7 +854,6 @@ function s_doPlugins(s) {
 			if(_dCompaignCode.indexOf(':edm:')>=0) _dCompaignCode = 'em'; // eDM
 			if(_dCompaignCode.indexOf(':dis:')>=0) _dCompaignCode = 'ds'; // Display
 			if(_dCompaignCode.indexOf(':van:')>=0) _dCompaignCode = 'vn'; // Vanity
-			if(_dCompaignCode.indexOf(':van:')>=0) _dCompaignCode = 'vn'; // Vanity
 			if(_dCompaignCode.indexOf(':aff:')>=0) _dCompaignCode = 'af'; // Affiliate
 			if(_dCompaignCode.indexOf(':com:')>=0) _dCompaignCode = 'cm'; // Comparison
 			if(_dCompaignCode.indexOf(':sem:')>=0){
