@@ -117,6 +117,10 @@ d.mediamindTag = function(activityID, randomID){
  * u5 = referrer url ( only on visit start call )
  *
  **/
+
+pString = '';
+pCategory = '';
+
 d.maTag = function() {
 	try {
 		var u1 = s.un;
@@ -124,12 +128,11 @@ d.maTag = function() {
 		var u3 = '';
 		var u4 = escape(document.location.href);
 		var u5 = '';
-		var pCategory = '';
+		//var pCategory = '';
         d.maTagFired = false;
 		if(s.eVar48) pCategory = s.eVar48;
-		var pString = '';
+		//var pString = '';
 		if(s.products) pString = d.replaceAll(s.products, ';', ':');
-
 		//specific issue when a application form links towards itself, setting onClick on submit button
 		if(s.pageName == 'bk:sun:campaign:termdeposits' || s.pageName == 'bk:sun:campaign:great') {
 
@@ -138,7 +141,8 @@ d.maTag = function() {
 			u5 = escape(document.referrer);
 			// lead start adserver call
 			u1 = u1 + '|ls|' + pCategory + '|' + pString;
-			d.triggerMA(u1, u2, u3, u4, u5);
+			et = 'lead-start';
+			d.triggerMA(u1, u2, u3, u4, u5, et);
 
 			//attach click to submit button
 			d.attachOnClick('edit-webform-ajax-submit-1018', function() {
@@ -146,7 +150,8 @@ d.maTag = function() {
 				u1 = s.un;
 				u5 = '';
 				u1 = u1 + '|lc|' + pCategory + '|' + pString;
-				d.triggerMA(u1, u2, u3, u4, u5);
+				et = 'lead-complete';
+				d.triggerMA(u1, u2, u3, u4, u5, et);
 				return;
 			});
 		}
@@ -154,27 +159,31 @@ d.maTag = function() {
 		if(s.eVar61 && s.pageName != 'in:cil:request-a-quote-confirmation') {
 			// fire the landing page adserver call
 			u1 = u1 + '|vs|' + pCategory + '|' + pString;
+			et = 'visit';
 			u3 = s.eVar61;
 			if(s.eVar62) u3 = u3 + '|' + s.eVar62;
 			u5 = escape(document.referrer);
-			d.triggerMA(u1, u2, u3, u4, u5);
+			d.triggerMA(u1, u2, u3, u4, u5, et);
 		}
 		if(scEventExists('event3')) {
 			// lead start adserver call
 			u1 = u1 + '|ls|' + pCategory + '|' + pString;
-			d.triggerMA(u1, u2, u3, u4, u5);
+			et = 'lead-start';
+			d.triggerMA(u1, u2, u3, u4, u5, et);
 			return;
 		}
 		if(scEventExists('event4')) {
 			// lead complete adserver call
 			u1 = u1 + '|lc|' + pCategory + '|' + pString;
-			d.triggerMA(u1, u2, u3, u4, u5);
+			et = 'lead-complete';
+			d.triggerMA(u1, u2, u3, u4, u5, et);
 			return;
 		}
 		if(scEventExists('event8')) {
 			// quote start adserver call
 			u1 = u1 + '|qs|' + pCategory + '|' + pString;
-			d.triggerMA(u1, u2, u3, u4, u5);
+			et = 'quote-start';
+			d.triggerMA(u1, u2, u3, u4, u5, et);
 			if(s.products.indexOf('ctp') < 0 && s.un == setting.getEnv('sun')) {
 				d.iframeTag('https://fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco371;ord=1;num=' + Math.floor(Math.random() * 11111111111) + '?'); // 1046484
 			}
@@ -184,9 +193,10 @@ d.maTag = function() {
 			// quote end adserver call
 			if(s.pageName == 'in:gio:business-insurance:quote-request:thank-you') pString = ':business';
 			u1 = u1 + '|qe|' + pCategory + '|' + pString;
+			et = 'quote-end';
 			if(s.eVar22) u1 = u1 + '|' + s.eVar22;
 			u2 = d.getAmount('event14');
-			d.triggerMA(u1, u2, u3, u4, u5);
+			d.triggerMA(u1, u2, u3, u4, u5, et);
 			if(s.products.indexOf('ctp') < 0 && s.un == setting.getEnv('sun')) {
 				d.iframeTag('https://fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco543;ord=1;num=' + Math.floor(Math.random() * 11111111111) + '?'); // 1051728
 			}
@@ -195,7 +205,8 @@ d.maTag = function() {
 		if(scEventExists('event17')) {
 			// buy start adserver call
 			u1 = u1 + '|bs|' + pCategory + '|' + pString;
-			d.triggerMA(u1, u2, u3, u4, u5);
+			et = 'buy-start';
+			d.triggerMA(u1, u2, u3, u4, u5, et);
 			if(s.products.indexOf('ctp') < 0 && s.un == setting.getEnv('sun')) {
 				d.iframeTag('https://fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco417;ord=1;num=' + Math.floor(Math.random() * 11111111111) + '?'); // 1046485
 			}
@@ -204,18 +215,20 @@ d.maTag = function() {
 		if(scEventExists('event18')) {
 			// buy end adserver call
 			u1 = u1 + '|be|' + pCategory + '|' + pString;
+			et = 'buy-end';
 			if(s.eVar23) u1 = u1 + '|' + s.eVar23;
 			u2 = d.getAmount('event19');
-			d.triggerMA(u1, u2, u3, u4, u5);
+			d.triggerMA(u1, u2, u3, u4, u5, et);
 			if(s.products.indexOf('ctp') < 0 && s.un == setting.getEnv('sun')) {
 				d.iframeTag('https://fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco590;ord=1;num=' + Math.floor(Math.random() * 11111111111) + '?'); // 1046487
 			}
 		}
 		if (scEventExists("event37")) {
 			u1 = u1 + '|c2c|' + pCategory + '|' + pString;
+			et = 'click-2-call';
 			if(s.eVar23) u1 = u1 + '|' + s.eVar23;
 			u2  = d.getAmount("event19");
-			d.triggerMA(u1, u2, u3, u4, u5);
+			d.triggerMA(u1, u2, u3, u4, u5, et);
 		}
 		var maEvents = { // priority matters
 			//clickToCall already in scode file
@@ -273,7 +286,8 @@ d.maTag = function() {
 			for(var j = maEvents[event].urls.length; j-- ;) {
 				if(window.location.href.indexOf(maEvents[event].urls[j]) > -1) {
 					u1 = s.un + "|" + maEvents[event].name + "|" + pCategory + "|" + pString;
-					d.triggerMA(u1, u2, u3, u4, u5);
+					et = maEvents[event].name;
+					d.triggerMA(u1, u2, u3, u4, u5, et);
 					break;
 				}
 			}
@@ -284,11 +298,12 @@ d.maTag = function() {
 	}
 };
 
-d.triggerMA = function(event, premium, eVar61, currentURL, previousURL) {
+d.triggerMA = function(event, premium, eVar61, currentURL, previousURL, eventType) {
     d.urlMA = "https://fls.doubleclick.net/activityi;src=875382;type=custo866;cat=singl081;u1=" + event + ";u2=" + premium + ";u3=" + eVar61 + ";u4=" + currentURL + ";u5=" + previousURL + ";ord=" + Math.floor(Math.random() * 11111111111) + "?";
     d.iframeTag(d.urlMA);
     d.maTagFired = true;
-    d.triggerDataCollectorAdserver(true, event, premium, eVar61, 'MA');
+    superT.setCrossDom(function() { d.triggerDataCollectorAdserver(true, event, premium, eVar61, eventType) })
+    
 };
 
 d.bazaarvoiceTags = function(type) {
@@ -3363,22 +3378,11 @@ d.adserverTags = function() {
     /* Fire Datacollector for MA tag */
     if (d.maTagFired == false) {
         // pageview dc tags
-        d.triggerDataCollectorAdserver(false, undefined, undefined, undefined, 'MA'); //study
+        superT.setCrossDom(function() { d.triggerDataCollectorAdserver(false, undefined, undefined, undefined) })
     }
-
-    /* Fire Datacollector for Facebook Study */
-	if (s.events.indexOf('event52') > -1) {
-		// conversion dc tags
-        d.triggerDataCollectorAdserver(true, undefined, undefined, undefined, 'purchase_path'); //study
-	} else {
-		// pageview dc tags
-        d.triggerDataCollectorAdserver(false, undefined, undefined, undefined, 'purchase_path'); //study
-	}
 	
 	// changed back to current environment
 	setting.env = tmpenv;
-
-
 
 };
 d.buttonTags = function(){
