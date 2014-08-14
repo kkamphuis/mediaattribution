@@ -79,7 +79,7 @@ d.trim = function(string){
 
 d.include(d.Codebase+'mbox-v' + d.getCurrentVersion() + '.js');
 d.include(d.Codebase+'scode-v' + d.getCurrentVersion() + '.js');
-d.include(d.Codebase+'tagserver-v' + d.getCurrentVersion() + '.js');
+d.include(d.Codebase+'tagserver-v' + d.getCurrentVersion() + '-source.js');
 d.currentURL=location.href.toLowerCase();
 if(d.currentURL.indexOf('terrischeer') > -1){
 	if(checkEnv('')) {
