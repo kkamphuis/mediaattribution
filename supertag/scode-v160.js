@@ -240,16 +240,16 @@ trackGIOClick2Call = function(elem) {
 };
 
 scTackExitLink = function(currentElement) {
-    var linkHref = currentElement.href;    
+    var linkHref = currentElement.href;
 	if(linkHref.search(/^tel:/i) > -1) {
 		scTempEvents=s.events;
 		s.usePlugins=false;
 		s.useForcedLinkTracking = true;
 		s.forcedLinkTrackingTimeout = 500;
 		s.linkTrackVars="events,eVar36";
-		s.linkTrackEvents="event37,event4,event50";
-		s.events="event37,event4,event50";
-        s.eVar36="Click to Call: " + s.pageName;
+		s.linkTrackEvents="event37";
+		s.events="event37";
+        s.eVar36="click to call|" + s.pageName;
         if(typeof d != undefined && typeof d.maTag === "function") d.maTag();
 
         var adlens = {
@@ -288,7 +288,7 @@ scTackExitLink = function(currentElement) {
         	d.imageTag("//pixel.everesttech.net/1589/t?ev_MobBizLClickToCall=1");
         	d.imageTag("//pixel.everesttech.net/1589/t?ev_MobTDClickToCall=1");
         }
-		
+
 		// iframe tag
 		if (s.pageName == 'in:ami:mobile:car-insurance:comprehensive-car-insurance') {
 			d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamio191;cat=mobil549;ord=1;num=' + cachebuster + '?');
@@ -303,7 +303,7 @@ scTackExitLink = function(currentElement) {
 		} else if (s.pageName == 'in:ami:mobile:car-insurance:third-party-property-car-insurance') {
 			d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aami3347;cat=mobil447;ord=1;num=' + cachebuster + '?');
 		};
-		
+
 		s.tl(currentElement,"o","Click to Call: "+linkHref, null,'navigate');
 		// restore events and clear filters
 		s.events=scTempEvents;
@@ -320,9 +320,9 @@ scTackExitLink = function(currentElement) {
 			scTempEvents=s.events;
 			s.usePlugins=false;
 			s.linkTrackVars="eVar49,events";
-			s.linkTrackEvents="event33,event4,event50";
+			s.linkTrackEvents="event33";
 			s.eVar49=linkHref;
-			s.events="event33,event4,event50";
+			s.events="event33";
 			s.tl(this,"o","Form Download:"+linkHref);
 			// restore events and clear filters
 			s.events=scTempEvents;
@@ -467,7 +467,7 @@ s.queryVarsList=""     // query parameters to keep
 s.pathExcludeDelim=";" // portion of the path to exclude
 s.pathConcatDelim=":"   // page name component separator
 s.pathExcludeList=""   // elements to exclude from the path
-	
+
 /* PurchasePath Config */
 var _dCompaignCode = '';
 var _dTrafficSourceVariable = 'eVar61';
@@ -492,19 +492,19 @@ s.Media.contextDataMapping = {
 
 function s_doPlugins(s) {
 	/* Add calls to plugins here */
-	
+
 	// Scode version
 	s.prop50 = d.code_version;
-	
+
 	// Server host
 	s.server=scHost;
-	
+
 	// set default page for Bingle Facebook App
 	if(s.server.indexOf("binglecomps.com.au") > -1) s.defaultPage="home";
-	
+
 	// Form analysis
 	if(typeof s.formList != 'undefined') s.setupFormAnalysis();
-	
+
 	// Config
 	var scInternalDomains = new Array();
 	var scBrandTerms = 'suncorp';
@@ -520,37 +520,28 @@ function s_doPlugins(s) {
 			}
 		}
 	}
-	
+
 	/* Fix for URL changes happening to these sites that would drop portions of page name*/
 	if(window.location.host.indexOf("insuremyride.com.au")>-1 && window.location.pathname.indexOf("/imr/") < 0) s.siteID = 'in:imr:imr';
 	if(window.location.host.indexOf("apia.com.au")>-1 && window.location.pathname.indexOf("/apia/") < 0) s.siteID = 'in:apa:apia';
 	if(window.location.host.indexOf("m.aami.com.au")>-1) s.siteID = 'in:ami:mobile';
 	if(window.location.host.indexOf("suncorpbank.com.au")>-1) s.siteID = 'bk:sun';
- 
+
 	// Set the Page Name using the plug-in
 	if(!s.pageType && !s.pageName){
 		s.pageName=s.getPageName();
 		s.pageName=s.pageName.toLowerCase();
-	}else{
-		if(s.pageName == 'sg:biz2:wizard:submission'){
-			if (!scEventExists('event4')) {
-				s.pageName=s.getPageName();
-				s.pageName=s.pageName.toLowerCase();
-			} else {
-				s.events = s.events.replace('event4', s.serializeEvent('event4'));
-			}
-		}
 	}
 
 	/* append quote start to the page name */
 	if(scEventExists("event8")){
 		if(s.pageName.indexOf(":quote_started") < 0) s.pageName=s.pageName+":quote_started";
 	}
-	
+
 	if(typeof(s_doPluginsExtension) == "function"){
 		s_doPluginsExtension(); //when terrischeer is included, will override this function from terrischeer-sitecat.js
 	}
-	
+
 	/* pagename clean up code */
 	pathArray=s.pageName.split(':');
 	var pathLength=pathArray.length;
@@ -558,14 +549,14 @@ function s_doPlugins(s) {
 	if(pathArray[3]){
 		s.prop1=pathArray[0]+":"+pathArray[1]+":"+pathArray[2]+":"+pathArray[3]; //Site Sub Section
 	}else{
-		s.prop1=s.channel;	
+		s.prop1=s.channel;
 	}
 	s.prop2=pathArray[0]; //Line of Business
 	s.prop3=pathArray[1]; //Brand
-	if(!s.hier1){	
-		s.hier1=s.pageName.replace(new RegExp(/:/g),"|");	
+	if(!s.hier1){
+		s.hier1=s.pageName.replace(new RegExp(/:/g),"|");
 	}
-	
+
 	/* Automate events based on page names */
     if(s.pageName == 'bk:sun:savings:term-deposits:enquiry'){
         s.events=s.apl(s.events,s.serializeEvent("event3"),",",1);
@@ -589,13 +580,6 @@ function s_doPlugins(s) {
 		s.events=s.apl(s.events,"event46",",",1);
 		s.eVar9="Claim_lodgement";
 	}
-    if(/in:(ami|sun):secapp:selfservice:claim:excess:sunpaypayment/i.test(s.pageName)){
-        s.events=s.apl(s.events, s.serializeEvent('event46',100000,999999) + '_excess_payment',",",1);
-        s.eVar9="in_selfservice_trackclaim_excesspayment";
-    }
-    if(/in:(ami|sun):secapp:selfservice:claim:excess:payment_completed/i.test(s.pageName)){
-        s.events=s.apl(s.events, s.serializeEvent('event1',100000,999999) + '_excess_payment',",",1);
-    }
 	if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:claimlodged:motor"){
 		s.events=s.apl(s.events,"event1",",",1);
 		s.eVar9="Claim_lodgement";
@@ -660,14 +644,14 @@ function s_doPlugins(s) {
 		s.events=s.events.replace("event1,","");
 		s.events=s.apl(s.events, s.serializeEvent("event1"), ",",1);
 		s.eVar9="logon";
-	} 
+	}
 	if(scEventExists('event18') && (s.siteID == "in:sun" || s.siteID == "in:ami")
 		&& (s.products.indexOf("home_") > -1 || s.products.indexOf("car_") > -1)){
 		s.events = s.apl(s.events, s.serializeEvent("event1"), ",", 1);
 		s.eVar9 = "in_selfservice_nb_unableregister_3rdparty";
 		var typeMap = {
-			elements: ["registrationOutcomeNew", 
-					"registrationOutcomeExistingMatched", 
+			elements: ["registrationOutcomeNew",
+					"registrationOutcomeExistingMatched",
 					"registrationOutcomeExistingUnmatched",
 					"registrationOutcomeBusinessCustomerNotRegistered",
 					"registrationOutcomeSystemError"],
@@ -690,7 +674,7 @@ function s_doPlugins(s) {
 		var sid=s.getQueryParam('sid');
 		s.events=s.apl(s.events,"event47",",",1); // tool start
 		s.events=s.apl(s.events,"event3",",",1); // lead start
-		s.eVar5="request-a-quote";	
+		s.eVar5="request-a-quote";
 	}
 	//CIL Request a Quote Complete Tracking
 	if(s.pageName=="in:cil:request-a-quote-confirmation") {
@@ -727,7 +711,7 @@ function s_doPlugins(s) {
 		var day = date.getDate().toString();
 		s.prop56 = date.getFullYear().toString() + (month[1] ? month : '0' + month[0]) + (day[1] ? day : '0' + day[0]);
 		s.eVar26 = s.prop42 = s.getSessionID();
-	}	
+	}
 	//Fix payment type in LSP Apps
 	if(s.prop26 && s.products != ';business_market_stall_public_liability' && s.products != ';ami_business') {
 		s.prop26 = s.prop26.toLowerCase().indexOf('m') > -1 ? 'monthly' : 'annually';
@@ -737,11 +721,11 @@ function s_doPlugins(s) {
 		s.eVar28 = (payMethod.indexOf('credit') > -1 || payMethod.indexOf('pay_now') > -1) ? 'credit_card' : payMethod.indexOf('later') > -1 ? 'pay_later' : 'direct_debit';
 	}
 
-    /* Set internal search automatically */	
+    /* Set internal search automatically */
 	if(s.prop5&&!s.eVar3){
 		s.events=s.apl(s.events,"event2",",",2);
-		s.prop5=s.eVar3=s.prop5.toLowerCase();		
-	}	
+		s.prop5=s.eVar3=s.prop5.toLowerCase();
+	}
 	if(s.pageName=="in:ami:skilled-drivers"){
 		s.events=s.apl(s.events,"event4",",",1);
 		s.eVar4="Skilled Drivers-Info View";
@@ -758,7 +742,7 @@ function s_doPlugins(s) {
 
 	/* Capture Campaign ID */
 	// Prioritise SEM CMPID, over session value
-	s.campaign=s.getQueryParam('cmpid');
+	s.campaign=s.getQueryParam('cmpid').toLowerCase();
 
 	if (s.campaign) {
     	s.prop4=s.campaign+"|"+s.pageName; //campaign pathing
@@ -780,7 +764,7 @@ function s_doPlugins(s) {
 
 	/* Capture Campaign Email ID */
 	if(s.getQueryParam('cmpid').toLowerCase().indexOf('edm') != -1){
-		s.eVar42=s.getQueryParam('cmpid'); 
+		s.eVar42=s.getQueryParam('cmpid');
 		s.eVar44=s.crossVisitParticipation(s.eVar42,'s_v44','365','5','>');}
 	else if(!document.referrer && !s.campaign){
 		s.eVar44=s.crossVisitParticipation('DIRECT','s_v44','365','5','>');
@@ -838,7 +822,7 @@ function s_doPlugins(s) {
 	s.eVar33=s.prop33; //Customer Income
 	s.eVar34=s.prop34; //Customer Product Purpose
 	s.eVar36=s.prop24; //Click
-	
+
 	scInternalRef=false;
 	for(i=0;i<scInternalDomains.length;i++){
 		if(_dGetHostName(document.referrer).toLowerCase().indexOf(scInternalDomains[i].toLowerCase())>=0) scInternalRef=true;
@@ -853,6 +837,7 @@ function s_doPlugins(s) {
 			_dCompaignCode=_dCompaignCode.toLowerCase();
 			if(_dCompaignCode.indexOf(':edm:')>=0) _dCompaignCode = 'em'; // eDM
 			if(_dCompaignCode.indexOf(':dis:')>=0) _dCompaignCode = 'ds'; // Display
+			if(_dCompaignCode.indexOf(':van:')>=0) _dCompaignCode = 'vn'; // Vanity
 			if(_dCompaignCode.indexOf(':van:')>=0) _dCompaignCode = 'vn'; // Vanity
 			if(_dCompaignCode.indexOf(':aff:')>=0) _dCompaignCode = 'af'; // Affiliate
 			if(_dCompaignCode.indexOf(':com:')>=0) _dCompaignCode = 'cm'; // Comparison
@@ -934,10 +919,10 @@ function s_doPlugins(s) {
 		s.eVar50 = s.pageName;
 		s.events = s.apl(s.events, "event31", ",", 1);
 	}
-	
+
 	/* New vs Repeat */
 	s.prop51=s.eVar51=s.getNewRepeat().toLowerCase();
-	
+
 	/* Time to Complete Quote */
 	if(s.events.indexOf('event8')>-1) s.prop46='start';
 	if(s.events.indexOf('event9')>-1) s.prop46='stop';
@@ -947,10 +932,10 @@ function s_doPlugins(s) {
 	if(s.events.indexOf('event17')>-1) s.prop47='start';
 	if(s.events.indexOf('event18')>-1) s.prop47='stop';
 	s.prop47=s.getTimeToComplete(s.prop47,'ttcb',0);
-	
+
 	/* Copy product to prop and define product category */
 	if(s.products && (s.events.indexOf('event9')>-1 || s.events.indexOf('event18')>-1)) s.prop48=scGetProducts();
-	
+
 	/* For 25k campaign (To be removed after campaign) */
 	var campaignSegment = '';
 	campaignSegment = s.getQueryParam('cst');
@@ -967,12 +952,12 @@ function s_doPlugins(s) {
 			// email landing page
 			if(scCount<1) d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco437;ord=1;num='+cachebuster+'?'); // 1046478
 		}
-		
+
 	}
-	
+
 	/* Add calls to plugins here */
 	s.tnt=s.trackTNT();
-	
+
 	//SiteCatalyst to Test&Target Integration (Bingle, AAMI, and GIO)
 		var SCPluginSites = {
             aami: true,
@@ -983,42 +968,42 @@ function s_doPlugins(s) {
             jci: true,
             sun: true
                 }
-	if (typeof(mboxLoadSCPlugin) != "undefined" && 
+	if (typeof(mboxLoadSCPlugin) != "undefined" &&
         (
-        (s.un=="sunaamiprod" && SCPluginSites.aami && s.products != ";ami_business" && (s.prop1.indexOf("in:ami:secapp:business") < 0)) || 
+        (s.un=="sunaamiprod" && SCPluginSites.aami && s.products != ";ami_business" && (s.prop1.indexOf("in:ami:secapp:business") < 0)) ||
         (s.un=="sunapia" && SCPluginSites.apia) ||
-        (s.un=="sunbingleprod" && SCPluginSites.bingle) || 
-        (s.un=="sungioprod" && SCPluginSites.gio) || 
+        (s.un=="sunbingleprod" && SCPluginSites.bingle) ||
+        (s.un=="sungioprod" && SCPluginSites.gio) ||
         (s.un=="suninsuremyrideprod" && SCPluginSites.imr) ||
         (s.un=="sunjustcarprod" && SCPluginSites.jci) ||
         (s.un=="sunprod" && SCPluginSites.sun)
              ) && (
             scEventExists("event1") ||
 			scEventExists("event3") ||
-			scEventExists("event4") || 
+			scEventExists("event4") ||
 			scEventExists("event6") ||
 			scEventExists("event7") ||
-			scEventExists("event8") || 
-			scEventExists("event9") || 
-			scEventExists("event11") || 
-			scEventExists("event12") || 
-			scEventExists("event14") || 
+			scEventExists("event8") ||
+			scEventExists("event9") ||
+			scEventExists("event11") ||
+			scEventExists("event12") ||
+			scEventExists("event14") ||
 			scEventExists("event17") ||
-			scEventExists("event18") || 
+			scEventExists("event18") ||
 			scEventExists("event19") ||
 			scEventExists("event71") ||
 			s.eVar4 ||
 			s.eVar9 ||
 			s.eVar10 ||
-			s.eVar14 || 
+			s.eVar14 ||
 			s.eVar21 ||
-			s.eVar13 || 
+			s.eVar13 ||
 			s.prop15 ||
 			s.eVar71)) {
 		mboxLoadSCPlugin(s);
 	}
-	
-	
+
+
 	//survey
 	if(s.pageName && s.pageName=="in:bin:secapp:motor:quote:car_selection:quote_started"){s.c_w('s_bin_qs',true);}
 	if(s.pageName && s.pageName=="in:bin:secapp:motor:quote:vehicle_accessories"){ s.c_w('s_bin_qs','',-1);} //delete cookie
@@ -1068,29 +1053,10 @@ function s_doPlugins(s) {
 		s.prop53=s.pev3.substring(0,s.pev3.indexOf(':'));
 		s.Survey.trackVars+=',prop53';
 	}
-	
-	//roll up events
-	if(scEventExists('prodView') || scEventExists('event2') || scEventExists('event5') || scEventExists('event8') || scEventExists('event25') ||
-			scEventExists('event28') ||	scEventExists('event29') || scEventExists('event30') || scEventExists('event35') || scEventExists('event40') ||
-			scEventExists('event47') || scEventExists('event33')){
-		s.events=s.apl(s.events,"event39",",",1); // engagement
-	}
-	if(scEventExists('event55') || scEventExists('event37') || scEventExists('event38')){
-		s.events=s.apl(s.events,"event4",",",1); // lead
-	}
-	if(scEventExists('event18')){
-		s.events=s.apl(s.events,"event52",",",1); // conversion
-	}
-	if((scEventExists('event42') || scEventExists('event43') || scEventExists('event44') || scEventExists('event45')) && !scEventExists('event1')){
-		s.events=s.apl(s.events,"event1",",",1); // transaction
-	}
-	
+
+
 	//seriailized events
-	if(scEventExists('event39')) s.events=s.apl(s.events,"event49",",",1);
-	if(scEventExists('event4')) s.events=s.apl(s.events,"event50",",",1);
-	if(scEventExists('event52')) s.events=s.apl(s.events,"event51",",",1);
-	if(scEventExists('event1')) s.events=s.apl(s.events,"event48",",",1);
-	
+
 	if(scEventExists('event1')){
 		if(s.eVar9){
 			scSelfService = s.eVar9.toLowerCase();
@@ -1111,19 +1077,19 @@ function s_doPlugins(s) {
 			}
 		}
 	}
-	
+
 	/* bizi tracking code */
 	if(s.pageName=='sg:biz2:wizard'){
 		var leadStartEvent = s.serializeEvent("event3");
 		s.events=s.apl(s.events,leadStartEvent,",",1);
 	}
-	
+
 	scCount++;
 	s.getAndPersistValue(s.pageName, 's_page_refreshed');
-	
+
 	// the final page load time function call
 	s.prop57 = s_getLoadTime();
-	
+
 	 /* Set transactionID for Shannon and Apia*/
 	if((s.siteID == 'in:shn' || s.siteID == 'in:apa:apia') && s.pageName.indexOf('secapp') == -1 && s.prop42) {
 		s.transactionID = s.prop42;
@@ -1141,26 +1107,20 @@ scCount=0;
 /* You may insert any plugins you wish to use here.                 */
 
 /* Plugin: Event ID Serialization */
-s.serializeEvent = function(sEvent,min,max) {
+s.serializeEvent = function(sEvent) {
 	if (sEvent != null && sEvent.indexOf(":") == -1) {
-		s.eVar26 = s.getSessionID(min,max);
+		s.eVar26 = s.getSessionID();
 		sEvent = sEvent + ":" + s.eVar26;
 	}
 	return sEvent;
 }
 
 /* Plugin: Session ID */
-s.getSessionID = function(min, max) {
-    if (s.getAndPersistValue(null, "s_serialization_id") == "") {
-        var randomNumber;
-        if (typeof min == 'undefined' || typeof max == 'undefined') {
-            randomNumber = new Date().getTime() + Math.random();
-        } else {
-            randomNumber = Math.random() * (max - min) + min;
-        }
-        s.getAndPersistValue(randomNumber, "s_serialization_id");
-    }
-    return s.getAndPersistValue(null, "s_serialization_id");
+s.getSessionID = function() {
+	if (s.getAndPersistValue(null, "s_serialization_id") == "") {
+		s.getAndPersistValue(new Date().getTime() + Math.random(), "s_serialization_id");
+	}
+	return s.getAndPersistValue(null, "s_serialization_id");
 }
 /* Plugin:Internal Search */
 function trackSearchTerm(e,t){if(s&&e&&e.length>0){s.usePlugins=false;var n=new Object;n.linkTrackEvents="event2";n.linkTrackVars="eVar3,prop5,prop6,events";n.events="event2";n.eVar3=n.prop5=e.toLowerCase();n.prop6=t;s.tl(this,"o","Internal Searches",n);s.usePlugins=true}}
@@ -1281,7 +1241,7 @@ s.getPageName=new Function("u",""
 +"ubstring(x+1)}return n");
 
 /*
- * Plugin: getTimeParting 3.4 
+ * Plugin: getTimeParting 3.4
  */
 s.getTimeParting=new Function("h","z",""
 +"var s=this,od;od=new Date('1/1/2000');if(od.getDay()!=6||od.getMont"
@@ -1434,7 +1394,7 @@ var s_YTO={};s_YTO.v=new Object;s_YTO.ya=s_YTisa()?2:0;s_YTO.ut=s_YTO.uf=0;s_YTO
  var s_YTO={};s_YTO.v=new Object;s_YTO.ya=s_YTisa()?2:0;s_YTO.ut=s_YTO.uf=0;s_YTO.vp='YouTube Player';if(document.loaded){s_YTp()}else if(window.addEventListener){window.addEventListener('load',s_YTp,false)}else if(window.attachEvent){window.attachEvent('onload',s_YTp)}else{s_YTp()}function onYouTubePlayerReady(id){if(id&&typeof id=='string'){var p=document.getElementById(id);if(p&&!s_YTO.v[id])s_YTO.v[id]=new s_YTv(id,1)}}function s_YTp(){try{var f=document.getElementsByTagName('iframe');if(s_YTisa())s_YTO.ya=2;for(var i=0;i<f.length;i++){var k=s_YTgk(f[i].src),id=f[i].id;if(k){if(!s_YTO.ya){s_YTO.ya=1;var t=document.createElement('script'),f;t.src='//www.youtube.com/player_api';f=document.getElementsByTagName('script')[0];f.parentNode.insertBefore(t,f)}else if(s_YTO.ya==2&&!s_YTO.v[id]){s_YTO.v[id]=new s_YTv(id)}}}}catch(e){};s_YTO.ut=setTimeout('s_YTp()',1000)}function s_YTisa(){return typeof window.YT=='object'&&typeof YT.Player}function s_YTism(){return typeof window.s=='object'&&typeof s.Media=='object'&&s.Media.open}function s_YTgk(u){var r='';try{var a,b,c,d;if(u.indexOf('//www.youtube.com/watch')>-1){a=u.indexOf('?');if(a>-1){b='&'+u.substring(a+1);c=b.indexOf('&v=');if(c>-1){r=b.substring(c+3);d=r.indexOf('&');if(d>-1)r=r.substring(0,d)}}}if(u.indexOf('//www.youtube.com/embed/')>-1){a=u.indexOf('/embed/')+7;r=u.substring(a+7);d=r.indexOf('?');if(d>-1)r=r.substring(0,d)}}catch(e){};return r}function onYouTubePlayerAPIReady(){try{s_YTO.ya=2;if(s_YTO.ut)clearTimeout(s_YTO.ut);s_YTp()}catch(e){}}function s_YTdi(){try{if(!s_YTism())return;if(typeof s.Media.trackWhilePlaying!='undefined'){s_YTO.twp=s.Media.trackWhilePlaying;s.Media.trackWhilePlaying=false}if(typeof s.Media.trackSeconds!='undefined'){s_YTO.ts=s.Media.trackSeconds;delete s.Media.trackSeconds}}catch(e){}}function s_YTei(){try{if(!s_YTism())return;if(typeof s_YTO.twp!='undefined'){s.Media.trackWhilePlaying=s_YTO.twp;delete s_YTO.twp}if(typeof s_YTO.ts!='undefined'){s.Media.trackSeconds=s_YTO.ts;delete s_YTO.ts}}catch(e){}}function s_YTut(){try{s_YTO.uf=0;s_YTei()}catch(e){}}function s_YTdv(id){try{if(!id)return;var v=s_YTO.v[id]||0;if(v){if(v.ss){if(s.Media)s.Media.close(v.sv);v.ss=0}}v.vc()}catch(e){}}function s_YTv(id){try{var t=this;t.vc=function(){var t=this;t.id=t.st=t.sv=t.sl='';t.yt=t.yp=t.ys=t.ss=t.ts=t.ql=t.qs=0};t.vg=function(yp){try{var t=this,F='function',O='object',N='number',S='string',u='',x=u,y=u,pt=typeof yp;if(pt==O||pt==F){if(typeof yp.getVideoUrl==F)u=yp.getVideoUrl();if(typeof yp.getVideoData==F){x=yp.getVideoData();if(typeof x==O){if(typeof x.video_id==S)y=x.video_id;if(typeof x.title==S)s.st=x.title}}if(!y&&u)y=s_YTgk(u);t.sv='YouTube';t.sv+='|'+(y?y:t.id);if(t.st)t.sv+='|'+t.st;if((typeof yp.getPlayerState)==F){x=yp.getPlayerState();if(typeof x==N)t.ys=x}t.qs=0;if((typeof yp.getCurrentTime)==F){x=yp.getCurrentTime();t.qs=(typeof x==N)?Math.round(x):0}t.ts=0;if((typeof yp.getDuration)==F){x=yp.getDuration();t.ts=(typeof x==N)?Math.round(x):0}}}catch(e){}};t.ve=function(){try{var t=this;if(!s_YTism()||!t.sv)return;t.vg(t.yp);if(t.sv!=t.sl&&t.ss){if(t.ss==2){s.Media.stop(t.sl,t.ql);t.ss=1}s.Media.close(t.sl);t.sl=t.sv;t.ss=t.ql=0}switch(t.ys){case 1:if(t.ss==2){if(t.qs>=t.ql&&Math.abs(t.qs-t.ql)<1.0)return;s.Media.stop(t.sl,t.ql)}if(!t.ss){s.Media.open(t.sv,t.ts,s_YTO.vp);t.qs=t.ql=0;t.sl=t.sv;t.ss=1}s.Media.play(t.sv,t.qs);t.ql=t.qs;t.ss=2;break;case 0:if(t.ss){if(t.ss!=1){if(Math.abs(t.qs-t.ts)<=1)t.qs=t.ts;s.Media.stop(t.sv,t.qs);t.ql=t.qs;t.ss=1}s.Media.close(t.sv);t.ss=t.qs=t.ql=0;t.sv=t.sl=''}break;case 2:if(!t.ss){s.Media.open(t.sv,t.ts,s_YTO.vp);t.ss=1;t.sl=t.sv}if(t.ss!=1){s.Media.stop(t.sv,t.qs);t.ql=t.qs;t.ss=1}break;case 3:if(s_YTO.uf){clearTimeout(s_YTO.uf)}else{s_YTdi()}s_YTO.uf=setTimeout('s_YTut()',3000);break;case 5:break;case-1:s.Media.open(t.sv,t.ts,s_YTO.vp);t.ss=1;t.sl=t.sv;break;default:break}}catch(e){}};t.fsc=function(ye){t.ys=ye;t.vg(t.yp);setTimeout('s_YTO.v["'+t.id+'"].ve()',10)};t.isc=function(ye){t.ys=ye.data;t.vg(ye.target);setTimeout('s_YTO.v["'+t.id+'"].ve()',10)};var o=id&&typeof id=='string'?document.getElementById(id):'';if(!o)return null;t.vc();t.id=id;var ar=arguments;if(ar.length>1&&ar[1]==1){t.yt=1;t.yp=o;if(window.addEventListener){t.yp.addEventListener('onStateChange','s_YTO.v.'+id+'.fsc',false)}else if(window.attachEvent){window.attachEvent('onStateChange','s_YTO.v.'+id+'.fsc')}}else{t.yt=2;var a=new Object();if(ar.length>1)a.videoId=ar[1];if(ar.length>3){a.width=w;a.height=h}a.events=new Object();a.events.onStateChange=t.isc;try{t.yp=new YT.Player(id,a)}catch(e){s_YTdv(id);t=null}}return t}catch(e){return null}}
 */
 
-/* 
+/*
  * socialAuthors v1.4
  */
 s.socialAuthors=new Function("",""
@@ -1462,9 +1422,11 @@ s.socialPlatforms=new Function("a",""
 +"D=s.split(K[i],'>');if(g.indexOf(D[0])!=-1){if(a){s[a]=D[1];}}}");
 s.socPlatList="facebook.com>Facebook|twitter.com>Twitter|t.co/>Twitter|youtube.com>Youtube|clipmarks.com>Clipmarks|dailymotion.com>Dailymotion|delicious.com>Delicious|digg.com>Digg|diigo.com>Diigo|flickr.com>Flickr|flixster.com>Flixster|fotolog.com>Fotolog|friendfeed.com>FriendFeed|google.com/buzz>Google Buzz|buzz.googleapis.com>Google Buzz|plus.google.com>Google+|hulu.com>Hulu|identi.ca>identi.ca|ilike.com>iLike|intensedebate.com>IntenseDebate|myspace.com>MySpace|newsgator.com>Newsgator|photobucket.com>Photobucket|plurk.com>Plurk|slideshare.net>SlideShare|smugmug.com>SmugMug|stumbleupon.com>StumbleUpon|tumblr.com>Tumblr|vimeo.com>Vimeo|wordpress.com>WordPress|xanga.com>Xanga|metacafe.com>Metacafe";
 
-s.loadModule("Survey")
-var s_sv_dynamic_root = "survey.122.2o7.net/survey/dynamic"
-var s_sv_gather_root = "survey.122.2o7.net/survey/gather"
+if(screen.width > 768) {
+	s.loadModule("Survey")
+	var s_sv_dynamic_root = "survey.122.2o7.net/survey/dynamic"
+	var s_sv_gather_root = "survey.122.2o7.net/survey/gather"
+}
 
 s.maxDelay='1000';  //max time to wait for 3rd party api response in milliseconds
 s.loadModule("Integrate")
