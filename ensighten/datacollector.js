@@ -1,8 +1,8 @@
 /* Dalicious */
-var window.d = {};
+window.d = {};
 
 /* DATACOLLECTOR: CONFIG */
-var window.superT = {};
+window.superT = {};
 
 /* Configuration section */
 superT.search = '';
