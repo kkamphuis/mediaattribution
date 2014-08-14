@@ -14,6 +14,12 @@ http://www.aami.com.au/datalicious=localtest
 ##Ensighten
 This is for Ensighten migration.
 
+### datacollector.js
+Single JavaScript file for DataCollector.
+
+### matag.js
+Single JavaScript file for MA DFA Tag.
+
 ### purchasepath.js
 Please put configuration and functions here.
 
