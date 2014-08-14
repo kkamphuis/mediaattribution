@@ -1,18 +1,18 @@
+var mediaAttribution = {};
+
 var d = {};
 d.maTag = function() {
 	try {
-		var u1 = Analytics.setting.rsID;
-		var u2 = '0';
-		var u3 = s.eVar61;
-		var u4 = escape(document.location.href);
-		var u5 = escape(document.referrer);
+		var u1 = Analytics.setting.rsID;	// site id, event and product
+		var u2 = '0';	// premium
+		var u3 = s.eVar61;	// campaign code
         d.maTagFired = false;
 		var pString = '';
 		if(dataLayer.dataModel.product) pString = ':' + dataLayer.dataModel.product;
-		
+
 		if(s.eVar61 && s.pageName != 'in:cil:request-a-quote-confirmation') {
 			// fire the landing page adserver call
-			u1 = u1 + '|vs|' + pCategory + '|' + pString;
+			u1 = u1 + '|vs|' + pString;
 			u3 = s.eVar61;
 			if(s.eVar62) u3 = u3 + '|' + s.eVar62;
 			u5 = escape(document.referrer);
