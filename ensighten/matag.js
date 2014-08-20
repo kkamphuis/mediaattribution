@@ -8,19 +8,19 @@ maDFATag = function() {
 	var eventType = '';
 	if (Analytics.util.containsEventTypes('LEAD', 'QUOTE', 'BUY')) {
 		if (Analytics.util.containsEvent('LEAD_STARTED')) {
-			eventType = '|ls|';
+			eventType = 'lead-start';
 		} else if (Analytics.util.containsEvent('LEAD_COMPLETED')) {
-			eventType = '|lc|';
+			eventType = 'lead-complete';
 		} else if (Analytics.util.containsEvent('QUOTE_STARTED')) {
-			eventType = '|qs|';
+			eventType = 'quote-start';
 		} else if (Analytics.util.containsEvent('QUOTE_COMPLETED')) {
-			eventType = '|qe|';
+			eventType = 'quote-end';
 		} else if (Analytics.util.containsEvent('BUY_STARTED')) {
-			eventType = '|bs|';
+			eventType = 'buy-start';
 		} else if (Analytics.util.containsEvent('BUY_COMPLETED')) {
-			eventType = '|be|';
+			eventType = 'buy-end';
 		}
-		u1 += (Analytics.setting.rsID + eventType + ':' + Analytics.util.getProduct());
+		u1 += (Analytics.setting.rsID + ':' + eventType + ':' + Analytics.util.getProduct());
 		u2 += Analytics.util.getTransactionValue();
 		u3 += s.eVar61;
 		if (s.eVar62) u3 += ('|' + s.eVar62);
@@ -29,6 +29,8 @@ maDFATag = function() {
 		var url = "//fls.doubleclick.net/activityi;src=875382;type=custo866;cat=singl081";
 	    url = url + u1 + u2 + u3 + u4 + u5 + ";ord=" + Math.floor(Math.random() * 11111111111) + "?";
 	    Analytics.track(url);
-	    d.triggerDataCollectorAdserver(true, u1, u2, u3, 'MA');
+	    d.triggerDataCollector(true, u1, u2, u3, 'MA', eventType);
+	} else {
+		d.triggerDataCollector(false);
 	}
 };
