@@ -301,7 +301,7 @@ d.triggerMA = function(event, premium, eVar61, currentURL, previousURL, eventTyp
     d.urlMA = "https://fls.doubleclick.net/activityi;src=875382;type=custo866;cat=singl081;u1=" + event + ";u2=" + premium + ";u3=" + eVar61 + ";u4=" + currentURL + ";u5=" + previousURL + ";ord=" + Math.floor(Math.random() * 11111111111) + "?";
     d.iframeTag(d.urlMA);
     d.maTagFired = true;
-    superT.setCrossDom(function() { d.triggerDataCollectorAdserver(true, event, premium, eVar61, eventType) });
+    d.triggerDataCollectorAdserver(true, event, premium, eVar61, eventType);
 };
 
 d.bazaarvoiceTags = function(type) {
@@ -3387,7 +3387,7 @@ d.adserverTags = function() {
     /* Fire Datacollector for MA tag */
     if (d.maTagFired == false) {
         // pageview dc tags
-        superT.setCrossDom(function() { d.triggerDataCollectorAdserver(false, undefined, undefined, undefined) });
+        d.triggerDataCollectorAdserver(false, undefined, undefined, undefined);
     }
 
 	// changed back to current environment
