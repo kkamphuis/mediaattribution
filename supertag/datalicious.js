@@ -34,7 +34,7 @@ d.ClientNameTest			= 'suncorptest';
 d.CodebaseLivetest		= '//www.datalicious.com/clients/' + d.ClientName + '/livetest/js/';
 d.CodebaseLatestCode	= '//www.datalicious.com/clients/' + d.ClientName + '/latestcode/js/';
 d.LocalDevName				= 'localtest';
-d.code_version 			= '160';
+d.code_version 			= '163';
 d.CodeFile				= 'dcode-v' + d.code_version + '.js';
 d.DFile					= 'datalicious.js';
 d.AllScripts			= document.getElementsByTagName('script');
@@ -49,7 +49,7 @@ d.include = function(filename){document.write(unescape("%3Cscript src='" + filen
 d.includeAS = function(file){var a=document.createElement('script');a.type='text/javascript';a.async=true;a.src=file;var b=document.getElementsByTagName('script')[0];b.parentNode.insertBefore(a,b);};
 
 //------- ARE WE TESTING? ---------------------
-d.URL=document.location.href.toLowerCase();
+d.URL=document.location.href.toLowerCase(); 
 d.Test = d.gqp('datalicious');
 
 if (d.Test == d.ClientNameDev) {
@@ -85,7 +85,7 @@ try {
 	for(i=0; i<d.AllScripts.length; i++){
 		if(d.AllScripts[i].src.indexOf(d.DFile) > -1){
 			d.thisFileCodebase = d.Codebase = d.AllScripts[i].src.split('?')[0].replace(d.DFile, "");
-			d.Codebase = d.thisFileCodebase;
+			d.Codebase = d.thisFileCodebase;  
 			break;
 		}
 	}
@@ -104,21 +104,21 @@ try {
 		if(checkEnv(d.ClientNameDev)) {
 			// This will use the test files on the client server folder livetest
 			d.Codebase = d.ClientDev;
-		}
+		} 
 		else if(checkEnv(d.ClientNameTest)) {
 			// This will use the test files on the client server folder livetest
 			d.Codebase = d.ClientTest;
-		}
+		}  
 		else if (checkEnv(d.LocalDevName)) {
 			d.Codebase = d.LocalDevTestCodebase;
 		}
 		else if (checkEnv(d.ClientName)) {
 			d.Codebase = d.ClientProd;
 		}
-
-		var thisFileFromProd = d.thisFileCodebase.toLowerCase().indexOf(d.ClientProd) > -1;
+		
+		var thisFileFromProd = d.thisFileCodebase.toLowerCase().indexOf(d.ClientProd) > -1; 
 		// increment the version no. of the dcode.js file when this file is downloaded from PROD
-
+		
 		if (thisFileFromProd && !checkEnv(d.ClientName)) {
 			dcodeVersion = parseInt(d.code_version) + 1;
 			d.CodeFile = 'dcode-v' + dcodeVersion + '.js';
@@ -129,7 +129,7 @@ try {
 		}
 
 	}
-
+	
 } catch (e) {
 	d.Codebase = d.ClientProd;
 }
