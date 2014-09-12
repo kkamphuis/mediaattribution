@@ -1,33 +1,33 @@
 d.aInclude = function(url, cB) {
-	var h = document.getElementsByTagName('head');
-	if (h.length == 0) h[0] = document.body.parentNode.appendChild(document.createElement('head'));
-	var n = document.createElement('script');
-	n.type = 'text/javascript';
-	n.src = url;
-	if (cB) {
-		if (n.addEventListener) n.addEventListener('load', cB, false);
-		else if (n.attachEvent) n.attachEvent('onreadystatechange', function () { if (n.readyState == 'complete' || n.readyState == 'loaded') cB(); });
-	}
-	h[0].appendChild(n);
-	return true;
+    var h = document.getElementsByTagName('head');
+    if (h.length == 0) h[0] = document.body.parentNode.appendChild(document.createElement('head'));
+    var n = document.createElement('script');
+    n.type = 'text/javascript';
+    n.src = url;
+    if (cB) {
+        if (n.addEventListener) n.addEventListener('load', cB, false);
+        else if (n.attachEvent) n.attachEvent('onreadystatechange', function () { if (n.readyState == 'complete' || n.readyState == 'loaded') cB(); });
+    }
+    h[0].appendChild(n);
+    return true;
 }
 
 d.getSiteFromReportSuite = function(un) {
-	var i = un.indexOf('prod');
-	var j = un.indexOf('dev');
-	var account = i > -1 ? un.substring(0,i) : (j > -1 ? un.substring(0,j) : un);
-	return account;
+    var i = un.indexOf('prod');
+    var j = un.indexOf('dev');
+    var account = i > -1 ? un.substring(0,i) : (j > -1 ? un.substring(0,j) : un);  
+    return account;
 };
 
 //include the Omniture scode file
 d.getCurrentVersion = function() {
-	return d.CodeFile.substring(7, d.CodeFile.indexOf("."));
+    return d.CodeFile.substring(7, d.CodeFile.indexOf("."));
 }
 
 //attach document state change event
 d.attachEvent = function(event, func) {
-	if(ie) document.attachEvent('on' + event, func);
-	else document.addEventListener(event, func);
+    if(ie) document.attachEvent('on' + event, func);
+    else document.addEventListener(event, func);    
 }
 
 d.addEventListenerForElement = function(elementID,eventType,listener){
@@ -43,32 +43,32 @@ d.addEventListenerForElement = function(elementID,eventType,listener){
 
 d.getElementsByClassName = function(className) {
 
-	if (window.navigator.appVersion.indexOf('MSIE 7.0') > 0) {
-		(function(g, s) {
-		g=document, s=g.createStyleSheet();
-		g.querySelectorAll = function(r, c, i, j, a) {
-			a=g.all, c=[], r = r.replace(/\[for\b/gi, '[htmlFor').split(',');
-			for (i=r.length; i--;) {
-				s.addRule(r[i], 'k:v');
-				for (j=a.length; j--;) a[j].currentStyle.k && c.push(a[j]);
-				s.removeRule(0);
-			}
-			return c;
-		}
-		})()
-	}
+    if (window.navigator.appVersion.indexOf('MSIE 7.0') > 0) {
+        (function(g, s) {
+        g=document, s=g.createStyleSheet();
+        g.querySelectorAll = function(r, c, i, j, a) {
+            a=g.all, c=[], r = r.replace(/\[for\b/gi, '[htmlFor').split(',');
+            for (i=r.length; i--;) {
+                s.addRule(r[i], 'k:v');
+                for (j=a.length; j--;) a[j].currentStyle.k && c.push(a[j]);
+                s.removeRule(0);
+            }
+            return c;
+        }
+        })()
+    }
 
     if (ie) return document.querySelectorAll('.' + className);
-	return document.getElementsByClassName(className);
+    return document.getElementsByClassName(className);
 }
 
 d.getInnerText = function(element) {
     if (element) {
-    	if (element.innerText) {
-    		return d.trim(element.innerText);
-    	} else {
-    		return d.trim(element.textContent);
-    	}
+        if (element.innerText) {
+            return d.trim(element.innerText);
+        } else {
+            return d.trim(element.textContent);
+        }
     }
     return '';
 }
@@ -79,14 +79,14 @@ d.trim = function(string){
 
 d.include(d.Codebase+'mbox-v' + d.getCurrentVersion() + '.js');
 d.include(d.Codebase+'scode-v' + d.getCurrentVersion() + '.js');
-d.include(d.Codebase+'tagserver-v' + d.getCurrentVersion() + '-source.js');
+d.include(d.Codebase+'tagserver-v' + d.getCurrentVersion() + '.js');
 d.currentURL=location.href.toLowerCase();
 if(d.currentURL.indexOf('terrischeer') > -1){
-	if(checkEnv('')) {
-		d.include(d.Codebase+'terrischeer-sitecat.js');
-	} else {
-		d.include(d.Codebase+'terrischeer-sitecat-source.js');
-	}
+    if(checkEnv('')) {
+        d.include(d.Codebase+'terrischeer-sitecat.js');
+    } else {
+        d.include(d.Codebase+'terrischeer-sitecat-source.js');
+    }
 }
 
 //---------- ClickTale ---------- //
@@ -95,24 +95,24 @@ if(d.currentURL.indexOf('terrischeer') > -1){
 var _gaq = _gaq || [];
 
 d.ClickTaleBottom = function(js) {
-	//do not load ClickTale script twice
-	if (typeof window.ClickTaleScriptSource == 'undefined') {
-		document.write(unescape("%3Cscript%20src='" +
-	                            (document.location.protocol == 'https:' ?
-	                             'https://clicktalecdn.sslcs.cdngc.net/' :
-	                             'http://cdn.clicktale.net/') +
-	                            js + "'%20type='text/javascript'%3E%3C/script%3E"));
-	}
+    //do not load ClickTale script twice
+    if (typeof window.ClickTaleScriptSource == 'undefined') {
+        document.write(unescape("%3Cscript%20src='" +
+                                (document.location.protocol == 'https:' ?
+                                 'https://clicktalecdn.sslcs.cdngc.net/' :
+                                 'http://cdn.clicktale.net/') +
+                                js + "'%20type='text/javascript'%3E%3C/script%3E"));
+    }                        
 };
 
 d.getAmount = function(event) {
-	if(s.products.indexOf(event) > -1){
-		amount = s.products.substr(s.products.indexOf(event)+event.length+1);
-		if(amount.indexOf(',') > -1) amount = amount.substr(0, amount.indexOf(','));
-		return amount;
-	}else{
-		return "0";
-	}
+    if(s.products.indexOf(event) > -1){
+        amount = s.products.substr(s.products.indexOf(event)+event.length+1);
+        if(amount.indexOf(',') > -1) amount = amount.substr(0, amount.indexOf(','));
+        return amount;
+    }else{
+        return "0";
+    }
 }
 
 //----------- Page Load Time-------------//
@@ -120,281 +120,291 @@ var inHeadTS;
 
 // ---------- Page Top Function ---------- //
 d.t = function(){
-	// page load time: support older browsers
-	inHeadTS=(new Date()).getTime();
-	// Redirect Test and Target
-	if(
-		d.currentURL.indexOf('http://www.justcarinsurance.com.au/index.asp')>=0 ||
-		d.currentURL.indexOf('http://justcarinsurance.com.au/index.asp')>=0
-	){
-		document.write('<div class="mboxDefault"></div><scr'+'ipt language="javascript1.2">mboxCreate(\'JCI_Home_Redirect\');</scr'+'ipt>');
-	}
-	// ClickTale
-	if(d.currentURL.indexOf('http://www.aami.com.au/') == 0 || d.currentURL.indexOf('http://www.bingle.com.au/') == 0 || d.currentURL.indexOf('http://www.suncorp.com.au/') == 0
-		|| d.currentURL.indexOf('http://www.gio.com.au/') == 0 || d.currentURL.indexOf('https://insurance.suncorp.com.au/home') == 0){
-		var WRInitTime=(new Date()).getTime();
-	}
+    // page load time: support older browsers
+    inHeadTS=(new Date()).getTime();
+    // Redirect Test and Target
+    if(
+        d.currentURL.indexOf('http://www.justcarinsurance.com.au/index.asp')>=0 ||
+        d.currentURL.indexOf('http://justcarinsurance.com.au/index.asp')>=0
+    ){
+        document.write('<div class="mboxDefault"></div><scr'+'ipt language="javascript1.2">mboxCreate(\'JCI_Home_Redirect\');</scr'+'ipt>');
+    }
+    // ClickTale
+    if(d.currentURL.indexOf('http://www.aami.com.au/') == 0 || d.currentURL.indexOf('http://www.bingle.com.au/') == 0 || d.currentURL.indexOf('http://www.suncorp.com.au/') == 0
+        || d.currentURL.indexOf('http://www.gio.com.au/') == 0 || d.currentURL.indexOf('https://insurance.suncorp.com.au/home') == 0){
+        var WRInitTime=(new Date()).getTime();
+    }
 
-	if(d.currentURL.indexOf('www.suncorp.com.au/insurance/campaigns/life-protect-your-family') > -1
-		|| d.currentURL.indexOf('www.aami.com.au/life-insurance/income-protection') > -1
-		|| d.currentURL.indexOf('www.suncorp.com.au/sites/default/files/campaign/lifeprotect/index.html') > -1) {
-		if(s.getQueryParam('net_uid') != '' ) {
-			s.getAndPersistValue(s.getQueryParam('net_uid'), 'net_uid');
-		}
-		if (s.getQueryParam('seg') != '') {
-			s.getAndPersistValue(s.getQueryParam('seg'), 'seg');
-		}
-		if(s.getQueryParam('cmpid') != '') {
-			s.getAndPersistValue(s.getQueryParam('cmpid'), 'cmpid');
-		}
-	}
+    if(d.currentURL.indexOf('www.suncorp.com.au/insurance/campaigns/life-protect-your-family') > -1
+        || d.currentURL.indexOf('www.aami.com.au/life-insurance/income-protection') > -1
+        || d.currentURL.indexOf('www.suncorp.com.au/sites/default/files/campaign/lifeprotect/index.html') > -1) {
+        if(s.getQueryParam('net_uid') != '' ) {
+            s.getAndPersistValue(s.getQueryParam('net_uid'), 'net_uid');
+        }
+        if (s.getQueryParam('seg') != '') {
+            s.getAndPersistValue(s.getQueryParam('seg'), 'seg');
+        }
+        if(s.getQueryParam('cmpid') != '') {
+            s.getAndPersistValue(s.getQueryParam('cmpid'), 'cmpid');
+        }
+    }
 }
 
 
 // ---------- Page Bottom Function ---------- //
 d.b = function(){
-	// do not send data to SiteCatalyst when SuperTag is disabled
-	if (typeof s.siteID == 'undefined' || s.siteID == '') {
-		return;
-	}
+    // do not send data to SiteCatalyst when SuperTag is disabled
+    if (typeof s.siteID == 'undefined' || s.siteID == '') {
+        return;
+    }
 
-	// Test and Target
-	/* Global mbox for AAMI, Suncorp and GIO Motor */
-    var secureGlobalMboxes = [
-        'insurance.suncorp.com.au/motor/',
-        'insurance.aami.com.au/motor/',
-        'insurance.gio.com.au/motor/',
-        'insurance.sys.aami.com.au/motor/',
-        'insurance.aami.com.au/home/pub/aamiquote',
-        'insurance.suncorp.com.au/home/pub/sunquote',
-        'insurance.gio.com.au/home/pub/gioquote',
-        'insurance.sys.aami.com.au/home/pub/sunquote',
-        'insurance.sys.aami.com.au/home/pub/gioquote',
-        'insurance.sys.aami.com.au/home/pub/aamiquote'
-    ];
-    var i;
-    for (i in secureGlobalMboxes) {
-        if (window.location.href.indexOf(secureGlobalMboxes[i]) > -1){
-            var mboxName = s.pageName
-                .replace(/\b(in:|sales:|:quote|:buy|:car_comprehensive|:car_thirdpartyproperty|:car_nonproduct_specific|:car_platinum|:car_thirdpartyfireandtheft|:home_building_only|:home_contents_only|:home_building_&_contents|:home_classic_building_&_contents|:home_classic_building_only|:home_classic_contents_only|:home_extras_building_&_contents|:home_extras_building_only|:home_extras_contents_only|:home_advantages_building_&_contents|:home_advantages_building_only|:home_advantages_contents_only)\b/gi,'')
-                .replace(':secapp',':sec')
-                .replace('ami','aami')
-                .replace(/home_classic|home_extras|home_advantages/i, 'home')
-                .replace(':quote_started',':qs')
-                .replace(':quote_completed',':qc')
-                .replace(':buy_started',':bs')
-                .replace(':buy_completed',':bc')
-                .replace(/:/g,'_').toUpperCase()+'_M1';
-            if (s.pageName.indexOf('buy_completed') > -1) {
-                var eventIndex = s.events.indexOf('event19:');
-                if (eventIndex > -1) {
-                    eventIndex += 8;
-                    var commaIndex = s.events.indexOf(',', eventIndex);
-                    if (commaIndex < 0) {
-                        commaIndex = s.events.length;
+    // Test and Target
+    /* Global mbox for AAMI, Suncorp and GIO Motor */
+    (function () {
+        var secureGlobalMboxes = [
+            'insurance.suncorp.com.au/motor/',
+            'insurance.aami.com.au/motor/',
+            'insurance.gio.com.au/motor/',
+            'insurance.sys.aami.com.au/motor/',
+            'insurance.aami.com.au/home/pub/aamiquote',
+            'insurance.suncorp.com.au/home/pub/sunquote',
+            'insurance.gio.com.au/home/pub/gioquote',
+            'insurance.sys.aami.com.au/home/pub/sunquote',
+            'insurance.sys.aami.com.au/home/pub/gioquote',
+            'insurance.sys.aami.com.au/home/pub/aamiquote'
+        ];
+        var i;
+        for (i in secureGlobalMboxes) { 
+            if (window.location.href.indexOf(secureGlobalMboxes[i]) > -1 && s.pageName.indexOf('dealerquote') < 0 && s.pageName.indexOf('dealerbuy') < 0 && s.pageName.indexOf('unknown') < 0 ) {
+                var mboxName = '';
+                var mboxNameArr = s.pageName
+                    .replace(/^(in:)|sales:|:quote(?!:jeopardy|_)|:buy(?!:jeopardy|_)/g,'')
+                    .replace(':secapp',':sec')
+                    .replace('ami','aami')
+                    .replace(/home_classic|home_extras|home_advantages|home_landlord/i, 'home')
+                    .replace('quote:jeopardy', 'quote_jeopardy')
+                    .replace('buy:jeopardy', 'buy_jeopardy')
+                    .replace(':quote_started',':qs')
+                    .replace(':quote_completed',':qc')
+                    .replace(':buy_started',':bs')
+                    .replace(':buy_completed',':bc')
+                    .split(':');
+                for (var i=0;i<mboxNameArr.length;i++) {
+                    if (i<4) {
+                        mboxName += mboxNameArr[i] + '_';
                     }
-                    var orderTotal = s.events.substring(eventIndex, commaIndex).replace(/\$|,/g, '');
-                    mboxCreate(mboxName, 'pageName=' + s.pageName, 'orderId=' + s.eVar23, 'orderTotal=' + orderTotal);
-                } else {
-                    mboxCreate(mboxName, 'pageName=' + s.pageName, 'error=event19');
                 }
-            } else {
-                mboxCreate(mboxName, 'pageName=' + s.pageName);
-            }
+                mboxName = mboxName.toUpperCase() + 'M1';
+
+                if (s.pageName.indexOf('buy_completed') > -1) {
+                    var eventIndex = s.events.indexOf('event19:');
+                    if (eventIndex > -1) {
+                        eventIndex += 8;
+                        var commaIndex = s.events.indexOf(',',eventIndex);
+                        if (commaIndex < 0) { commaIndex = s.events.length; }
+                        var orderTotal = s.events.substring(eventIndex,commaIndex).replace(/\$|,/g,'');
+                        mboxCreate(mboxName,'pageName='+s.pageName,'orderId='+s.eVar23,'orderTotal='+orderTotal);
+                    } else {
+                        mboxCreate(mboxName,'pageName='+s.pageName,'error=event19');
+                    }
+                } else {
+                    mboxCreate(mboxName,'pageName='+s.pageName);
+                }
+            } 
+        }
+    })();
+    
+    // when use prod site to test, force report suite to dev
+    if ((checkEnv(d.ClientNameDev) || checkEnv(d.ClientNameTest) || checkEnv(d.LocalDevName))) {
+        setting.env = E_DEV;
+        s.un = s.un.indexOf('prod') > -1 ? setting.getEnv(s.un.substring(0,s.un.indexOf('prod'))) : s.un.indexOf('dev') > -1 ? s.un : setting.getEnv(s.un);
+    }
+
+    d.adjustBrochureware(s);
+
+    var delay = false;
+    /* ClickTale Call */
+    if (window.navigator.appVersion.indexOf('MSIE 7.0') < 0 && window.navigator.appVersion.indexOf('MSIE 8.0') < 0) {
+        if(d.currentURL.indexOf('http://www.aami.com.au/') == 0 || s.getPageName() == 'in:ami:life-insurance:life-insurance-calculator'){
+            d.ClickTaleBottom("www02/ptc/6fe21bcd-c381-4497-befd-d3d62a2a6cd1.js");
+            delay = true;
+        }
+        if(d.currentURL.indexOf('http://www.bingle.com.au/') == 0){
+            d.ClickTaleBottom("www02/ptc/4d9ed179-188c-4460-a70d-378d380f8895.js");
+            delay = true;
+        }
+        if((d.currentURL.indexOf('http://www.suncorp.com.au/') == 0 && s.pageName != 'in:sun:homepage') 
+        || ((/insurance.suncorp.com.au\/home/i.test(d.currentURL) || /(insurance|sunpay).uat.suncorp.com.au\/(home|payonlineweb)/i.test(d.currentURL))
+        && (s.pageName.indexOf('in:sun:secapp:home_classic') == 0 || s.pageName.indexOf('in:sun:secapp:home_advantages') == 0|| s.pageName.indexOf('in:sun:secapp:home_extras') == 0))) {
+            d.ClickTaleBottom("www02/ptc/8d43d9e9-72d8-40b2-a9ae-34e4cbe9d545.js");
+            delay = true;
+        }
+        
+        if(d.currentURL.indexOf('http://www.gio.com.au/') == 0) {
+            d.ClickTaleBottom("www02/ptc/4629092c-1c77-428a-a47d-18eb1ceb6ea6.js");
+            delay = true;
         }
     }
 
-	// when use prod site to test, force report suite to dev
-	if ((checkEnv(d.ClientNameDev) || checkEnv(d.ClientNameTest) || checkEnv(d.LocalDevName))) {
-		setting.env = E_DEV;
-		s.un = s.un.indexOf('prod') > -1 ? setting.getEnv(s.un.substring(0,s.un.indexOf('prod'))) : s.un.indexOf('dev') > -1 ? s.un : setting.getEnv(s.un);
-	}
-
-	d.adjustBrochureware(s);
-
-	var delay = false;
-	/* ClickTale Call */
-	if (window.navigator.appVersion.indexOf('MSIE 7.0') < 0 && window.navigator.appVersion.indexOf('MSIE 8.0') < 0) {
-		if(d.currentURL.indexOf('http://www.aami.com.au/') == 0 || s.getPageName() == 'in:ami:life-insurance:life-insurance-calculator'){
-			d.ClickTaleBottom("www02/ptc/6fe21bcd-c381-4497-befd-d3d62a2a6cd1.js");
-			delay = true;
-		}
-		if(d.currentURL.indexOf('http://www.bingle.com.au/') == 0){
-			d.ClickTaleBottom("www02/ptc/4d9ed179-188c-4460-a70d-378d380f8895.js");
-			delay = true;
-		}
-	    if((d.currentURL.indexOf('http://www.suncorp.com.au/') == 0 && s.pageName != 'in:sun:homepage')
-		|| (/insurance.suncorp.com.au\/home/i.test(d.currentURL) || /(insurance|sunpay).uat.suncorp.com.au\/(home|payonlineweb)/i.test(d.currentURL)
-		&& (s.pageName.indexOf('in:sun:secapp:home_classic') == 0 || s.pageName.indexOf('in:sun:secapp:home_advantages') == 0|| s.pageName.indexOf('in:sun:secapp:home_extras') == 0))) {
-		    d.ClickTaleBottom("www02/ptc/8d43d9e9-72d8-40b2-a9ae-34e4cbe9d545.js");
-			delay = true;
-		}
-
-		if(d.currentURL.indexOf('http://www.gio.com.au/') == 0) {
-		    d.ClickTaleBottom("www02/ptc/4629092c-1c77-428a-a47d-18eb1ceb6ea6.js");
-			delay = true;
-		}
-	}
-
-	if(s.siteID == 'in:apa') {
-		delay = true;
-	}
-
-	// if use call back function, delay 1s
-	if (delay) {
-		setTimeout(d.firePageLoadTagsWhenReady,500);
-	} else {
-		d.firePageLoadTagsNow();
-	}
+    if(s.siteID == 'in:apa') {
+        delay = true;
+    }
+    
+    // if use call back function, delay 1s
+    if (delay) {
+        setTimeout(d.firePageLoadTagsWhenReady,500);
+    } else {
+        d.firePageLoadTagsNow();
+    } 
 }
 
 var firePageLoadTagsAttempts = 0;
-d.firePageLoadTagsWhenReady = function() {
-	if (typeof ClickTaleGetUID != 'function' && firePageLoadTagsAttempts < 6) {
-		firePageLoadTagsAttempts++;
-		setTimeout(d.firePageLoadTagsWhenReady, 500);
-		return;
-	}
-	d.firePageLoadTagsNow();
+d.firePageLoadTagsWhenReady = function() {  
+    if (typeof ClickTaleGetUID != 'function' && firePageLoadTagsAttempts < 6) {
+        firePageLoadTagsAttempts++;
+        setTimeout(d.firePageLoadTagsWhenReady, 500);
+        return;
+    }
+    d.firePageLoadTagsNow();
 }
 
 d.firePageLoadTagsNow = function() {
-	// fire now
-	s_code=s.t();if(s_code)document.write(s_code);
-	scApplyTrackLink();
-	d.adserverTags();
-	d.buttonTags();
+    // fire now
+    s_code=s.t();if(s_code)document.write(s_code);
+    scApplyTrackLink();
+    d.adserverTags();
+    d.buttonTags();
 };
 
 // ----- QLD 25K Campaign (To be removed after campaign)----- //
 d.trackEnter = function(postcode, insuranceString, monthString){
-	if(typeof postcode != 'undefined'){
-		scTempEvents=s.events;
-		s.linkTrackVars="eVar12";
-		s.eVar12=postcode;
-		s.tl(this,"o","postcode: "+postcode);
-		// restore events and clear filters
-		s.events=scTempEvents;
-		s.linkTrackVars="none";
-		s.linkTrackEvents="none";
-	}
-	if(typeof insuranceString != 'undefined'){
-		var products = insuranceString.split(':');
-		if(typeof monthString != 'undefined'){
-			var months = monthString.split(':');
-			var date = new Date();
-			var thisMonth = date.getMonth();
-			thisMonth++;
-			var renewIndex = -1;
-			var minMonth = 100;
-			for(i in months){
-				if(months[i] != 'mm'){
-					var month = parseInt(months[i], 10);
-					if(month - thisMonth < 0) month=month+12;
-					if(month - thisMonth < minMonth){
-						minMonth = month - thisMonth;
-						renewIndex = i;
-					}
-				}
-			}
-			if(renewIndex != -1 && (renewIndex >=0 && renewIndex <=3)){
-				cachebuster = Math.floor(Math.random()*11111111111);
-				var retargeting = products[renewIndex];
-				if(retargeting == 'car'){
-					d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco658;ord=1;num='+cachebuster+'?'); // 1051726
-				}
-				if(retargeting == 'home'){
-					d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco403;ord=1;num='+cachebuster+'?'); // 1051729
-				}
-				if(retargeting == 'contents'){
-					d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco137;ord=1;num='+cachebuster+'?'); // 1051731
-				}
-				if(retargeting == 'boat'){
-					d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco294;ord=1;num='+cachebuster+'?'); // 1051737
-				}
-				if(retargeting == 'landlord'){
-					d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco071;ord=1;num='+cachebuster+'?'); // 1051732
-				}
-				if(minMonth <= 3){
-					d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco436;ord=1;num='+cachebuster+'?'); // 1046482
-				}else{
-					d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco149;ord=1;num='+cachebuster+'?'); // 1046481
-				}
-			}
-		}
-	}
+    if(typeof postcode != 'undefined'){
+        scTempEvents=s.events;
+        s.linkTrackVars="eVar12";
+        s.eVar12=postcode;
+        s.tl(this,"o","postcode: "+postcode);
+        // restore events and clear filters
+        s.events=scTempEvents;
+        s.linkTrackVars="none";
+        s.linkTrackEvents="none";
+    }
+    if(typeof insuranceString != 'undefined'){
+        var products = insuranceString.split(':');
+        if(typeof monthString != 'undefined'){
+            var months = monthString.split(':');
+            var date = new Date();
+            var thisMonth = date.getMonth();
+            thisMonth++;
+            var renewIndex = -1;
+            var minMonth = 100;
+            for(i in months){
+                if(months[i] != 'mm'){
+                    var month = parseInt(months[i], 10);
+                    if(month - thisMonth < 0) month=month+12;
+                    if(month - thisMonth < minMonth){
+                        minMonth = month - thisMonth;
+                        renewIndex = i;
+                    }
+                }
+            }
+            if(renewIndex != -1 && (renewIndex >=0 && renewIndex <=3)){
+                cachebuster = Math.floor(Math.random()*11111111111);
+                var retargeting = products[renewIndex];
+                if(retargeting == 'car'){
+                    d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco658;ord=1;num='+cachebuster+'?'); // 1051726
+                }
+                if(retargeting == 'home'){
+                    d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco403;ord=1;num='+cachebuster+'?'); // 1051729
+                }
+                if(retargeting == 'contents'){
+                    d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco137;ord=1;num='+cachebuster+'?'); // 1051731
+                }
+                if(retargeting == 'boat'){
+                    d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco294;ord=1;num='+cachebuster+'?'); // 1051737
+                }
+                if(retargeting == 'landlord'){
+                    d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco071;ord=1;num='+cachebuster+'?'); // 1051732
+                }
+                if(minMonth <= 3){
+                    d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco436;ord=1;num='+cachebuster+'?'); // 1046482
+                }else{
+                    d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco149;ord=1;num='+cachebuster+'?'); // 1046481
+                }
+            }
+        }
+    }
 }
 
 d.socialShare = function(shareType){
-	if(typeof shareType != 'undefined'){
-		scTempEvents=s.events;
-		s.linkTrackVars="events,eVar74";
-		s.linkTrackEvents="event74";
-		s.eVar74=shareType;
-		s.events="event74";
-		s.tl(this,"o","share: "+shareType);
-		// restore events and clear filters
-		s.events=scTempEvents;
-		s.linkTrackVars="none";
-		s.linkTrackEvents="none";
-
-	}
+    if(typeof shareType != 'undefined'){
+        scTempEvents=s.events;
+        s.linkTrackVars="events,eVar74";
+        s.linkTrackEvents="event74";
+        s.eVar74=shareType;
+        s.events="event74";
+        s.tl(this,"o","share: "+shareType);
+        // restore events and clear filters
+        s.events=scTempEvents;
+        s.linkTrackVars="none";
+        s.linkTrackEvents="none";
+        
+    }
 }
 
 d.trackSegment = function(segment){
-	if(typeof segment != 'undefined'){
-		cachebuster = Math.floor(Math.random()*11111111111);
-		segment = segment.toLowerCase();
-		if(segment == 'future' || segment == 'new' || segment =='existing'){
-			scTempEvents=s.events;
-			s.linkTrackVars="events,eVar73";
-			s.linkTrackEvents="event73";
-			s.eVar73=segment;
-			s.events="event73";
-			s.tl(this,"o","segment: "+segment);
-			// restore events and clear filters
-			s.events=scTempEvents;
-			s.linkTrackVars="none";
-			s.linkTrackEvents="none";
-			if(segment == 'existing'){
-				d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco260;ord=1;num='+cachebuster+'?'); // 1046483
-			}
-			if(segment == 'new'){
-				d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco402;ord=1;num='+cachebuster+'?'); // 1051742
-			}
-		}
-		if(segment == 'enter'){
-			s.tl(this,"o","25K landing enter");
-		}
-	}
+    if(typeof segment != 'undefined'){
+        cachebuster = Math.floor(Math.random()*11111111111);
+        segment = segment.toLowerCase();
+        if(segment == 'future' || segment == 'new' || segment =='existing'){
+            scTempEvents=s.events;
+            s.linkTrackVars="events,eVar73";
+            s.linkTrackEvents="event73";
+            s.eVar73=segment;
+            s.events="event73";
+            s.tl(this,"o","segment: "+segment);
+            // restore events and clear filters
+            s.events=scTempEvents;
+            s.linkTrackVars="none";
+            s.linkTrackEvents="none";
+            if(segment == 'existing'){
+                d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco260;ord=1;num='+cachebuster+'?'); // 1046483
+            }
+            if(segment == 'new'){
+                d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco402;ord=1;num='+cachebuster+'?'); // 1051742
+            }
+        }
+        if(segment == 'enter'){
+            s.tl(this,"o","25K landing enter");         
+        }
+    }
 }
 
 d.addButtonTag = function(siteID, pageName, buttonID, linkTrackVars, linkTrackEvents, linkName, transfer){
-	if (pageName != s.pageName && !(pageName == 'GLOBAL' && s.siteID.indexOf(siteID) >= 0)) {
-		return;
-	}
+    if (pageName != s.pageName && !(pageName == 'GLOBAL' && s.siteID.indexOf(siteID) >= 0)) {
+        return;
+    }
     var element = document.getElementById(buttonID);
     if (element){
-		if (transfer) {
-			element.onclick=function() {
-				d.fireButtonTag(s.un, linkTrackVars, linkTrackEvents, linkName, element);
-				return false;};
-		} else {
-			element.onclick=function() {
-				d.fireButtonTag(s.un, linkTrackVars, linkTrackEvents, linkName)};
-		}
-	}
+        if (transfer) {
+            element.onclick=function() {
+                d.fireButtonTag(s.un, linkTrackVars, linkTrackEvents, linkName, element);               
+                return false;};
+        } else {
+            element.onclick=function() {
+                d.fireButtonTag(s.un, linkTrackVars, linkTrackEvents, linkName)};
+        }
+    }
 }
 
 d.addButtonEventByClassName = function(pageName, buttonClassName, nodeId, tagName) {
     if ( typeof s != 'undefined' && typeof s.un != 'undefined' && (typeof pageName != 'undefined') && (typeof buttonClassName != 'undefined') ) {
         if ( pageName == s.pageName ){
-			var button = d.getElementsByClassName(buttonClassName);
-	        if (button && button.length > 0){
-	            button[0].onclick=function() {
-	                d.setCookie(buttonClassName, true);
-	            };
-	        }
+            var button = d.getElementsByClassName(buttonClassName);
+            if (button && button.length > 0){
+                button[0].onclick=function() {
+                    d.setCookie(buttonClassName, true);
+                };
+            }
         }
     }
 }
@@ -406,10 +416,10 @@ d.addButtonsTag = function(siteID, pageName, buttonName, linkTrackVars, linkTrac
         // Attach the tag to the onclick of the link
         var elements = document.getElementsByName(buttonName);
         if (linkTrackVars.indexOf('prop37') >= 0) {
-            s.prop37 = 'CarSearchResult';
+            s.prop37 = 'CarSearchResult';  
             if (elements && elements.length > 0) {
                 s.prop38 = elements.length;
-			} else {
+            } else {
                 s.prop38 = 0;
             }
             d.setCookie('prop38',s.prop38);
@@ -427,108 +437,108 @@ d.addButtonsTag = function(siteID, pageName, buttonName, linkTrackVars, linkTrac
 // Call the tag on a event click
 d.fireButtonTag = function(siteID, linkTrackVars, linkTrackEvents, linkName, element){
     // Make sure the supertag exists and that pageName and buttonID are defined
-    if ( (typeof siteID != 'undefined') && (typeof linkTrackVars != 'undefined') && (typeof linkTrackEvents != 'undefined') && (typeof linkName != 'undefined') ) {
-        //var s=s_gi(siteID);
-		s.useForcedLinkTracking=true;
-        scTempEvents=s.events;
+    if ( (typeof siteID != 'undefined') && (typeof linkTrackVars != 'undefined') && (typeof linkTrackEvents != 'undefined') && (typeof linkName != 'undefined') ) { 
+        //var s=s_gi(siteID); 
+        s.useForcedLinkTracking=true;
+        scTempEvents=s.events; 
         s.events=linkTrackEvents;
-        s.linkTrackVars=linkTrackVars;
-        s.linkTrackEvents=linkTrackEvents;
-        s.eVar36=linkName;
-		if (linkTrackVars.indexOf('eVar22') >= 0) {
-			s.events=linkTrackEvents + ':' + s.eVar22;
-			if(s.pageName.indexOf('in:sun:secapp:motor:quote:quote_completed') >= 0) {
-				d.imageTag('//googleads.g.doubleclick.net/pagead/viewthroughconversion/1052146104/?value=0&label=SIJRCODe0AkQuPPZ9QM&guid=ON&script=0');
-			}  else if(s.pageName.indexOf('in:gio:secapp:sales:motor:quote:quote_completed') >= 0) {
-				d.imageTag('//googleads.g.doubleclick.net/pagead/viewthroughconversion/1066334314/?value=0&label=9Qn9CPb0rQcQ6vC7_AM&guid=ON&script=0');
-			}
-		} else if (s.pageName == 'in:ami:life-insurance:life-insurance-calculator') {
-			var linkName = s.eVar36;
-			setTimeout(function () {
-				var error = '';
-				elements = d.getElementsByClassName('error');
-				for (i = 1; i < elements.length; i = i + 2) {
-					if (elements[i].style.display != "none") {
-						error = error + d.getInnerText(elements[i].parentElement.parentElement.firstElementChild).replace('*', '') + " is required.|";
-					}
-				}
-				scTempEvents=s.events;
-				s.usePlugins=false;
-				if (error) {
-					s.events = "event64";
-					s.linkTrackEvents = "event64";
-					s.list3 = error.substring(0, error.length-1);
-					s.linkTrackVars = 'events,list3';
-					s.tl(this,'o','Validation Error');
-				} else {
-					var elements = document.getElementById('step-ul');
-					for (i = 0; i < elements.childElementCount; i++) {
-					    if (elements.childNodes[i].className=='selected') {
-					    	s.eVar36 = linkName + ' ' + d.getInnerText(elements.childNodes[i]);
-					    	break;
-					    }
-					}
-					s.events = "event20";
-					s.linkTrackEvents = "event20";
-					s.linkTrackVars = 'events,eVar36';
-					s.tl(this,'o', s.eVar36);
-				}
-				s.events=scTempEvents;
-				s.usePlugins=true;
-			}, 600);
-			return;
-		} else if(scEventExists('event1') && (s.siteID == "in:sun" || s.siteID == "in:ami") && (s.products.indexOf("home_") > -1 || s.products.indexOf("car_") > -1)) {
-			s.eVar9 = 'in_selfservice_nb_register';
-  			s.events = s.serializeEvent('event1');
-		}
-		if (s.trackingServer == null || s.trackingServer.length == 0) {
-			s.trackingServer = "metrics.suncorp.com.au";
-		}
-		if (s.trackingServerSecure == null || s.trackingServerSecure.length == 0) {
-			s.trackingServerSecure = "smetrics.suncorp.com.au";
-		}
+        s.linkTrackVars=linkTrackVars; 
+        s.linkTrackEvents=linkTrackEvents; 
+        s.eVar36=linkName; 
+        if (linkTrackVars.indexOf('eVar22') >= 0) {
+            s.events=linkTrackEvents + ':' + s.eVar22;
+            if(s.pageName.indexOf('in:sun:secapp:motor:quote:quote_completed') >= 0) {
+                d.imageTag('//googleads.g.doubleclick.net/pagead/viewthroughconversion/1052146104/?value=0&label=SIJRCODe0AkQuPPZ9QM&guid=ON&script=0');
+            }  else if(s.pageName.indexOf('in:gio:secapp:sales:motor:quote:quote_completed') >= 0) {
+                d.imageTag('//googleads.g.doubleclick.net/pagead/viewthroughconversion/1066334314/?value=0&label=9Qn9CPb0rQcQ6vC7_AM&guid=ON&script=0');
+            }
+        } else if (s.pageName == 'in:ami:life-insurance:life-insurance-calculator') {
+            var linkName = s.eVar36;
+            setTimeout(function () {
+                var error = '';
+                elements = d.getElementsByClassName('error');
+                for (i = 1; i < elements.length; i = i + 2) {
+                    if (elements[i].style.display != "none") {
+                        error = error + d.getInnerText(elements[i].parentElement.parentElement.firstElementChild).replace('*', '') + " is required.|";
+                    }
+                }
+                scTempEvents=s.events;
+                s.usePlugins=false;
+                if (error) {
+                    s.events = "event64";
+                    s.linkTrackEvents = "event64";
+                    s.list3 = error.substring(0, error.length-1);
+                    s.linkTrackVars = 'events,list3';
+                    s.tl(this,'o','Validation Error');
+                } else {
+                    var elements = document.getElementById('step-ul');
+                    for (i = 0; i < elements.childElementCount; i++) {
+                        if (elements.childNodes[i].className=='selected') {
+                            s.eVar36 = linkName + ' ' + d.getInnerText(elements.childNodes[i]);
+                            break;
+                        }
+                    }
+                    s.events = "event20";
+                    s.linkTrackEvents = "event20";
+                    s.linkTrackVars = 'events,eVar36';
+                    s.tl(this,'o', s.eVar36);
+                }
+                s.events=scTempEvents;
+                s.usePlugins=true;
+            }, 600);
+            return;
+        } else if(scEventExists('event1') && (s.siteID == "in:sun" || s.siteID == "in:ami") && (s.products.indexOf("home_") > -1 || s.products.indexOf("car_") > -1)) {
+            s.eVar9 = 'in_selfservice_nb_register';
+            s.events = s.serializeEvent('event1');
+        }
+        if (s.trackingServer == null || s.trackingServer.length == 0) {
+            s.trackingServer = "metrics.suncorp.com.au";
+        }
+        if (s.trackingServerSecure == null || s.trackingServerSecure.length == 0) {
+            s.trackingServerSecure = "smetrics.suncorp.com.au";
+        }
         s.usePlugins=false;
         s.forcedLinkTrackingTimeout = 500;
-		if (element == null ) {
-			s.tl(this,'o',linkName);
-		} else {
-			s.tl(element,'o',linkName, null, 'navigate');
-		}
-		s.events=scTempEvents;
-		s.usePlugins=true;
+        if (element == null ) {
+            s.tl(this,'o',linkName);
+        } else {
+            s.tl(element,'o',linkName, null, 'navigate');
+        }
+        s.events=scTempEvents;
+        s.usePlugins=true;
     }
 }
 
 d.adjustBrochureware = function(s) {
     if (s) {
-		s.linkInternalFilters=s.linkInternalFilters + ",tel:,"
-		if(s.pageName == 'in:imr:secapp:motorcycle:buy:buy_started'){
-			s.getAndPersistValue(s.products, 'IMRProducts');
-		} else if(s.pageName == 'in:imr:secapp:motorcycle:buy:buy_completed'){
-			if(s.products.indexOf(';nonproductspecific') >= 0){
-				s.products = s.products.replace(';nonproductspecific',s.getAndPersistValue(null, 'IMRProducts'));
-			}
-		} else if(s.pageName == 'in:bin:secapp:motor:quote:quote_completed'){
-			if(scEventExists('event9')){
-				s.getAndPersistValue(s.eVar22,'BingleQuoteNumber');
-			} else if(scEventExists('event10')){
-				s.getAndPersistValue("QTE"+s.events.substring(s.events.indexOf(":")+1),'BingleQuoteNumber');
-			}
-		} else if(s.pageName == 'in:jci:secapp:motor:buy:buy_started'){
-			s.getAndPersistValue(s.products, 'JCIProducts');
-		} else if(s.pageName.indexOf('in:jci:secapp:motor:buy:buy_completed') >= 0){
-			if(s.products.indexOf(';nonproductspecific') >= 0){
-				s.products = s.products.replace(';nonproductspecific', s.getAndPersistValue(null, 'JCIProducts'));
-			}
-		} else if(s.getPageName() == 'in:ami:life-insurance:life-insurance-calculator') {
-			d.attachEvent('readystatechange', function() {
-				if(document.readyState == 'complete') {
-					d.addButtonTag(s.siteID, s.pageName, 'webform-client-form-6062-nextButton', 'eVar36,events', 'event20', 'Next');
-					d.addButtonTag(s.siteID, s.pageName, 'webform-client-form-6062-prevButton', 'eVar36,events', 'event20', 'Back');
-				}
-			});
-		} else if (s.pageName.indexOf('in:ami:secapp:selfservice:claim:lodgement:contactingyou') > -1) {
-			var element = document.getElementById('fileUpload');
+        s.linkInternalFilters=s.linkInternalFilters + ",tel:,"
+        if(s.pageName == 'in:imr:secapp:motorcycle:buy:buy_started'){
+            s.getAndPersistValue(s.products, 'IMRProducts');
+        } else if(s.pageName == 'in:imr:secapp:motorcycle:buy:buy_completed'){
+            if(s.products.indexOf(';nonproductspecific') >= 0){
+                s.products = s.products.replace(';nonproductspecific',s.getAndPersistValue(null, 'IMRProducts'));
+            }   
+        } else if(s.pageName == 'in:bin:secapp:motor:quote:quote_completed'){
+            if(scEventExists('event9')){
+                s.getAndPersistValue(s.eVar22,'BingleQuoteNumber');
+            } else if(scEventExists('event10')){
+                s.getAndPersistValue("QTE"+s.events.substring(s.events.indexOf(":")+1),'BingleQuoteNumber');
+            }
+        } else if(s.pageName == 'in:jci:secapp:motor:buy:buy_started'){
+            s.getAndPersistValue(s.products, 'JCIProducts');
+        } else if(s.pageName.indexOf('in:jci:secapp:motor:buy:buy_completed') >= 0){
+            if(s.products.indexOf(';nonproductspecific') >= 0){
+                s.products = s.products.replace(';nonproductspecific', s.getAndPersistValue(null, 'JCIProducts'));
+            }
+        } else if(s.getPageName() == 'in:ami:life-insurance:life-insurance-calculator') {
+            d.attachEvent('readystatechange', function() {
+                if(document.readyState == 'complete') {
+                    d.addButtonTag(s.siteID, s.pageName, 'webform-client-form-6062-nextButton', 'eVar36,events', 'event20', 'Next');
+                    d.addButtonTag(s.siteID, s.pageName, 'webform-client-form-6062-prevButton', 'eVar36,events', 'event20', 'Back');
+                }
+            });     
+        } else if (s.pageName.indexOf('in:ami:secapp:selfservice:claim:lodgement:contactingyou') > -1) {
+            var element = document.getElementById('fileUpload');
 
             if (element != null) {
                 element.onclick = function trackError() {
@@ -549,12 +559,12 @@ d.adjustBrochureware = function(s) {
                     }
                 };
             }
-		} else if (/in:\w+:secapp:(sales:)?\w+:quote:(retrieve_quote|quote_retrieve)/i.test(s.pageName)) {
-			var km = s.getAndPersistValue(null, scGetQuoteNumber() + '_eVar67');
-			if (km) {
-				s.eVar57 = km;
-				s.getAndPersistValue(km, s.eVar26 + '_eVar67');
-			}
+        } else if (/in:\w+:secapp:(sales:)?\w+:quote:(retrieve_quote|quote_retrieve)/i.test(s.pageName)) {
+            var km = s.getAndPersistValue(null, scGetQuoteNumber() + '_eVar67');
+            if (km) {
+                s.eVar57 = km;
+                s.getAndPersistValue(km, s.eVar26 + '_eVar67');
+            }
             var element = document.getElementById('_eventId_submit') || document.getElementById('_eventId_nextpage');
 
             if (element != null) {
@@ -581,35 +591,35 @@ d.adjustBrochureware = function(s) {
             //capture eVar22
             s.eVar22 = scGetQuoteNumber();
         } else if (/in:\w+:secapp:(sales:)?\motor:quote:quote_started/i.test(s.pageName)) {
-        	var element = document.getElementById('policyStartDatePicker');
-        	if (!element) return;
-        	var getPolicyStartDate = function() {
-	        	var dateArray = element.value.split('/');
-	        	if (dateArray && dateArray.length == 3) {
-	        		var policyStart = new Date(dateArray[2],dateArray[1]-1,dateArray[0]);
-	        		return policyStart;
-	    		}
-        	}
-        	var getDaysToPolicyStartDate = function() {
-        		var policyStart = getPolicyStartDate();
-        		var millisecondsOfDay = 24*60*60*1000;
-        		var now = new Date();
-        		var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        		var elapsedDays = Math.floor((policyStart - today) / millisecondsOfDay);
-        		elapsedDays = elapsedDays < 0 ? '0' : elapsedDays + '';
-        		return elapsedDays;
-        	}
-        	s.eVar70 = getDaysToPolicyStartDate();
-        	s.getAndPersistValue(s.eVar70, s.eVar26 + '_eVar70');
-        	element.onchange = function() {
-				s.linkTrackVars = 'products,eVar70';
-				s.usePlugins = false;
-				var override = new Object();
-				override.eVar70 = getDaysToPolicyStartDate();
-				s.getAndPersistValue(override.eVar70, s.eVar26 + '_eVar70');
-				s.tl(this, 'o', 'Days to Policy Start Date', override);
-				s.usePlugins = true;
-        	}
+            var element = document.getElementById('policyStartDatePicker');
+            if (!element) return;
+            var getPolicyStartDate = function() {
+                var dateArray = element.value.split('/');
+                if (dateArray && dateArray.length == 3) {
+                    var policyStart = new Date(dateArray[2],dateArray[1]-1,dateArray[0]);
+                    return policyStart;
+                }
+            }
+            var getDaysToPolicyStartDate = function() {
+                var policyStart = getPolicyStartDate();
+                var millisecondsOfDay = 24*60*60*1000;
+                var now = new Date();
+                var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                var elapsedDays = Math.floor((policyStart - today) / millisecondsOfDay);
+                elapsedDays = elapsedDays < 0 ? '0' : elapsedDays + '';
+                return elapsedDays;
+            }
+            s.eVar70 = getDaysToPolicyStartDate();
+            s.getAndPersistValue(s.eVar70, s.eVar26 + '_eVar70');
+            element.onchange = function() {
+                s.linkTrackVars = 'products,eVar70';
+                s.usePlugins = false;
+                var override = new Object();
+                override.eVar70 = getDaysToPolicyStartDate();
+                s.getAndPersistValue(override.eVar70, s.eVar26 + '_eVar70');
+                s.tl(this, 'o', 'Days to Policy Start Date', override);
+                s.usePlugins = true;
+            }
 
             //Year of manufacture
             var vehicleYearOfManufactureList = document.getElementById('vehicleYearOfManufactureList');
@@ -622,29 +632,29 @@ d.adjustBrochureware = function(s) {
                 }
             }
         } else if (/in:\w+:secapp:(sales:)?\motor:quote:car_details/i.test(s.pageName)) {
-        	var elements = document.getElementsByName('averageKmTravelPerYear');
-        	if (!elements) return;
-    		for (i=0; i<elements.length; i++) {
-    			elements[i].onclick = function(e) {
-    				s.linkTrackVars = 'products,eVar57';
-    				s.usePlugins = false;
-    				var override = new Object();
-    				override.eVar57 = this.value;
-    				s.getAndPersistValue(this.value, s.eVar26 + '_eVar67');
-    				s.tl(this, 'o', 'Amount of KM', override);
-    				s.usePlugins = true;
-    			};
-    		}
-        }
+            var elements = document.getElementsByName('averageKmTravelPerYear');
+            if (!elements) return;
+            for (i=0; i<elements.length; i++) {
+                elements[i].onclick = function(e) {
+                    s.linkTrackVars = 'products,eVar57';
+                    s.usePlugins = false;
+                    var override = new Object();
+                    override.eVar57 = this.value;
+                    s.getAndPersistValue(this.value, s.eVar26 + '_eVar67');
+                    s.tl(this, 'o', 'Amount of KM', override);
+                    s.usePlugins = true;
+                };
+            }
+        } 
         if (/in:\w+:secapp:(sales:)?\motor:quote:/i.test(s.pageName)) {
-        	var daysToPolicyStartDate = s.getAndPersistValue(null, s.eVar26 + '_eVar70');
-        	if (daysToPolicyStartDate) s.eVar70 = daysToPolicyStartDate;
-        	var km = s.getAndPersistValue(null, s.eVar26 + '_eVar67');
-        	if (km) s.eVar57 = km;
+            var daysToPolicyStartDate = s.getAndPersistValue(null, s.eVar26 + '_eVar70');
+            if (daysToPolicyStartDate) s.eVar70 = daysToPolicyStartDate;
+            var km = s.getAndPersistValue(null, s.eVar26 + '_eVar67');
+            if (km) s.eVar57 = km;
             var vehicleYearOfManufacture = s.getAndPersistValue(null, 'yearofmanufacture');
             if (vehicleYearOfManufacture) s.eVar15 = s.prop17 = vehicleYearOfManufacture;
-        	// set browser cookie when quote is completed, will expire in 45 days
-        	if(/quote_completed/i.test(s.pageName)) s.getAndPersistValue(km, s.eVar22 + '_eVar67', 45);
+            // set browser cookie when quote is completed, will expire in 45 days
+            if(/quote_completed/i.test(s.pageName)) s.getAndPersistValue(km, s.eVar22 + '_eVar67', 45);
         }
 
         if (s.pageName == 'in:apa:apia:health-insurance' || s.getPageName() == 'in:apa:health-insurance') {
@@ -758,7 +768,7 @@ superT.contains=function(e,t){var n,r;for(n=0,r=e.length;n<r;n++){if(e[n]===t){r
 d.triggerDataCollectorAdserver = function(conversion, event, premium, eVar61, eventType) {
     d.dc2Params = {};
     d.dc2Params = {
-    	"pic.e1": superT.getCookie('superT_e1'),
+        "pic.e1": superT.getCookie('superT_e1'),
         "cc.pr": superT.project,
         "cc.co": superT.company,
         "e.id": document.location.href,
@@ -780,12 +790,17 @@ d.triggerDataCollectorAdserver = function(conversion, event, premium, eVar61, ev
         }
 
         if (premium == '0') {
-        	var value = s.eVar30 || premium;
+            var value = s.eVar30 || premium;
         } else {
-        	var value = premium;
+            var value = premium;
         }
 
-        cat2 = s.eVar48 || s.prop48 || d.replaceAll(pString, ':', '');
+        var product = '';
+        if(s.products) {
+            var product = s.products.split(';')[1];
+        }
+
+        prMA = product || s.eVar48 || s.prop48 || '';
 
         d.dc2Params['e.ty'] = 'page|conversion|' + eventType;
         d.dc2Params['et.id'] = s.eVar22 || s.eVar23;
@@ -793,9 +808,9 @@ d.triggerDataCollectorAdserver = function(conversion, event, premium, eVar61, ev
         d.dc2Params['et.pa'] = s.eVar28;
         d.dc2Params['et.km'] = s.eVar57;
         d.dc2Params['et.prin'] = s.eVar21;
-        d.dc2Params['etp.n1.na'] = cat2;
+        d.dc2Params['etp.n1.na'] = prMA;
         d.dc2Params['etp.n1.pr'] = value;
-        d.dc2Params['etp.n1.ca'] = cat1 + '|' + s.un + '|' + cat2;
+        d.dc2Params['etp.n1.ca'] = cat1 + '|' + s.un + '|' + prMA;
         d.dc2Params['etp.n1.te'] = s.eVar24;
         d.dc2Params['p.ge'] = s.eVar11;
         d.dc2Params['p.ag'] = s.eVar10;
