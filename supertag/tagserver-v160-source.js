@@ -223,25 +223,8 @@ d.maTag = function() {
             }
         }
         if (scEventExists("event37")) {
-            // click2call - not used
             u1 = u1 + '|c2c|' + pCategory + '|' + pString;
             et = 'click-2-call';
-            if(s.eVar23) u1 = u1 + '|' + s.eVar23;
-            u2  = d.getAmount("event19");
-            d.triggerMA(u1, u2, u3, u4, u5, et);
-        }
-        if (scEventExists("event29")) {
-            // competition entries
-            u1 = u1 + '|ce|' + pCategory + '|' + pString;
-            et = 'competition-entries';
-            if(s.eVar23) u1 = u1 + '|' + s.eVar23;
-            u2  = d.getAmount("event19");
-            d.triggerMA(u1, u2, u3, u4, u5, et);
-        }
-        if (scEventExists("event10")) {
-            // quote retrieved
-            u1 = u1 + '|qr|' + pCategory + '|' + pString;
-            et = 'quote-retrieved';
             if(s.eVar23) u1 = u1 + '|' + s.eVar23;
             u2  = d.getAmount("event19");
             d.triggerMA(u1, u2, u3, u4, u5, et);
@@ -365,7 +348,7 @@ d.fireAamiAdlensPolicyCompleteTag = function(type) {
 // const variables for pi tag.
 piAId = '30552';
 piCId = '1532';
-d.adserverTags = function() {
+d.adserverTags = function() {   
     // only fire agency tag in PROD environment
     tmpenv = setting.env;
     setting.env = E_PROD;        
@@ -468,8 +451,8 @@ d.adserverTags = function() {
             if(s.pageName == 'in:ami:mobile:secapp:travel:buy:buy_started') {
                d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=mobil677;ord=1;num=' + cachebuster + '?');
             }
-            if(s.pageName == 'in:ami:mobile:secapp:travel:buy:buy_completed') {
-               d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=mobil132;ord=1;num=' + cachebuster + '?');
+            if(s.pageName == 'in:ami:mobile:travel-insurance'){
+               d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=inami0;ord=1;num=' + cachebuster + '?');
             }
             if(s.pageName == 'in:ami:mobile:home-insurance') {
                d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamio191;cat=mobil961;ord=1;num=' + cachebuster + '?');
@@ -590,29 +573,18 @@ d.adserverTags = function() {
             if(s.pageName == 'in:ami:travel-insurance') {
                 d.downStreamTag("transaction", "ev_AAMITravelProductPage=1", "", "", "2243");
                 d.downStreamTag("pageview", "", "2306", "2305", "1589");
+                d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=aamit688;ord=1;num=' + cachebuster + '?');
                 d.facebookTag('712832825446307');
+            }
+            if(s.pageName == 'in:ami:mobile:secapp:travel:buy:buy_completed')
+            {
+                d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=mobil132;ord=1;num=' + cachebuster + '?');
             }
             if(s.pageName == 'in:ami:lp:travel-insurance') {
                 d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=aamit688;ord=1;num=' + cachebuster + '?');
             }
             if(s.pageName == 'in:ami:secapp:travel:quote:select_cover:quote_started') {
                 d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=aamit921;ord=1;num=' + cachebuster + '?');
-            }
-            if(s.pageName == 'in:ami:secapp:travel:quote:quote_completed') {
-                d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=aamit979;ord=1;num=' + cachebuster + '?');
-                d.imageTag('http://ib.adnxs.com/px?id=87127&order_id=' + s.eVar22 + '&value='+ d.getAmount('event14') + '&t=2');
-            }
-            if(s.pageName == 'in:ami:secapp:travel:buy:buy_started') {
-                d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=aamit955;ord=1;num=' + cachebuster + '?');
-            }
-            if(s.pageName == 'in:ami:secapp:travel:buy:buy_completed') {
-                d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit404;cat=aamit698;qty=1;cost=' + d.getAmount('event19') + ';ord=' + s.eVar23 + '?');
-            } 
-            if(s.pageName == 'in:ami:secapp:travel:buy:buy_started') {
-                d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=aamit955;ord=1;num=' + cachebuster + '?');
-            }
-            if(s.pageName == 'in:ami:secapp:travel:buy:buy_completed') {
-                d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit404;cat=aamit698;qty=1;cost=' + d.getAmount('event19') + ';ord=' + s.eVar23 + '?');
             }
             if(s.pageName == 'in:ami:business-insurance:small-business-insurance?') {
                 d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamib983;cat=aamiw284;ord=1;num=' + cachebuster + '?');
@@ -1033,7 +1005,7 @@ d.adserverTags = function() {
             /** AAMI Quote Start **/
             if(scEventExists('event8')) {
                 if(s.products.indexOf('travel') > -1 || ((typeof s.eVar48 != 'undefined') && (s.eVar48.indexOf('travel') > -1))) {
-                    d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=aamit432;ord=1;num=' + cachebuster + '?');
+                    d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=aamit921;ord=1;num=' + cachebuster + '?');
                     d.downStreamTag("transaction", "ev_AAMITravelQ1=1", "", "", "2243");
                 } else if(s.products.indexOf('home_') > -1 || s.products.indexOf('landlord_') > -1 || ((typeof s.eVar48 != 'undefined') && (s.eVar48 == 'landlord' || s.eVar48 == 'home' || s.eVar48.indexOf('renter') > -1))) {
                     if(s.products.indexOf('home_building_&_contents') > -1) {
@@ -1066,6 +1038,7 @@ d.adserverTags = function() {
                     d.downStreamTag("transaction", "ev_aamiciquotestart=1", "1356", "", "1827");
                 } else if(s.products.indexOf('car') > -1 || s.products.indexOf('motor') > -1 || ((typeof s.eVar48 != 'undefined') && (s.eVar48 == 'car' || s.eVar48 == 'caravan' || s.eVar48 == 'ctp-greenslip-nsw' || s.eVar48 == 'motorcycle'))) {
                     d.iframeTag('//fls.doubleclick.net/activityi;src=3203149;type=bidda180;cat=aamim203;ord=1;num=' + cachebuster + '?');
+                    d.facebookTag('300336300129800');
                     if(s.products.indexOf('car_comprehensive') > -1) {
                         d.fireAamiStarcomTag('aamio191','carst020', cachebuster);
                         d.downStreamTag("transaction", "ev_AAMIMotorQ1=1", "", "", "2243");
@@ -1093,7 +1066,7 @@ d.adserverTags = function() {
             if(scEventExists('event9')) {
                 d.imageTag('//e.insurance-email.com.au/pub/cct?_ri_=X0Gzc2X%3DWQpglLjHJlYQGzbvzbtkyazeR1DqPwSfozfkbcR&_ei_=Eg9e8ZPvz390ulmzt6Id6AI');
                 if(s.products.indexOf('travel') > -1) {
-                    d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=aamit144;ord=1;num=' + cachebuster + '?');
+                    d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=aamit979;ord=1;num=' + cachebuster + '?');
                     d.downStreamTag("transaction", "ev_AAMITravelQ2=1&ev_AAMITravelQ2Revenue=" + d.getAmount('event14'), "", "", "2243");
                 } else if(s.products.indexOf('home_') > -1 || s.products.indexOf('landlord_') > -1) {
                     if(s.products.indexOf('home_building_&_contents') > -1) {
@@ -1118,6 +1091,7 @@ d.adserverTags = function() {
                     d.imageTag('//e.insurance-email.com.au/pub/cct?ri=X0Gzc2X%3DWQpglLjHJlYQGnMFdze6CNjtTzaAdjzb92zfJCC&ei=EjIuRudawUuRBwQbqnIC3wY');
                 } else if(s.products.indexOf('car') > -1 || s.products.indexOf('motor') > -1) {
                     d.iframeTag('//fls.doubleclick.net/activityi;src=3203149;type=bidda180;cat=aamim718;ord=1;num=' + cachebuster + '?');
+                    d.facebookTag('300336300129800');
                     if(s.products.indexOf('car_comprehensive') > -1|| s.products.indexOf('car_thirdpartyproperty') > -1) {
                         attachEfButtonEvents(["emailButton"], "//googleads.g.doubleclick.net/pagead/viewthroughconversion/1030522869/?value=0&label=Id8NCJfJ5AcQ9Y-y6wM&guid=ON&script=0");
                     }
@@ -1206,6 +1180,7 @@ d.adserverTags = function() {
                     d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamib983;cat=comme963;ord=1;num=' + cachebuster + '?');
                     d.downStreamTag("transaction", "ev_aamiciappstart=1", "1359", "", "1827");
                 } else if(s.products.indexOf('car') > -1 || s.products.indexOf('motor') > -1) {
+                    d.facebookTag('300336300129800');
                     if(s.products.indexOf('car_comprehensive') > -1) {
                         d.fireAamiStarcomTag('aamio191','car-b533', cachebuster);
                         d.downStreamTag("transaction", "ev_AAMIMotorA1=1", "", "", "2243");
@@ -1217,7 +1192,9 @@ d.adserverTags = function() {
                         d.downStreamTag("transaction", "ev_AAMIMotorcycleA1=1", "", "", "2243");
                     }
                 }
- 
+                if(s.products.indexOf('travel') > -1) {
+                   d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=aamit955;ord=1;num=' + cachebuster + '?');
+                }
                 if(navigator.userAgent.indexOf("MSIE 7.0") < 0) {
                     d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=custo866;cat=polic975;u1=' + s.prop3 + ';u4=' + escape(document.location.href) + ';ord=1;num=' + cachebuster + '?');
                 }
@@ -1225,9 +1202,10 @@ d.adserverTags = function() {
             /** AAMI Buy Complete **/
             if(scEventExists('event18')) {
                 if(s.products.indexOf('travel') > -1) {
-                    d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamip184;cat=aamit252;qty=1;cost=' + d.getAmount('event19') + ';ord=' + s.eVar23 + '?');
+                    d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit404;cat=aamit698;qty=1;cost=' + d.getAmount('event19') + ';ord=' + s.eVar23 + '?');
                     d.downStreamTag("transaction", "ev_AAMITravelBuy=1&ev_AAMITravelBuyRevenue=" + d.getAmount('event19'), "", "", "2243");
                 } else if(s.products.indexOf('home_') > -1 || s.products.indexOf('landlord_') > -1) {
+                    d.imageTag('//e.insurance-email.com.au/pub/sf/ResponseForm?_ri_=X0Gzc2X%3DWQpglLjHJlYQGzbPhOyuPYza33W7A8iLs0kzgKzfkjnXUHizcEfVXMtX%3DWQpglLjHJlYQGiykAn8RrAsju31F8FO7UrizfkjnXUHizcEf&_ei_=ErjF0nhrR1KwvaDvAJuhPKc&OrderID=' + s.eVar23 + '&ORDERTOTAL=' + d.getAmount("event19"));
                     if(s.products.indexOf('home_building_&_contents') > -1) {
                         d.fireAamiStarcomPolicyCompleteTag('aamip184','aamih211');
                         d.fireAamiAdlensPolicyCompleteTag("ev_AAMIHomeConBuy=1&ev_AAMIHomeConBuyRevenue=");
@@ -1250,6 +1228,7 @@ d.adserverTags = function() {
                     d.imageTag('//www.s2d6.com/x/?x=a&h=63758&o=' + s.eVar23 + '&');
                     d.imageTag('//www.s2d6.com/x/?x=r&h=63758&o=' + s.eVar23 + '&g=593529836517&s=1&q=1&');
                 } else if(s.products.indexOf('car') > -1 || s.products.indexOf('motor') > -1) {
+                    d.facebookTag('300336300129800');
                     if (s.products.indexOf('motorcycle') == -1) {
                         d.imageTag('//e.insurance-email.com.au/pub/cct?_ri_=X0Gzc2X%3DWQpglLjHJlYQGgfKHDqzbBMEW30Ozf73fdLhW&_ei_=Eq6nmFxgK4wt6n3QD8PBTM0&OrderID=' + s.eVar23 + '&ORDERTOTAL=' + d.getAmount("event19"));
                     }
@@ -1338,11 +1317,11 @@ d.adserverTags = function() {
             }
             if(s.pageName == 'in:apa:apia:health-insurance'){
                 d.iframeTag('//fls.doubleclick.net/activityi;src=2417670;type=APIAH0;cat=APIAH0;ord=1;num=' + cachebuster + '?');
-                var freeCallBtnEle = d.getElementsByClassName('btn call-back secure-popup')[0];
+                var freeCallBtnEle = d.getElementsByClassName('btn2 call-back secure-popup')[0];
                 if(freeCallBtnEle){
                     freeCallBtnEle.onclick = function(){
                         d.iframeTag('//fls.doubleclick.net/activityi;src=2417670;type=APIAH0;cat=APIAH002;ord=1;num=' + cachebuster + '?');
-                        d.imageTag('//pixel.everesttech.net/2247/t?ev_Apia_RequestCallBack=1');
+                        d.imageTag('//pixel.everesttech.net/2247/t?ev_apia_health_callback=1');
                     };
                 }
             }
@@ -1493,7 +1472,13 @@ d.adserverTags = function() {
                 d.downStreamTag("pageview", "", "2809", "2808", "1589");
                 d.gRemarketing('959521971','',window.google_tag_params,true);
                 d.gRemarketing('1002075787','',window.google_tag_params,true);
-            } /** APIA Quote Start **/
+            }
+            if(s.pageName == 'in:apa:apia:secure:readersdigestrequestaquote') {
+                d.iframeTag('//fls.doubleclick.net/activityi;src=4080583;type=APIAF0;cat=Sunco0;ord=1;num=' + cachebuster + '?');
+            }
+            if(s.pageName == 'in:apa:apia:funeral-plan') {
+                d.iframeTag('//fls.doubleclick.net/activityi;src=4080583;type=APIAF0;cat=Sunco00;ord=1;num=' + cachebuster + '?');
+            }/** APIA Quote Start **/
             if(scEventExists('event8')) {
                 if(s.products.indexOf('car_') > -1 || ((typeof s.eVar48 != 'undefined') && s.eVar48.indexOf('car') > -1 && s.eVar48.indexOf('caravan') < 0)) {
                     if(s.products.indexOf('car_ctp') > -1) {
@@ -1623,6 +1608,7 @@ d.adserverTags = function() {
                     d.iframeTag('//fls.doubleclick.net/activityi;src=2417670;type=apiaf561;cat=apiam121;ord=1;num=' + cachebuster + '?');
                 }
                 if(s.products.indexOf('home_') > -1) {
+                    d.imageTag('//e.insurance-email.com.au/pub/sf/ResponseForm?_ri_=X0Gzc2X%3DWQpglLjHJlYQGgnkW1HCbsyp5zeSIzbuWrzcugoa6qIWRVXMtX%3DWQpglLjHJlYQGhezbJqcRYTCJFhWhHl9R1tBsTzan&_ei_=Ej7lPxiuT7xuPNoswa1UsDs&OrderID='+ s.eVar23 +'&ORDERTOTAL=' + d.getAmount('event19'));
                     d.iframeTag('//fls.doubleclick.net/activityi;src=2417670;type=custo820;cat=homep506;u1=' + s.prop3 + ';u4=' + escape(document.location.href) + ';ord=1;num=' + cachebuster + '?');
                     d.iframeTag('//fls.doubleclick.net/activityi;src=2417670;type=apiaf561;cat=apia-733;ord=1;num=' + cachebuster + '?');
                     if(s.products.indexOf('assisted') > -1) {
@@ -1675,18 +1661,21 @@ d.adserverTags = function() {
                 d.iframeTag('//fls.doubleclick.net/activityi;src=1635365;type=bingl903;cat=quick621;ord=1;num=' + cachebuster + '?');
                 d.downStreamTag("transaction", "ev_BingleQuickPolicyStart=1", "1952", "", "2244");
                 d.iframeTag('//fls.doubleclick.net/activityi;src=1635365;type=custo426;cat=quote791;u2=' + s.prop3 + ';u5=' + escape(document.location.href) + ';ord=1;num=' + cachebuster + '?');
-                } /** Bingle Quote Complete **/
+                d.facebookTag('300336300129800');
+            } /** Bingle Quote Complete **/
             if(scEventExists('event9')) {
                 d.iframeTag('//fls.doubleclick.net/activityi;src=1635365;type=bingl938;cat=quick076;qty=1;cost=' + d.getAmount('event14') + ';ord=' + s.eVar22 + '?');
                 d.downStreamTag("transaction", "ev_BingleQuickPolicyComplete=1&ev_BingleQuickPolicyCompleteRev=" + d.getAmount('event14'), "1949", "", "2244");
                 d.iframeTag('//fls.doubleclick.net/activityi;src=1635365;type=custo426;cat=quote803;u2=' + s.prop3 + ';u5=' + escape(document.location.href) + ';ord=1;num=' + cachebuster + '?');
                 d.includeAS('//apps.rokt.com/?id=24c1c4f17dff4b0d9b2f3b3d1353a09a&bhid=24c1c4f17dff4b0d9b2f3b3d1353a09a-b&Page=Quote&hidewidget=y&v=' + Math.floor(Math.random() * 999));
+                d.facebookTag('300336300129800');
             } /** Bingle Buy Start **/
             if(scEventExists('event17')) {
                 d.iframeTag('//fls.doubleclick.net/activityi;src=1635365;type=bingl903;cat=buypo666;ord=1;num=' + cachebuster + '?');
                 d.downStreamTag("transaction", "ev_BingleBuyPolicyStart=1", "1950", "", "2244");
                 d.downStreamTag("transaction", "ev_BingleQuickPolicyStart=1", "", "", "2244");
                 d.iframeTag('//fls.doubleclick.net/activityi;src=1635365;type=custo426;cat=polic589;u2=' + s.prop3 + ';u5=' + escape(document.location.href) + ';ord=1;num=' + cachebuster + '?');
+                d.facebookTag('300336300129800');
             } /** Bingle Buy Complete **/
             if(scEventExists('event18')) {
                 d.imageTag('//e.insurance-email.com.au/pub/cct?_ri_=X0Gzc2X%3DWQpglLjHJlYQGtRTDzbfirow0H1LJmzeLmAlO&_ei_=Eo1Nk-8CcPPCIKYZVQTDi6U&OrderID='+ s.eVar23 +'&ORDERTOTAL=' + d.getAmount('event19'));
@@ -1695,6 +1684,7 @@ d.adserverTags = function() {
                 d.downStreamTag("transaction", "ev_BinglePolicyComplete=1&ev_BinglePolicyCompleteRev=" + d.getAmount('event19'), "1951", "", "2244");
                 d.iframeTag('//fls.doubleclick.net/activityi;src=1635365;type=custo426;cat=polic288;u2=' + s.prop3 + ';u5=' + escape(document.location.href) + ';ord=1;num=' + cachebuster + '?');
                 d.includeAS('//apps.rokt.com/?id=24c1c4f17dff4b0d9b2f3b3d1353a09a&bhid=24c1c4f17dff4b0d9b2f3b3d1353a09a-b&Page=Policy&hidewidget=y&v=' + Math.floor(Math.random() * 999));
+                d.facebookTag('300336300129800');
             }
             // Bingle
             if(typeof d.protocol != 'undefined' && d.protocol == 'http:') {
@@ -1973,7 +1963,14 @@ d.adserverTags = function() {
             if(s.pageName == 'in:gio:business-insurance:quote-request:thank-you') {
                 d.iframeTag('//fls.doubleclick.net/activityi;src=1753472;type=busin038;cat=busin681;ord=1;num=' + cachebuster + '?');
             }
-            
+            if(s.pageName == 'in:gio:car-insurance:ways-to-save')
+            {
+                d.iframeTag('//fls.doubleclick.net/activityi;src=1753472;type=brand713;cat=Wayst0;ord=1;num=' + cachebuster + '?');
+            }
+            if(s.pageName == 'in:gio:home-insurance:ways-to-save')
+            {
+                d.iframeTag('//fls.doubleclick.net/activityi;src=1753472;type=homep972;cat=Wayst0;ord=1;num=' + cachebuster + '?');
+            }
             //for SiteCat-94
             if(s.pageName == 'in:gio:platinum-car-insurance-campaign-4' || s.pageName == 'in:gio:platinum-car-insurance-campaign-3' || s.pageName == 'in:gio:car-insurance:campaigns:car-insurance-sem-lp') {
                 d.gAdService("1007225733", "en", "3", "ffffff", "PniSCNPXzAIQhZek4AM", "0");
@@ -2093,7 +2090,7 @@ d.adserverTags = function() {
             if(scEventExists('event18')) {
                 if(s.products.indexOf('car_') > -1) {
                     d.bazaarvoiceTags('buy_completed');
-                    d.imageTag('//e.insurance-email.com.au/pub/cct?_ri_=X0Gzc2X%3DWQpglLjHJlYQGuHza7Mry4NalqI630v9MKs3&_ei_=EvyJvne-_4e3HhsduPDx6B8&OrderID='+ s.eVar23 +'&ORDERTOTAL=' + d.getAmount('event19'));
+                    d.imageTag('//e.insurance-email.com.au/pub/sf/ResponseForm?_ri_=X0Gzc2X%3DWQpglLjHJlYQGsjo5pcNROcDMizbYCWseIntX6GvAI8Tzc9nVXMtX%3DWQpglLjHJlYQGmK4j5U6f6m3A9MhrNE9zajKX6GvAI8Tzc9n&_ei_=Eo1Kj-EhekH0lTAPIeBhu14&ORDERTOTAL='+ s.eVar23 +'&ORDERTOTAL=' + d.getAmount('event19'));
                 }
                 if(s.products.indexOf('car_comprehensive') > -1) {
                     d.iframeTag('//fls.doubleclick.net/activityi;src=1789298;type=polic661;cat=app7p683;qty=1;cost=' + d.getAmount('event19') + ';u2=' + s.eVar23 + ';ord=' + s.eVar23 + '?');
@@ -2726,6 +2723,9 @@ d.adserverTags = function() {
             if(s.pageName == 'bk:sun:savings:savings-accounts') {
                 d.iframeTag('//fls.doubleclick.net/activityi;src=1792027;type=2014_091;cat=2014_001;ord=1;num=' + cachebuster + '?');
             }
+            if(s.pageName == 'bk:sun:genuinealternative') {
+                d.iframeTag('//fls.doubleclick.net/activityi;src=1792027;type=2014_091;cat=2014_005;ord=1;num=' + cachebuster + '?');
+            }
             /** Suncorp Insurance Tags **/
             if(s.pageName == 'in:sun:secapp:financialplanner_enquiry:form:form_started') {
                 d.iframeTag('//fls.doubleclick.net/activityi;src=1792027;type=trans957;cat=trans998;ord=1;num=' + cachebuster + '?');
@@ -2737,7 +2737,6 @@ d.adserverTags = function() {
                 d.iframeTag('//fls.doubleclick.net/activityi;src=1792027;type=2014_731;cat=funer226;ord=1;num=' + cachebuster + '?');
             }
             if(s.pageName == 'in:sun:insurance:life-insurance:funeral-plan') {
-                d.ifrmaeTag('//fls.doubleclick.net/activityi;src=1792027;type=2014_731;cat=sunco463;ord=1;num=' + cachebuster + '?');
                 d.facebookTag('658553810846510');
             }
             if(s.pageName == 'in:sun:insurance:life-insurance:free-info-pack') {
@@ -2758,7 +2757,10 @@ d.adserverTags = function() {
                 d.facebookTag('658553810846510');
                 d.iframeTag('//fls.doubleclick.net/activityi;src=1792027;type=2014_0;cat=2014_0;ord=1;num=' + cachebuster + '?');
             }
-            
+            if(s.pageName == 'in:sun:insurance:secure:readersdigestrequestaquote') {
+                d.iframeTag('//fls.doubleclick.net/activityi;src=4080583;type=Sunco0;cat=Sunco00;ord=1;num=' + cachebuster + '?');
+            }
+
             /* Tags released June 2013 */
             if(s.pageName == 'in:sun:insurance:home') {
                 d.downStreamTag("pageview","","8585","","1589");
@@ -2938,7 +2940,7 @@ d.adserverTags = function() {
                 d.gRemarketing('959521971','',window.google_tag_params,true);
             }
             if(s.pageName == 'in:sun:insurance:life-insurance:funeral-plan') {
-                d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=misce517;cat=funer281;ord=' + cachebuster + '?');
+                d.iframeTag('//fls.doubleclick.net/activityi;src=4080583;type=Sunco0;cat=Sunco0;ord=1;num=' + cachebuster + '?');
                 d.downStreamTag("pageview", "", "3103", "", "1589");
                 d.gRemarketing('959521971','',window.google_tag_params,true);
             }
@@ -3238,6 +3240,7 @@ d.adserverTags = function() {
                     d.downStreamTag("transaction", "ev_SunCTPFormThankYou=1", "", "", "1589");
                 }
                 if(s.products.indexOf('home') > -1) {
+                    d.imageTag('//e.insurance-email.com.au/pub/sf/ResponseForm?_ri_=X0Gzc2X%3DWQpglLjHJlYQGhwKbhr7UafuEWfDGoWy5GzcIFtCeT13cNRVXMtX%3DWQpglLjHJlYQGiPzdD8p1phO56eOnGurggmeIFtCeT13cNR&_ei_=Es4vmW8bc5Mg2ZzNx91WMb0&OrderID='+ s.eVar23 +'&ORDERTOTAL=' + d.getAmount('event19'));
                     d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=insur172;cat=homei233;ord=' + cachebuster + '?');
                     d.downStreamTag("transaction", "ev_SunHomeInsAppEnd=1&ev_SunHomeInsAppEndValue=" + d.getAmount('event19'), "", "", "1589");
                     d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=insur172;cat=homei233;ord=1;num=' + cachebuster + '?');
@@ -3250,7 +3253,14 @@ d.adserverTags = function() {
                     d.downStreamTag("transaction","ev_DS_ExistingAppEnd_IB=1&ev_transid="+ s.eVar27,"19001","","1589","pixel.everesttech.net");
                     d.gRemarketing("1004226082","window.google_tag_params",true);
                 }
-
+                if( s.products.indexOf('everydaysuper_withib') > -1){
+                    d.downStreamTag("transaction","ev_DS_ExistingAppEnd_IB=1&ev_transid="+ s.eVar27,"19001","","1589","pixel.everesttech.net");
+                    d.gRemarketing("1004226082","window.google_tag_params",true);
+                }
+                if( s.products.indexOf('everydaysuper_withoutib') > -1){
+                    d.downStreamTag("transaction","ev_DS_ExistingAppEnd_NoIB=1&ev_transid="+ s.eVar27,"19009","","1589","pixel.everesttech.net");
+                    d.gRemarketing("1004226082","window.google_tag_params",true);
+                }
                 d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=custo071;cat=polic404;u1=' + s.prop3 + ';u4=' + escape(document.location.href) + ';ord=1;num=' + cachebuster + '?');
             }
             if(s.pageName.indexOf('in:sun:insurance:business-insurance') < 0 && s.pageName.indexOf('in:sun:insurance') > -1 && typeof d.protocol != 'undefined' && (d.protocol == 'http:' || s.pageName == 'in:sun:insurance:contactus:email')) {
@@ -3333,7 +3343,7 @@ d.adserverTags = function() {
         }
 
         /** Agency AD Tags **/
-        if(d.shouldFireAgencyTagsFor('suncontent')) {           
+        if(d.shouldFireAgencyTagsFor('suncontent')) {
             if(s.pageName.indexOf('in:ami:carsguide-quote') > -1) {
                 d.imageTag('//ad.doubleclick.net/ad/N3197.125981.2410002385421/B7769710.108963499;sz=1x1;ord=' + cachebuster);
                 var btnEle = document.getElementById('btn-quote');
