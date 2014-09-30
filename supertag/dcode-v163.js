@@ -15,7 +15,7 @@ d.aInclude = function(url, cB) {
 d.getSiteFromReportSuite = function(un) {
 	var i = un.indexOf('prod');
 	var j = un.indexOf('dev');
-	var account = i > -1 ? un.substring(0,i) : (j > -1 ? un.substring(0,j) : un);  
+	var account = i > -1 ? un.substring(0,i) : (j > -1 ? un.substring(0,j) : un);
 	return account;
 };
 
@@ -25,22 +25,13 @@ d.getCurrentVersion = function() {
 }
 
 //attach document state change event
-d.attachEvent = function(event, func) {
-	if(ie) document.attachEvent('on' + event, func);
-	else document.addEventListener(event, func);	
-}
-
-d.addEventListenerForElement = function(elementID,eventType,listener){
-    var element = document.getElementById(elementID);
-    if (element){
-        if (element.addEventListener){
-            element.addEventListener(eventType,listener,false);
-        }else{
-            element.attachEvent('on' + eventType, listener);
-        }
+d.attachEvent = function(event, func , element) {
+    if (typeof element == 'undefined') {
+        element = document;
     }
+	if(ie) element.attachEvent('on' + event, func);
+	else element.addEventListener(event, func);
 }
-
 d.getElementsByClassName = function(className) {
 
 	if (window.navigator.appVersion.indexOf('MSIE 7.0') > 0) {
@@ -73,8 +64,8 @@ d.getInnerText = function(element) {
     return '';
 }
 
-d.trim = function(string){
-    return string.replace(/^\s+|\s+$/g, '');
+d.trim = function(text){
+    return typeof text != 'undefined' ? text.replace(/^\s+|\s+$/g, '') : '';
 }
 
 d.include(d.Codebase+'mbox-v' + d.getCurrentVersion() + '.js');
@@ -102,7 +93,7 @@ d.ClickTaleBottom = function(js) {
 	                             'https://clicktalecdn.sslcs.cdngc.net/' :
 	                             'http://cdn.clicktale.net/') +
 	                            js + "'%20type='text/javascript'%3E%3C/script%3E"));
-	}						 
+	}
 };
 
 d.getAmount = function(event) {
@@ -174,7 +165,7 @@ d.b = function(){
 	        'insurance.sys.aami.com.au/home/pub/aamiquote'
 	    ];
 	    var i;
-	    for (i in secureGlobalMboxes) { 
+	    for (i in secureGlobalMboxes) {
 	        if (window.location.href.indexOf(secureGlobalMboxes[i]) > -1 && s.pageName.indexOf('dealerquote') < 0 && s.pageName.indexOf('dealerbuy') < 0 && s.pageName.indexOf('unknown') < 0 ) {
 	            var mboxName = '';
 	            var mboxNameArr = s.pageName
@@ -210,10 +201,10 @@ d.b = function(){
 	            } else {
 	                mboxCreate(mboxName,'pageName='+s.pageName);
 	            }
-	        } 
+	        }
 	    }
 	})();
-	
+
 	// when use prod site to test, force report suite to dev
 	if ((checkEnv(d.ClientNameDev) || checkEnv(d.ClientNameTest) || checkEnv(d.LocalDevName))) {
 		setting.env = E_DEV;
@@ -233,13 +224,13 @@ d.b = function(){
 			d.ClickTaleBottom("www02/ptc/4d9ed179-188c-4460-a70d-378d380f8895.js");
 			delay = true;
 		}
-	    if((d.currentURL.indexOf('http://www.suncorp.com.au/') == 0 && s.pageName != 'in:sun:homepage') 
+	    if((d.currentURL.indexOf('http://www.suncorp.com.au/') == 0 && s.pageName != 'in:sun:homepage')
 		|| ((/insurance.suncorp.com.au\/home/i.test(d.currentURL) || /(insurance|sunpay).uat.suncorp.com.au\/(home|payonlineweb)/i.test(d.currentURL))
 		&& (s.pageName.indexOf('in:sun:secapp:home_classic') == 0 || s.pageName.indexOf('in:sun:secapp:home_advantages') == 0|| s.pageName.indexOf('in:sun:secapp:home_extras') == 0))) {
 		    d.ClickTaleBottom("www02/ptc/8d43d9e9-72d8-40b2-a9ae-34e4cbe9d545.js");
 			delay = true;
 		}
-		
+
 		if(d.currentURL.indexOf('http://www.gio.com.au/') == 0) {
 		    d.ClickTaleBottom("www02/ptc/4629092c-1c77-428a-a47d-18eb1ceb6ea6.js");
 			delay = true;
@@ -249,17 +240,17 @@ d.b = function(){
 	if(s.siteID == 'in:apa') {
 		delay = true;
 	}
-	
+
 	// if use call back function, delay 1s
 	if (delay) {
 		setTimeout(d.firePageLoadTagsWhenReady,500);
 	} else {
 		d.firePageLoadTagsNow();
-	} 
+	}
 }
 
 var firePageLoadTagsAttempts = 0;
-d.firePageLoadTagsWhenReady = function() {	
+d.firePageLoadTagsWhenReady = function() {
 	if (typeof ClickTaleGetUID != 'function' && firePageLoadTagsAttempts < 6) {
 		firePageLoadTagsAttempts++;
 		setTimeout(d.firePageLoadTagsWhenReady, 500);
@@ -347,7 +338,7 @@ d.socialShare = function(shareType){
 		s.events=scTempEvents;
 		s.linkTrackVars="none";
 		s.linkTrackEvents="none";
-		
+
 	}
 }
 
@@ -374,7 +365,7 @@ d.trackSegment = function(segment){
 			}
 		}
 		if(segment == 'enter'){
-			s.tl(this,"o","25K landing enter");      	
+			s.tl(this,"o","25K landing enter");
 		}
 	}
 }
@@ -387,7 +378,7 @@ d.addButtonTag = function(siteID, pageName, buttonID, linkTrackVars, linkTrackEv
     if (element){
 		if (transfer) {
 			element.onclick=function() {
-				d.fireButtonTag(s.un, linkTrackVars, linkTrackEvents, linkName, element);				
+				d.fireButtonTag(s.un, linkTrackVars, linkTrackEvents, linkName, element);
 				return false;};
 		} else {
 			element.onclick=function() {
@@ -416,7 +407,7 @@ d.addButtonsTag = function(siteID, pageName, buttonName, linkTrackVars, linkTrac
         // Attach the tag to the onclick of the link
         var elements = document.getElementsByName(buttonName);
         if (linkTrackVars.indexOf('prop37') >= 0) {
-            s.prop37 = 'CarSearchResult';  
+            s.prop37 = 'CarSearchResult';
             if (elements && elements.length > 0) {
                 s.prop38 = elements.length;
 			} else {
@@ -434,17 +425,40 @@ d.addButtonsTag = function(siteID, pageName, buttonName, linkTrackVars, linkTrac
       }
   }
 }
+// find name
+d.getTxtWhinNchar = function (text,length)
+{
+    if(text.length < length)
+    {
+        text = text.replace(/\s+/gi,'-')
+    }
+    else
+    {
+        texts=text.split(" ");
+        text=texts[0];
+        for(j = 1; j < texts.length;j++)
+        {
+            nextLen=text.length + texts[j].length + 1;
+            if(nextLen > length)
+            {
+                break;
+            }
+            text=text + '-' + texts[j];
+        }
+    }
+    return text;
+}
 // Call the tag on a event click
 d.fireButtonTag = function(siteID, linkTrackVars, linkTrackEvents, linkName, element){
     // Make sure the supertag exists and that pageName and buttonID are defined
-    if ( (typeof siteID != 'undefined') && (typeof linkTrackVars != 'undefined') && (typeof linkTrackEvents != 'undefined') && (typeof linkName != 'undefined') ) { 
-        //var s=s_gi(siteID); 
+    if ( (typeof siteID != 'undefined') && (typeof linkTrackVars != 'undefined') && (typeof linkTrackEvents != 'undefined') && (typeof linkName != 'undefined') ) {
+        //var s=s_gi(siteID);
 		s.useForcedLinkTracking=true;
-        scTempEvents=s.events; 
+        scTempEvents=s.events;
         s.events=linkTrackEvents;
-        s.linkTrackVars=linkTrackVars; 
-        s.linkTrackEvents=linkTrackEvents; 
-        s.eVar36=linkName; 
+        s.linkTrackVars=linkTrackVars;
+        s.linkTrackEvents=linkTrackEvents;
+        s.eVar36=linkName;
 		if (linkTrackVars.indexOf('eVar22') >= 0) {
 			s.events=linkTrackEvents + ':' + s.eVar22;
 			if(s.pageName.indexOf('in:sun:secapp:motor:quote:quote_completed') >= 0) {
@@ -517,7 +531,7 @@ d.adjustBrochureware = function(s) {
 		} else if(s.pageName == 'in:imr:secapp:motorcycle:buy:buy_completed'){
 			if(s.products.indexOf(';nonproductspecific') >= 0){
 				s.products = s.products.replace(';nonproductspecific',s.getAndPersistValue(null, 'IMRProducts'));
-			} 	
+			}
 		} else if(s.pageName == 'in:bin:secapp:motor:quote:quote_completed'){
 			if(scEventExists('event9')){
 				s.getAndPersistValue(s.eVar22,'BingleQuoteNumber');
@@ -525,19 +539,20 @@ d.adjustBrochureware = function(s) {
 				s.getAndPersistValue("QTE"+s.events.substring(s.events.indexOf(":")+1),'BingleQuoteNumber');
 			}
 		} if(s.siteID == 'in:jci') {
-			if(/\w+/i.test(s.products)) {
-				if(s.products.indexOf(';') < 0) {
-					s.products = ';' + s.products + ';;;';
-				} else if(s.products.indexOf(',') > 0) {
-					s.products = s.products.replace(',', '');
-				} else if(!/;\w+;;;/i.test(s.products)) {
-					s.list1 = s.products + '_' + window.location.href;
-				}
-			}
 			if(s.pageName == 'in:jci:secapp:motor:buy:buy_started'){
 				s.getAndPersistValue(s.products, 'JCIProducts');
-			} else if(s.pageName.indexOf('in:jci:secapp:motor:buy:buy_completed') >= 0 && s.products.indexOf(';nonproductspecific') >= 0){
-				s.products = s.products.replace(';nonproductspecific', s.getAndPersistValue(null, 'JCIProducts'));
+			}
+			if(s.products.indexOf('#product#') >= 0){
+				s.products = s.products.replace('#product#', s.getAndPersistValue(null, 'JCIProducts'));
+			}
+			if(/\w+/i.test(s.products)) {
+				if(s.products.indexOf(';') != 0) {
+					s.products = ';' + s.products;
+				} else if(s.products.indexOf(',') > 0) {
+					s.products = s.products.replace(',', '');
+				} else if(scEventExists('event18')) {
+					s.list1 = s.products + '_' + window.location.href + '_' + s.events;
+				}
 			}
 		} else if(s.getPageName() == 'in:ami:life-insurance:life-insurance-calculator') {
 			d.attachEvent('readystatechange', function() {
@@ -545,7 +560,7 @@ d.adjustBrochureware = function(s) {
 					d.addButtonTag(s.siteID, s.pageName, 'webform-client-form-6062-nextButton', 'eVar36,events', 'event20', 'Next');
 					d.addButtonTag(s.siteID, s.pageName, 'webform-client-form-6062-prevButton', 'eVar36,events', 'event20', 'Back');
 				}
-			});		
+			});
 		} else if (s.pageName.indexOf('in:ami:secapp:selfservice:claim:lodgement:contactingyou') > -1) {
 			var element = document.getElementById('fileUpload');
 
@@ -654,7 +669,7 @@ d.adjustBrochureware = function(s) {
     				s.usePlugins = true;
     			};
     		}
-        } 
+        }
         if (/in:\w+:secapp:(sales:)?\motor:quote:/i.test(s.pageName)) {
         	var daysToPolicyStartDate = s.getAndPersistValue(null, s.eVar26 + '_eVar70');
         	if (daysToPolicyStartDate) s.eVar70 = daysToPolicyStartDate;
@@ -731,18 +746,21 @@ d.adjustBrochureware = function(s) {
         if (s.pageName.indexOf('in:ami:secapp:business:marketstalls:buy') > -1){
             s.products = ';business_market_stall_public_liability';
             if (s.pageName == 'in:ami:secapp:business:marketstalls:buy:buy_started'){
-                d.addEventListenerForElement('quote','click',function(){
-                    var premiumLabels = document.getElementsByClassName('premiumLabelShow');
-                    if(premiumLabels.length > 3){
-                        //cover limit
-                        s.getAndPersistValue(premiumLabels[1].id.substr(-9), 'cover_limit');
+                quote = document.getElementById('quote');
+                if (quote) {
+                    d.attachEvent('click', function () {
+                        var premiumLabels = document.getElementsByClassName('premiumLabelShow');
+                        if (premiumLabels.length > 3) {
+                            //cover limit
+                            s.getAndPersistValue(premiumLabels[1].id.substr(-9), 'cover_limit');
 
-                        //policy Duration
-                        var policyDurationID = premiumLabels[2].id;
-                        var policyDuration = policyDurationID.substr(policyDurationID.indexOf('Duration') + 8);
-                        s.getAndPersistValue(policyDuration, 'policy_duration');
-                    }
-                });
+                            //policy Duration
+                            var policyDurationID = premiumLabels[2].id;
+                            var policyDuration = policyDurationID.substr(policyDurationID.indexOf('Duration') + 8);
+                            s.getAndPersistValue(policyDuration, 'policy_duration');
+                        }
+                    }, quote);
+                }
             }else if(s.pageName == 'in:ami:secapp:business:marketstalls:buy:confirmation'){
                 //Cover limit
                 s.eVar31 = s.getAndPersistValue(null, 'cover_limit');
@@ -751,7 +769,557 @@ d.adjustBrochureware = function(s) {
             }
         }
 
+        //capture evar69 event78
+        if(s.pageName.indexOf('in:ami:secapp:sales:home:quote:quote_completed') > -1 )
+        {
+            radio_crc=document.getElementById('buildingSumInsuredType-crc');
+            check_tenant=document.getElementById('tenantProtection');
+            name=scGetProducts().split('_')[0];
+            if(radio_crc)
+            {
+                d.attachEvent('click',function(){
+                    s.linkTrackEvents = "event78";
+                    s.linkTrackVars = "eVar69";
+                    s.usePlugins = false;
+                    var override = new Object();
+                    override.events = "event78";
+                    override.eVar69 =name + '_complete_replacement_offer';
+                    s.tl(this, 'o', name + '_complete_replacement_offer is selected', override);
+                    s.usePlugins = true;
+                },radio_crc);
+            }
+            if(check_tenant)
+            {
+                d.attachEvent('click',function(){
+                    if(this.checked)
+                    {
+                        s.linkTrackEvents = "event78";
+                        s.linkTrackVars = "eVar69";
+                        s.usePlugins = false;
+                        var override = new Object();
+                        override.events = "event78";
+                        override.eVar69 =name + '_tenant_protection';
+                        s.tl(this, 'o', name + '_tenant_protection is selected', override);
+                        s.usePlugins = true;
+                    }
+                },check_tenant);
+            }
+        }
 
+        if(s.pageName.indexOf('in:ami:secapp:sales:home:quote:contents_cover') > -1 )
+        {
+            radio_yes=document.getElementById('hasPersonalValuables1');
+            name=s.pageName.split(':')[7].split('_')[0];
+            if(radio_yes)
+            {
+                d.attachEvent('click',function(){
+                    s.linkTrackEvents = "event78";
+                    s.linkTrackVars = "eVar69";
+                    s.usePlugins = false;
+                    var override = new Object();
+                    override.events = "event78";
+                    override.eVar69 =name + '_portable_valuablees';
+                    s.tl(this, 'o', name + '_portable_valuablees is selected', override);
+                    s.usePlugins = true;
+                },radio_yes);
+            }
+        }
+        if(/in:sun:secapp:home\w+:quote:quote_completed/i.test(s.pageName))
+        {
+            ids=['accidentalDamage','safetyNetCover','hasMotorBurnout','petInjuryCover'];
+            for(id in ids)
+            {
+                checkbox=document.getElementById(ids[id]);
+                if(checkbox)
+                {
+                    d.attachEvent('click',function(){
+                        if(this.checked)
+                        {
+                            product_name = s.pageName.split(':')[3].split('_')[0];
+                            name=d.getInnerText(this.parentElement.parentElement);
+                            name=name.toLowerCase().replace(/\s+/gi,'-')
+                            s.linkTrackEvents = "event78";
+                            s.linkTrackVars = "eVar69";
+                            s.usePlugins = false;
+                            var override = new Object();
+                            override.events = "event78";
+                            override.eVar69 =product_name + '_' + name;
+                            s.tl(this, 'o', product_name + '_' + name, override);
+                            s.usePlugins = true;
+
+                        }
+                    },checkbox);
+                }
+            }
+        }
+
+        if(/in:sun:secapp:home\w+:quote:contents_cover/i.test(s.pageName) )
+        {
+            radio_yes = document.getElementById('hasPersonalValuables1');
+            radio_yes = radio_yes.parentElement.childNodes[1];
+            if (radio_yes) {
+                name = s.pageName.split(':')[3].split('_')[0];
+                d.attachEvent('click',function () {
+                    s.linkTrackEvents = "event78";
+                    s.linkTrackVars = "eVar69";
+                    s.usePlugins = false;
+                    var override = new Object();
+                    override.events = "event78";
+                    override.eVar69 = name + '_portable_valuables';
+                    s.tl(this, 'o', name + '_portable_valuables is selected', override);
+                    s.usePlugins = true;
+                },radio_yes);
+            }
+        }
+
+//        if(s.getPageName() == 'in:sun:insurance:car:comprehensive')
+//        {
+//            links = document.getElementsByClassName('popover-marker')
+//            if(links)
+//            {
+//                for(i = 5;i < links.length;i++)
+//                {
+//                    link = links[i];
+//                    d.attachEvent('click',function(){
+//                        text= d.getTxtWhinNchar(d.getInnerText(this),26);
+//                        s.linkTrackVars = "prop8";
+//                        s.usePlugins = false;
+//                        var override = new Object();
+//                        override.prop8 ='car_' + text;
+//                        s.tl(this, 'o', 'car_' + text, override);
+//                        s.usePlugins = true;
+//                    },link);
+//                }
+//            }
+//        }
+//        if(s.getPageName() == 'in:sun:insurance:car')
+//        {
+//            setTimeout(function() {
+//                button_findmore = document.getElementsByClassName('button-image')[0];
+//                if(button_findmore)
+//                {
+//                    d.attachEvent('click', function(){
+//                        s.linkTrackVars = "prop8";
+//                        s.usePlugins = false;
+//                        var override = new Object();
+//                        override.prop8 ='car_find-more';
+//                        s.tl(this, 'o', 'car_find-more', override);
+//                        s.usePlugins = true;
+//                    },button_findmore);
+//                }
+//            }, 1000);
+//        }
+//        if(/in:ami:secapp:sales:motor:quote:quote_completed/i.test(s.pageName))
+//        {
+//            ids=['windScreen','hireCarUnlimited','roadsideAssistance'];
+//            for(id in ids)
+//            {
+//                checkbox=document.getElementById(ids[id]);
+//                if(checkbox)
+//                {
+//
+//                    d.attachEvent('click',function(){
+//                        if(this.checked)
+//                        {
+//                            product_name = s.pageName.split(':')[4];
+//                            name=d.getInnerText(this.parentElement.parentElement);
+//                            name=name.toLowerCase().replace(/\s+/gi,'-');
+//                            s.linkTrackEvents = "event78";
+//                            s.linkTrackVars = "eVar69";
+//                            s.usePlugins = false;
+//                            var override = new Object();
+//                            override.events = "event78";
+//                            override.eVar69 =product_name + '_' + name;
+//                            s.tl(this, 'o', product_name + '_' + name, override);
+//                            s.usePlugins = true;
+//
+//                        }
+//                    },checkbox);
+//                }
+//            }
+//            thirdpartcheckbox=document.getElementById('thirdPartyFireTheft');
+//            if(thirdpartcheckbox)
+//            {
+//                d.attachEvent('click',function(){
+//                    if(this.checked)
+//                    {
+//                        product_name = s.pageName.split(':')[4];
+//                        name=d.getInnerText(this.parentElement.parentElement);
+//                        name=name.toLowerCase().replace(/\s+/gi,'-');
+//                        s.linkTrackEvents = "event78";
+//                        s.linkTrackVars = "eVar69";
+//                        s.usePlugins = false;
+//                        var override = new Object();
+//                        override.events = "event78";
+//                        override.eVar69 =product_name + '_' + name;
+//                        s.tl(this, 'o', product_name + '_' + name, override);
+//                        s.usePlugins = true;
+//
+//                    }
+//                },thirdpartcheckbox);
+//            }
+//            paylinks = document.getElementsByClassName('alternate-price-link switchToComprehensive');
+//            if(paylinks)
+//            {
+//                for(link in paylinks)
+//                {
+//                    d.attachEvent('click',function(){
+//                        product_name = s.pageName.split(':')[4];
+//                        name=d.getInnerText(this);
+//                        name=name.toLowerCase().replace(/\s+/gi,'-');
+//                        s.linkTrackEvents = "event78";
+//                        s.linkTrackVars = "eVar69";
+//                        s.usePlugins = false;
+//                        var override = new Object();
+//                        override.events = "event78";
+//                        override.eVar69 =product_name + '_' + name;
+//                        s.tl(this, 'o', product_name + '_' + name, override);
+//                        s.usePlugins = true;
+//                    },paylinks[link]);
+//                }
+//            }
+//
+//        }
+//
+//
+//        if(s.pageName.indexOf('in:ami:secapp:sales:home:quote') > -1)
+//        {
+//            if(scEventExists('event8'))
+//            {
+//                select=document.getElementById('previousInsurer')
+//                if(select)
+//                {
+//                    d.attachEvent('change', function () {
+//                        select = document.getElementById('previousInsurer');
+//                        if (select.selectedIndex != 0) {
+//                            s.getAndPersistValue(select[select.selectedIndex].text,"ami_home_previous");
+//                        }
+//                    });
+//
+//                }
+//            }
+//            else
+//            {
+//                previous= s.c_r("ami_home_previous");
+//                if(previous)
+//                {
+//                    s.eVar21 = previous;
+//                    s.prop23 = s.eVar21;
+//                }
+//            }
+//        }
+//
+//        if(/in:sun:secapp:motor:quote:quote_completed/i.test(s.pageName))
+//        {
+//            ids = ['windScreen','hireCarLimited','winScreenHireCarUnlimitedBundle'];
+//            for(id in ids)
+//            {
+//                checkbox = document.getElementById(ids[id]);
+//                if(checkbox)
+//                {
+//                    d.attachEvent('click',function(){
+//                        if(this.checked)
+//                        {
+//                            product_name = s.pageName.split(':')[3];
+//                            name = d.getInnerText(this.parentElement.parentElement);
+//                            name = name.toLowerCase().replace(/\s+/gi,'-');
+//                            s.linkTrackEvents = "event78";
+//                            s.linkTrackVars = "eVar69";
+//                            s.usePlugins = false;
+//                            var override = new Object();
+//                            override.events = "event78";
+//                            override.eVar69 =product_name + '_' + name;
+//                            s.tl(this, 'o', product_name + '_' + name, override);
+//                            s.usePlugins = true;
+//
+//                        }
+//                    },checkbox);
+//                }
+//            }
+//            thirdpartcheckbox = document.getElementById('thirdPartyFireTheft');
+//            if(thirdpartcheckbox)
+//            {
+//                d.attachEvent('click',function(){
+//                    if(this.checked)
+//                    {
+//                        product_name = s.pageName.split(':')[3];
+//                        name=d.getInnerText(this.parentElement.parentElement);
+//                        name=name.toLowerCase().replace(/\s+/gi,'-');
+//                        s.linkTrackEvents = "event78";
+//                        s.linkTrackVars = "eVar69";
+//                        s.usePlugins = false;
+//                        var override = new Object();
+//                        override.events = "event78";
+//                        override.eVar69 =product_name + '_' + name;
+//                        s.tl(this, 'o', product_name + '_' + name, override);
+//                        s.usePlugins = true;
+//
+//                    }
+//                },thirdpartcheckbox);
+//            }
+//            paylinks = document.getElementsByClassName('alternate-price-link switchToComprehensive');
+//            if(paylinks)
+//            {
+//                for(link in paylinks)
+//                {
+//                    d.attachEvent('click',function(){
+//                        product_name = s.pageName.split(':')[3];
+//                        name=d.getInnerText(this);
+//                        name=name.toLowerCase().replace(/\s+/gi,'-');
+//                        s.linkTrackEvents = "event78";
+//                        s.linkTrackVars = "eVar69";
+//                        s.usePlugins = false;
+//                        var override = new Object();
+//                        override.events = "event78";
+//                        override.eVar69 =product_name + '_' + name;
+//                        s.tl(this, 'o', product_name + '_' + name, override);
+//                        s.usePlugins = true;
+//                    },paylinks[link]);
+//                }
+//            }
+//        }
+//        if (s.getPageName() == 'in:ami:car-insurance') {
+//            links = document.links;
+//            for (link in links) {
+//                txt = d.getInnerText(links[link]);
+//                if (txt.indexOf('Find out more') > -1 || txt.indexOf('Compare Car Insurance policies') > -1) {
+//                    d.attachEvent('click',function(){
+//                        text= d.getTxtWhinNchar(d.getInnerText(this),26);
+//                        s.linkTrackVars = "prop8";
+//                        s.usePlugins = false;
+//                        var override = new Object();
+//                        override.prop8 ='car_' + text;
+////                        s.tl(this, 'o', 'car_' + text, override);
+//                        s.usePlugins = true;
+//                    },links[link]);
+//                }
+//
+//            }
+//        }
+//
+//        if (s.getPageName() == 'in:ami:car-insurance:comprehensive-car-insurance') {
+//            links = document.links;
+//            for (link = 17; link < 46; link++) {
+//                d.attachEvent('click', function () {
+//                    text = d.getTxtWhinNchar(d.getInnerText(this), 26);
+//                    s.linkTrackVars = "prop8";
+//                    s.usePlugins = false;
+//                    var override = new Object();
+//                    override.prop8 = 'car_' + text;
+////                    s.tl(this, 'o', 'car_' + text, override);
+//                    s.usePlugins = true;
+//                }, links[link]);
+//            }
+//
+//        }
+//        if (s.getPageName() == 'in:ami:home-insurance:comparison') {
+//            links = document.links;
+//            for (link in links) {
+//                url = links[link].href;
+//                if (url) {
+//                    if (url.indexOf('javascript:void(0)') > -1) {
+//                        d.attachEvent('click', function () {
+//                            text = d.getTxtWhinNchar(d.getInnerText(this), 26);
+//                            s.linkTrackVars = "prop8";
+//                            s.usePlugins = false;
+//                            var override = new Object();
+//                            override.prop8 = 'home_' + text;
+////                            s.tl(this, 'o', 'home_' + text, override);
+//                            s.usePlugins = true;
+//                        }, links[link]);
+//                    }
+//                }
+//            }
+//        }
+//        if(s.getPageName() == 'in:ami:home-insurance:landlord-insurance')
+//        {
+//            links = document.links;
+//            for (link in links) {
+//                url = links[link].href;
+//                if (url) {
+//                    if (url.indexOf('javascript:void(0)') > -1) {
+//                        d.attachEvent('click', function () {
+//                            text = d.getTxtWhinNchar(d.getInnerText(this), 26);
+//                            s.linkTrackVars = "prop8";
+//                            s.usePlugins = false;
+//                            var override = new Object();
+//                            override.prop8 = 'home_' + text;
+////                            s.tl(this, 'o', 'home_' + text, override);
+//                            s.usePlugins = true;
+//                        }, links[link]);
+//                    }
+//                }
+//            }
+//        }
+//
+//        if(s.getPageName() == 'in:ami:home-insurance:landlord-contents-insurance')
+//        {
+//            links = document.links;
+//            for (link in links) {
+//                url = links[link].href;
+//                if (url) {
+//                    if (url.indexOf('javascript:void(0)') > -1) {
+//                        d.attachEvent('click', function () {
+//                            text = d.getTxtWhinNchar(d.getInnerText(this), 26);
+//                            s.linkTrackVars = "prop8";
+//                            s.usePlugins = false;
+//                            var override = new Object();
+//                            override.prop8 = 'home_' + text;
+////                            s.tl(this, 'o', 'home_' + text, override);
+//                            s.usePlugins = true;
+//                        }, links[link]);
+//                    }
+//                }
+//            }
+//            clickme=document.getElementById('click-me-to-slow-scroll');
+//            d.attachEvent('click', function () {
+//                text = d.getTxtWhinNchar(d.getInnerText(this), 26);
+//                s.linkTrackVars = "prop8";
+//                s.usePlugins = false;
+//                var override = new Object();
+//                override.prop8 = 'home_' + text;
+////                s.tl(this, 'o', 'home_' + text, override);
+//                s.usePlugins = true;
+//            }, clickme);
+//        }
+//        if(s.getPageName() == 'in:sun:insurance:home')
+//        {
+//            propers = document.getElementsByClassName('popover-marker');
+//            for (link in propers) {
+//                d.attachEvent('click', function () {
+//                    text = d.getTxtWhinNchar(d.getInnerText(this), 26);
+//                    s.linkTrackVars = "prop8";
+//                    s.usePlugins = false;
+//                    var override = new Object();
+//                    override.prop8 = 'home_' + text;
+////                    s.tl(this, 'o', 'home_' + text, override);
+//                    s.usePlugins = true;
+//                }, propers[link]);
+//            }
+//            bnts = document.getElementsByClassName('button-image');
+//            for(link in bnts)
+//            {
+//                txt = d.getInnerText(links[link]);
+//                if (txt.indexOf('Find out more') > -1) {
+//                    d.attachEvent('click',function(){
+//                        text= d.getTxtWhinNchar(d.getInnerText(this),26);
+//                        s.linkTrackVars = "prop8";
+//                        s.usePlugins = false;
+//                        var override = new Object();
+//                        override.prop8 ='car_' + text;
+////                        s.tl(this, 'o', 'car_' + text, override);
+//                        s.usePlugins = true;
+//                    },bnts[link]);
+//                }
+//            }
+//            links = document.links;
+//            for (link = 31; link < 39; link++) {
+//                d.attachEvent('click', function () {
+//                    text = d.getTxtWhinNchar(d.getInnerText(this), 26);
+//                    s.linkTrackVars = "prop8";
+//                    s.usePlugins = false;
+//                    var override = new Object();
+//                    override.prop8 = 'car_' + text;
+////                    s.tl(this, 'o', 'car_' + text, override);
+//                    s.usePlugins = true;
+//                }, links[link]);
+//            }
+//        }
+//        if(s.getPageName() == 'in:sun:insurance:home-contents')
+//        {
+//            links = document.getElementsByClassName('popover-marker');
+//            for (link=0;link < links.length-1;link ++) {
+//                d.attachEvent('click', function () {
+//                    text = d.getTxtWhinNchar(d.getInnerText(this), 26);
+//                    s.linkTrackVars = "prop8";
+//                    s.usePlugins = false;
+//                    var override = new Object();
+//                    override.prop8 = 'car_' + text;
+////                    s.tl(this, 'o', 'car_' + text, override);
+//                    s.usePlugins = true;
+//                }, links[link]);
+//            }
+//            links = document.links;
+//            for (link = 32; link < 40; link++) {
+//                d.attachEvent('click', function () {
+//                    text = d.getTxtWhinNchar(d.getInnerText(this), 26);
+//                    s.linkTrackVars = "prop8";
+//                    s.usePlugins = false;
+//                    var override = new Object();
+//                    override.prop8 = 'car_' + text;
+////                    s.tl(this, 'o', 'car_' + text, override);
+//                    s.usePlugins = true;
+//                }, links[link]);
+//            }
+//        }
+//        if(s.getPageName() == 'in:sun:insurance:home-building')
+//        {
+//            links = document.getElementsByClassName('popover-marker');
+//            for (link=0;link < links-1;link ++) {
+//                d.attachEvent('click', function () {
+//                    text = d.getTxtWhinNchar(d.getInnerText(this), 26);
+//                    s.linkTrackVars = "prop8";
+//                    s.usePlugins = false;
+//                    var override = new Object();
+//                    override.prop8 = 'car_' + text;
+////                    s.tl(this, 'o', 'car_' + text, override);
+//                    s.usePlugins = true;
+//                }, links[link]);
+//            }
+//            links = document.links;
+//            for (link = 28; link < 36; link++) {
+//                d.attachEvent('click', function () {
+//                    text = d.getTxtWhinNchar(d.getInnerText(this), 26);
+//                    s.linkTrackVars = "prop8";
+//                    s.usePlugins = false;
+//                    var override = new Object();
+//                    override.prop8 = 'car_' + text;
+////                    s.tl(this, 'o', 'car_' + text, override);
+//                    s.usePlugins = true;
+//                }, links[link]);
+//            }
+//        }
+//        if(s.getPageName() == 'in:sun:insurance:home:contents')
+//        {
+//            links = document.getElementsByClassName('popover-marker');
+//            for (link=0;link < links.length;link ++) {
+//                d.attachEvent('click', function () {
+//                    text = d.getTxtWhinNchar(d.getInnerText(this), 26);
+//                    s.linkTrackVars = "prop8";
+//                    s.usePlugins = false;
+//                    var override = new Object();
+//                    override.prop8 = 'car_' + text;
+////                    s.tl(this, 'o', 'car_' + text, override);
+//                    s.usePlugins = true;
+//                }, links[link]);
+//            }
+//            links = document.links;
+//            for (link = 32; link < 40; link++) {
+//                d.attachEvent('click', function () {
+//                    text = d.getTxtWhinNchar(d.getInnerText(this), 26);
+//                    s.linkTrackVars = "prop8";
+//                    s.usePlugins = false;
+//                    var override = new Object();
+//                    override.prop8 = 'car_' + text;
+////                    s.tl(this, 'o', 'car_' + text, override);
+//                    s.usePlugins = true;
+//                }, links[link]);
+//            }
+//        }
+//        if(s.getPageName == 'in:sun:insurance:landlord')
+//        {
+//            link = document.links[35];
+//            d.attachEvent('click', function () {
+//                text = d.getTxtWhinNchar(d.getInnerText(this), 26);
+//                s.linkTrackVars = "prop8";
+//                s.usePlugins = false;
+//                var override = new Object();
+//                override.prop8 = 'car_' + text;
+////                s.tl(this, 'o', 'car_' + text, override);
+//                s.usePlugins = true;
+//            }, link)
+//
+//        }
     }
 };
 
