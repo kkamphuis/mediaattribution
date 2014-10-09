@@ -45,146 +45,147 @@ scConfig[15] = ['sunbizi', 'bizi', 'sg:biz2', 'suncorp.com.au', 'bizi', 'bizi.co
 scConfig[16] = ['sunideaexchange', 'ideaexchange', 'sg:iex', 'suncorp.com.au', 'ideaexchange', 'ideaxchange.int.corp.sun, ideaxchange'];
 
 if(typeof s_account == 'undefined'){
-	// modify s_account to correct value when you deploy it
-	var s_account='sundev';
-	if(scHost.indexOf('gio.com.au') > -1) s_account=setting.getEnv('sungio'); // GIO has no account defined on page
-	else if(scHost.indexOf('apia.com.au') > -1) s_account='sunapia'; // APIA has no account defined on page
-	else if(scHost.indexOf('bingle.com.au') > -1) s_account=setting.getEnv('sunbingle'); // Bingle account is defined after s_code loaded
-	else if (scHost.indexOf('aami.com.au') > -1) {
-		s_account = setting.getEnv('sunaami');
-	}
-	else if (scHost.indexOf('suncorp.com.au') > -1 || scHost.indexOf('suncorpbank.com.au') > -1 || scHost.indexOf('suncorpinsurance.com.au') > -1) {
-		s_account = setting.getEnv('sun');
-	}
-	else if (scHost.indexOf('insuremyride.com.au') > -1) {
-		s_account = setting.getEnv('suninsuremyride');
-	}
+    // modify s_account to correct value when you deploy it
+    var s_account='sundev';
+    if(scHost.indexOf('gio.com.au') > -1) s_account=setting.getEnv('sungio'); // GIO has no account defined on page
+    else if(scHost.indexOf('apia.com.au') > -1) s_account='sunapia'; // APIA has no account defined on page
+    else if(scHost.indexOf('bingle.com.au') > -1) s_account=setting.getEnv('sunbingle'); // Bingle account is defined after s_code loaded
+    else if (scHost.indexOf('aami.com.au') > -1) {
+        s_account = setting.getEnv('sunaami');
+    }
+    else if (scHost.indexOf('suncorp.com.au') > -1 || scHost.indexOf('suncorpbank.com.au') > -1 || scHost.indexOf('suncorpinsurance.com.au') > -1) {
+        s_account = setting.getEnv('sun');
+    }
+    else if (scHost.indexOf('insuremyride.com.au') > -1) {
+        s_account = setting.getEnv('suninsuremyride');
+    }
 }
 var s=s_gi(s_account)
 /************************** FUNCTIONS **************************/
 scLiveChatInteraction = function(interactionType, field){
-	scTempEvents=s.events;
-	s.linkTrackVars="events,eVar47,eVar54";
-	s.linkTrackEvents="event60,event61";
-	if(s.pageName.indexOf(":quote") > -1){
-	 s.events="event60";
-	}else if(s.pageName.indexOf(":buy") > -1){
-	 s.events="event61";
-	}
-	s.eVar47=interactionType;
-	s.eVar54=field;
-	s.tl(this,"o","LiveChat: "+interactionType);
-	// restore events and clear filters
-	s.events=scTempEvents;
-	s.linkTrackVars="none";
-	s.linkTrackEvents="none";
+    scTempEvents=s.events;
+    s.linkTrackVars="events,eVar47,eVar54";
+    s.linkTrackEvents="event60,event61";
+    if(s.pageName.indexOf(":quote") > -1){
+     s.events="event60";
+    }else if(s.pageName.indexOf(":buy") > -1){
+     s.events="event61";
+    }
+    s.eVar47=interactionType;
+    s.eVar54=field;
+    s.tl(this,"o","LiveChat: "+interactionType);
+    // restore events and clear filters
+    s.events=scTempEvents;
+    s.linkTrackVars="none";
+    s.linkTrackEvents="none";
 }
 var ie = /*@cc_on!@*/false;
 scApplyTrackLink = function() {
-	var aElements = document.getElementsByTagName('a');
+    var aElements = document.getElementsByTagName('a');
     for (var i=0; i < aElements.length; i++){
-		scAddListener(aElements[i], scTrackLink);
-	    scLocateInternalPromotion(aElements[i]);
+        scAddListener(aElements[i], scTrackLink);
+        scLocateInternalPromotion(aElements[i]);
     }
 };
 scLocateInternalPromotion = function(element){
-	var intCID = s.getQueryParam('intcmp','',element.href);
-	if(intCID){
-		scTrackInternalPromotionImp(intCID);
-	}
+    var intCID = s.getQueryParam('intcmp','',element.href);
+    if(intCID){
+        scTrackInternalPromotionImp(intCID);
+    }
 }
 scTrackInternalPromotionImp = function(intCID){
-	scTempEvents=s.events;
-	s.linkTrackVars="events,eVar2";
-	s.linkTrackEvents="event34";
-	s.events="event34";
-	s.eVar2=intCID;
-	s.usePlugins=false;
-	s.tl(this,"o","Intcmp Imp: "+intCID);
-	// restore events and clear filters
-	s.events=scTempEvents;
-	s.linkTrackVars="none";
-	s.linkTrackEvents="none";
-	s.usePlugins=true;
+    scTempEvents=s.events;
+    s.linkTrackVars="events,eVar2";
+    s.linkTrackEvents="event34";
+    s.events="event34";
+    s.eVar2=intCID;
+    s.usePlugins=false;
+    s.tl(this,"o","Intcmp Imp: "+intCID);
+    // restore events and clear filters
+    s.events=scTempEvents;
+    s.linkTrackVars="none";
+    s.linkTrackEvents="none";
+    s.usePlugins=true;
 }
 scAddListener = function(element, func) {
-	if(ie){
-		element.attachEvent('onclick', func);
-	}else{
-		element.addEventListener('click', func, false);
-	}
+    if(ie){
+        element.attachEvent('onclick', func);
+    }else{
+        element.addEventListener('click', func, false);
+    }
 };
 scTrackLink = function(e) {
-	try{
-		var currentElement = (ie) ? e.srcElement : e.target;
-		if (currentElement) {
-			while (currentElement.tagName != "A") {
-				currentElement = currentElement.parentNode;
-			}
-		}
-		scTackExitLink(currentElement);
-		if (currentElement.href.search(/^tel:/i) > -1) {
-			if (ie) {
-				return false;
-			} else {
-				e.preventDefault();
-			}
-		}
-	} catch(e) {
-		;
-	}
+    try{
+        var currentElement = (ie) ? e.srcElement : e.target;
+        if (currentElement) {
+            while (currentElement.tagName != "A") {
+                currentElement = currentElement.parentNode;
+            }
+        }
+        scTackExitLink(currentElement);
+        if (currentElement.href.search(/^tel:/i) > -1) {
+            if (ie) {
+                return false;
+            } else {
+                e.preventDefault();
+            }
+        }
+    } catch(e) {
+        ;
+    }
 };
 scEmailButton = function() {
-	scTempEvents=s.events;
-	s.linkTrackVars="events,eVar22,products";
-	s.linkTrackEvents="event72";
-	s.events = "event72:" + s.eVar22;
+    scTempEvents=s.events;
+    s.linkTrackVars="events,eVar22,products";
+    s.linkTrackEvents="event72";
+    s.events = "event72:" + s.eVar22;
     if (s.products.indexOf("event")){
         s.products = s.products.substr(0,s.products.indexOf("event"));
     }
-	s.usePlugins=false;
-	s.tl(this,"o","Terri Sheer: Quote Emailed");
-	// restore events and clear filters
-	s.events=scTempEvents;
-	s.linkTrackVars="none";
-	s.linkTrackEvents="none";
-	s.usePlugins=true;
+    s.usePlugins=false;
+    s.tl(this,"o","Terri Sheer: Quote Emailed");
+    d.triggerQuoteSaved();
+    // restore events and clear filters
+    s.events=scTempEvents;
+    s.linkTrackVars="none";
+    s.linkTrackEvents="none";
+    s.usePlugins=true;
 };
 
 scJeopardy = function(errorMessage, errorKind) {
-	scTempEvents=s.events;
+    scTempEvents=s.events;
 
-	if(errorKind == 'business') {
-		s.linkTrackVars="events,eVar17";
-		s.linkTrackEvents="event15";
-		s.eVar17 = errorMessage;
-		s.pageName = s.pageName + ':' + s.eVar17;
-		s.events = 'event15:' + s.eVar26;
-		s.usePlugins=false;
-		s.tl(this,"o","Terri Sheer: Business Jeopardy");
-	}
+    if(errorKind == 'business') {
+        s.linkTrackVars="events,eVar17";
+        s.linkTrackEvents="event15";
+        s.eVar17 = errorMessage;
+        s.pageName = s.pageName + ':' + s.eVar17;
+        s.events = 'event15:' + s.eVar26;
+        s.usePlugins=false;
+        s.tl(this,"o","Terri Sheer: Business Jeopardy");
+    }
 
-	if(errorKind == 'technical') {
-		s.linkTrackVars="events,eVar25";
-		s.linkTrackEvents="event41";
-		s.eVar25 = errorMessage;
-		s.pageName = s.pageName + ':' + s.eVar25;
-		s.events = 'event41:' + s.eVar26;
-		s.usePlugins=false;
-		s.tl(this,"o","Terri Sheer: Technical Jeopardy");
-	}
+    if(errorKind == 'technical') {
+        s.linkTrackVars="events,eVar25";
+        s.linkTrackEvents="event41";
+        s.eVar25 = errorMessage;
+        s.pageName = s.pageName + ':' + s.eVar25;
+        s.events = 'event41:' + s.eVar26;
+        s.usePlugins=false;
+        s.tl(this,"o","Terri Sheer: Technical Jeopardy");
+    }
 
-	// restore events and clear filters
-	s.events=scTempEvents;
-	s.linkTrackVars="none";
-	s.linkTrackEvents="none";
-	s.usePlugins=true;
+    // restore events and clear filters
+    s.events=scTempEvents;
+    s.linkTrackVars="none";
+    s.linkTrackEvents="none";
+    s.usePlugins=true;
 };
 trackGIOClick2Call = function(elem) {
     var pixel = '';
     try {
         var headingElem = elem.parentNode.parentNode.parentNode.getElementsByTagName('h3')[0];
-		var heading = (headingElem.textContent || headingElem.innerText);
+        var heading = (headingElem.textContent || headingElem.innerText);
     } catch (e){ heading = ''; }
     try {
         var labelElem = elem.parentNode.previousSibling.previousSibling.previousSibling.previousSibling.getElementsByTagName('li')[0];
@@ -241,14 +242,14 @@ trackGIOClick2Call = function(elem) {
 
 scTackExitLink = function(currentElement) {
     var linkHref = currentElement.href;    
-	if(linkHref.search(/^tel:/i) > -1) {
-		scTempEvents=s.events;
-		s.usePlugins=false;
-		s.useForcedLinkTracking = true;
-		s.forcedLinkTrackingTimeout = 500;
-		s.linkTrackVars="events,eVar36";
-		s.linkTrackEvents="event37";
-		s.events="event37";
+    if(linkHref.search(/^tel:/i) > -1) {
+        scTempEvents=s.events;
+        s.usePlugins=false;
+        s.useForcedLinkTracking = true;
+        s.forcedLinkTrackingTimeout = 500;
+        s.linkTrackVars="events,eVar36";
+        s.linkTrackEvents="event37";
+        s.events="event37";
         s.eVar36="click to call|" + s.pageName;
         if(typeof d != undefined && typeof d.maTag === "function") d.maTag();
 
@@ -281,103 +282,103 @@ scTackExitLink = function(currentElement) {
             }
         } else if(adlens[s.pageName]){
             var da_img = new Image();
-			da_img.src = adlens[s.pageName];
-		} else if(/^in:gio:mobile:get-insurance-quote/.test(s.pageName)){
+            da_img.src = adlens[s.pageName];
+        } else if(/^in:gio:mobile:get-insurance-quote/.test(s.pageName)){
             trackGIOClick2Call(currentElement);
         } else if(s.pageName == "bk:sun:agribusiness"){
-        	d.imageTag("//pixel.everesttech.net/1589/t?ev_MobBizLClickToCall=1");
-        	d.imageTag("//pixel.everesttech.net/1589/t?ev_MobTDClickToCall=1");
+            d.imageTag("//pixel.everesttech.net/1589/t?ev_MobBizLClickToCall=1");
+            d.imageTag("//pixel.everesttech.net/1589/t?ev_MobTDClickToCall=1");
         }
-		
-		// iframe tag
-		if (s.pageName == 'in:ami:mobile:car-insurance:comprehensive-car-insurance') {
-			d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamio191;cat=mobil549;ord=1;num=' + cachebuster + '?');
-		} else if (s.pageName == 'in:ami:mobile:travel-insurance') {
-			d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=mobil378;ord=1;num=' + cachebuster + '?');
-		} else if (s.pageName == 'in:ami:mobile:home-insurance') {
-			d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamio191;cat=mobil575;ord=1;num=' + cachebuster + '?');
-		} else if (s.pageName == 'in:ami:mobile:ctp-insurance:ctp-insurance-nsw' || s.pageName == 'in:ami:mobile:ctp-insurance:ctp-insurance-act') {
-			d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamio191;cat=mobil648;ord=1;num=' + cachebuster + '?');
-		} else if (s.pageName == 'in:ami:mobile:business-insurance') {
-			d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamib983;cat=mobil561;ord=1;num=' + cachebuster + '?');
-		} else if (s.pageName == 'in:ami:mobile:car-insurance:third-party-property-car-insurance') {
-			d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aami3347;cat=mobil447;ord=1;num=' + cachebuster + '?');
-		};
-		
-		s.tl(currentElement,"o","Click to Call: "+linkHref, null,'navigate');
-		// restore events and clear filters
-		s.events=scTempEvents;
-		s.linkTrackVars="none";
-		s.linkTrackEvents="none";
-		s.usePlugins=true;
-		s.useForcedLinkTracking = false;
-		s.forcedLinkTrackingTimeout = 250;
-	}
-	// PDF downloads
-	var fileMatch = linkHref.match(new RegExp(/\.pdf$|\.pdf\?/));
-	if(fileMatch != null) {
-		if(typeof fileMatch[0] !== 'undefined') {
-			scTempEvents=s.events;
-			s.usePlugins=false;
-			s.linkTrackVars="eVar49,events";
-			s.linkTrackEvents="event33";
-			s.eVar49=linkHref;
-			s.events="event33";
-			s.tl(this,"o","Form Download:"+linkHref);
-			// restore events and clear filters
-			s.events=scTempEvents;
-			s.linkTrackVars="none";
-			s.linkTrackEvents="none";
-			s.usePlugins=true;
-		}
-	}
+        
+        // iframe tag
+        if (s.pageName == 'in:ami:mobile:car-insurance:comprehensive-car-insurance') {
+            d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamio191;cat=mobil549;ord=1;num=' + cachebuster + '?');
+        } else if (s.pageName == 'in:ami:mobile:travel-insurance') {
+            d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamit287;cat=mobil378;ord=1;num=' + cachebuster + '?');
+        } else if (s.pageName == 'in:ami:mobile:home-insurance') {
+            d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamio191;cat=mobil575;ord=1;num=' + cachebuster + '?');
+        } else if (s.pageName == 'in:ami:mobile:ctp-insurance:ctp-insurance-nsw' || s.pageName == 'in:ami:mobile:ctp-insurance:ctp-insurance-act') {
+            d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamio191;cat=mobil648;ord=1;num=' + cachebuster + '?');
+        } else if (s.pageName == 'in:ami:mobile:business-insurance') {
+            d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aamib983;cat=mobil561;ord=1;num=' + cachebuster + '?');
+        } else if (s.pageName == 'in:ami:mobile:car-insurance:third-party-property-car-insurance') {
+            d.iframeTag('//fls.doubleclick.net/activityi;src=875382;type=aami3347;cat=mobil447;ord=1;num=' + cachebuster + '?');
+        };
+        
+        s.tl(currentElement,"o","Click to Call: "+linkHref, null,'navigate');
+        // restore events and clear filters
+        s.events=scTempEvents;
+        s.linkTrackVars="none";
+        s.linkTrackEvents="none";
+        s.usePlugins=true;
+        s.useForcedLinkTracking = false;
+        s.forcedLinkTrackingTimeout = 250;
+    }
+    // PDF downloads
+    var fileMatch = linkHref.match(new RegExp(/\.pdf$|\.pdf\?/));
+    if(fileMatch != null) {
+        if(typeof fileMatch[0] !== 'undefined') {
+            scTempEvents=s.events;
+            s.usePlugins=false;
+            s.linkTrackVars="eVar49,events";
+            s.linkTrackEvents="event33";
+            s.eVar49=linkHref;
+            s.events="event33";
+            s.tl(this,"o","Form Download:"+linkHref);
+            // restore events and clear filters
+            s.events=scTempEvents;
+            s.linkTrackVars="none";
+            s.linkTrackEvents="none";
+            s.usePlugins=true;
+        }
+    }
 };
 scEventExists = function(event){
-	if(s.events){
-		var events = s.events.split(',');
-		for(i=0;i<events.length;i++){
-			if(events[i]==event || events[i].indexOf(event+':') > -1){
-				return true;
-			}
-		}
-	}
-	return false;
+    if(s.events){
+        var events = s.events.split(',');
+        for(i=0;i<events.length;i++){
+            if(events[i]==event || events[i].indexOf(event+':') > -1){
+                return true;
+            }
+        }
+    }
+    return false;
 }
 scProductExists = function(product){
-	if(s.products){
-		var products = s.products.split(',');
-		for(i=0;i<products.length;i++){
-			var product_array = products[i].split(';');
-			if(product_array.length>1){
-				if(product_array[1]==product) return true;
-			}
-		}
-	}
-	return false;
+    if(s.products){
+        var products = s.products.split(',');
+        for(i=0;i<products.length;i++){
+            var product_array = products[i].split(';');
+            if(product_array.length>1){
+                if(product_array[1]==product) return true;
+            }
+        }
+    }
+    return false;
 }
 scGetProducts = function(){
-	var returnValue = ''
-	if(s.products){
-		var products = s.products.split(',');
-		for(i=0;i<products.length;i++){
-			var delimiter = i == products.length - 1 ? '' : ';';
-			var product_array = products[i].split(';');
-			if(product_array.length>1){
-				returnValue = returnValue + product_array[1] + delimiter;
-			}
-		}
-	}
-	return returnValue;
+    var returnValue = ''
+    if(s.products){
+        var products = s.products.split(',');
+        for(i=0;i<products.length;i++){
+            var delimiter = i == products.length - 1 ? '' : ';';
+            var product_array = products[i].split(';');
+            if(product_array.length>1){
+                returnValue = returnValue + product_array[1] + delimiter;
+            }
+        }
+    }
+    return returnValue;
 }
 scGetQuoteNumber = function () {
-	var events = s.events.split(',');
-	var quoteNumber = '';
-	for(i=0;i<events.length;i++){
-		if (events[i].indexOf('event9') > -1 || events[i].indexOf('event10') > -1) {
-			quoteNumber = events[i].split(':')[1];
-		}
-	}
-	return quoteNumber;
+    var events = s.events.split(',');
+    var quoteNumber = '';
+    for(i=0;i<events.length;i++){
+        if (events[i].indexOf('event9') > -1 || events[i].indexOf('event10') > -1) {
+            quoteNumber = events[i].split(':')[1];
+        }
+    }
+    return quoteNumber;
 }
 
 scGetISODateString = function() {
@@ -404,53 +405,53 @@ scGetISODateString = function() {
 
 //manual Survey launch
 if (/*@cc_on!@*/false) { // check for Internet Explorer
-	document.onfocusin = onFocus;
+    document.onfocusin = onFocus;
 } else {
-	window.onfocus = onFocus;
+    window.onfocus = onFocus;
 }
 function onFocus(){
-	if(s.c_r('s_bin_qs')){
-		if(s.pageName && s.pageName!='in:bin:secapp:motor:quote:car_selection:quote_started'){
-			if(typeof s.Survey.launch == "function") { s.Survey.launch("31847"); }
-			s.c_w('s_bin_qs','',-1); //delete cookie
-		}
-	}
-	if(s.c_r('s_bin_ss')){
-		if(s.pageName && s.pageName.indexOf('in:bin:secapp:selfservice:claim:lodgement') == -1){
-			if(typeof s.Survey.launch == "function") { s.Survey.launch("32011"); }
-			s.c_w('s_bin_ss','',-1); //delete cookie
-		}
-	}
-	if(s.c_r('s_ami_income_qc')){
-		if(s.pageName && (s.pageName != "in:ami:secapp:sales:directlife:quote:quote_completed:income_protection" &&
-						s.pageName != "in:ami:secapp:sales:directlife:application:application_started:income_protection" &&
-						s.pageName != "in:ami:secapp:sales:directlife:application:application_summary:income_protection" &&
-						s.pageName != "in:ami:secapp:sales:directlife:buy:buy_started:income_protection")){
-			if(typeof s.Survey.launch == "function") { s.Survey.launch("33435"); }
-			s.c_w('s_ami_income_qc', '',-1); //delete cookie
-		}
-	}
+    if(s.c_r('s_bin_qs')){
+        if(s.pageName && s.pageName!='in:bin:secapp:motor:quote:car_selection:quote_started'){
+            if(typeof s.Survey.launch == "function") { s.Survey.launch("31847"); }
+            s.c_w('s_bin_qs','',-1); //delete cookie
+        }
+    }
+    if(s.c_r('s_bin_ss')){
+        if(s.pageName && s.pageName.indexOf('in:bin:secapp:selfservice:claim:lodgement') == -1){
+            if(typeof s.Survey.launch == "function") { s.Survey.launch("32011"); }
+            s.c_w('s_bin_ss','',-1); //delete cookie
+        }
+    }
+    if(s.c_r('s_ami_income_qc')){
+        if(s.pageName && (s.pageName != "in:ami:secapp:sales:directlife:quote:quote_completed:income_protection" &&
+                        s.pageName != "in:ami:secapp:sales:directlife:application:application_started:income_protection" &&
+                        s.pageName != "in:ami:secapp:sales:directlife:application:application_summary:income_protection" &&
+                        s.pageName != "in:ami:secapp:sales:directlife:buy:buy_started:income_protection")){
+            if(typeof s.Survey.launch == "function") { s.Survey.launch("33435"); }
+            s.c_w('s_ami_income_qc', '',-1); //delete cookie
+        }
+    }
     if(s.c_r('s_ami_home_qsp')){
         if(s.pageName && (s.pageName.indexOf("in:ami:secapp:sales:home") == -1)){
             if(typeof s.Survey.launch == "function") s.Survey.launch("33744");
             s.c_w('s_ami_home_qsp', '',-1);
         }
     }
-	if(s.c_r('s_sun_life_qc')){
-		if(s.pageName && (s.pageName != "in:sun:secapp:sales:directlife:quote:quote_completed:life_protect" &&
-						s.pageName != "in:sun:secapp:sales:directlife:application:application_started:life_protect" &&
-						s.pageName != "in:sun:secapp:sales:directlife:application:application_summary:life_protect" &&
-						s.pageName != "in:sun:secapp:sales:directlife:buy:buy_started:life_protect")){
-			if(typeof s.Survey.launch == "function") { s.Survey.launch("33434"); }
-			s.c_w('s_sun_life_qc', '',-1); //delete cookie
-		}
-	}
-	if(s.c_r('s_sun_motor_qs')){
-		if(s.pageName && (s.pageName.indexOf("in:sun:secapp:motor") == -1)){
-			if(typeof s.Survey.launch == "function") s.Survey.launch("32997");
-			s.c_w('s_sun_motor_qs', '',-1);
-		}
-	}
+    if(s.c_r('s_sun_life_qc')){
+        if(s.pageName && (s.pageName != "in:sun:secapp:sales:directlife:quote:quote_completed:life_protect" &&
+                        s.pageName != "in:sun:secapp:sales:directlife:application:application_started:life_protect" &&
+                        s.pageName != "in:sun:secapp:sales:directlife:application:application_summary:life_protect" &&
+                        s.pageName != "in:sun:secapp:sales:directlife:buy:buy_started:life_protect")){
+            if(typeof s.Survey.launch == "function") { s.Survey.launch("33434"); }
+            s.c_w('s_sun_life_qc', '',-1); //delete cookie
+        }
+    }
+    if(s.c_r('s_sun_motor_qs')){
+        if(s.pageName && (s.pageName.indexOf("in:sun:secapp:motor") == -1)){
+            if(typeof s.Survey.launch == "function") s.Survey.launch("32997");
+            s.c_w('s_sun_motor_qs', '',-1);
+        }
+    }
     if(s.c_r('s_gio_motor_qsp')){
         if(s.pageName && (s.pageName.indexOf("in:gio:secapp:sales:motor") == -1)){
             if(typeof s.Survey.launch == "function") s.Survey.launch("33309");
@@ -477,8 +478,25 @@ function onFocus(){
     }
     if(s.c_r('s_everdaysuper_qsp')){
         if(s.pageName && (s.pageName.indexOf("sp:sun:secapp:sales:superonline:apply") == -1)){
-            if(typeof s.Survey.launch == "function") s.Survey.launch("33612");
+            if(typeof s.Survey.launch == "function") s.Survey.launch("33828");
             s.c_w('s_everdaysuper_qsp', '',-1);
+        }
+    }
+    if(s.c_r('s_apia_car_bsp'))
+    {
+        if(s.pageName && s.pageName != "in:apa:secapp:motor:quote:completed")
+        {
+            if(typeof s.Survey.launch == "function") s.Survey.launch("33805");
+            s.c_w('s_apia_car_bsp', '',-1);
+        }
+    }
+
+    if(s.c_r('s_apia_home_bsp'))
+    {
+        if(s.pageName && s.pageName != "in:apa:secapp:home:quote:completed")
+        {
+            if(typeof s.Survey.launch == "function") s.Survey.launch("33806");
+            s.c_w('s_apia_home_bsp', '',-1);
         }
     }
 
@@ -488,7 +506,7 @@ function onFocus(){
 /* You may add or alter any code config here. */
 s.cookieDomainPeriods="3"
 /* Link Tracking Config */
-s.useForcedLinkTracking=false	//use custom link tracking
+s.useForcedLinkTracking=false   //use custom link tracking
 s.trackDownloadLinks=true
 s.trackExternalLinks=true
 s.trackInlineStats=true
@@ -507,7 +525,7 @@ s.queryVarsList=""     // query parameters to keep
 s.pathExcludeDelim=";" // portion of the path to exclude
 s.pathConcatDelim=":"   // page name component separator
 s.pathExcludeList=""   // elements to exclude from the path
-	
+    
 /* PurchasePath Config */
 var _dCompaignCode = '';
 var _dTrafficSourceVariable = 'eVar61';
@@ -524,488 +542,488 @@ s.Media.trackEvents="event25,event75,event76";
 s.Media.trackUsingContextData = true;
 s.Media.trackSeconds=6;
 s.Media.contextDataMapping = {
-	"a.media.name":"eVar38,prop30",
-	"a.media.view":"event25",
-	"a.media.complete":"event76",
-	"a.media.timePlayed":"event75"
+    "a.media.name":"eVar38,prop30",
+    "a.media.view":"event25",
+    "a.media.complete":"event76",
+    "a.media.timePlayed":"event75"
 };
 
 function s_doPlugins(s) {
-	/* Add calls to plugins here */
+    /* Add calls to plugins here */
 
-	// Scode version
-	s.prop50 = d.code_version;
-	
-	// Server host
-	s.server=scHost;
-	
-	// set default page for Bingle Facebook App
-	if(s.server.indexOf("binglecomps.com.au") > -1) s.defaultPage="home";
-	
-	// Form analysis
-	if(typeof s.formList != 'undefined') s.setupFormAnalysis();
-	
-	// Config
-	var scInternalDomains = new Array();
-	var scBrandTerms = 'suncorp';
-	if(scCount==0){
-		scSiteID = s.siteID;
-		for(i=0; i<scConfig.length; i++){
-			if(s.un.indexOf(scConfig[i][0]) > -1){
-				if(scSiteID == "none") s.siteID = scConfig[i][2]; // assign site id
-				s.trackingServer='metrics.'+scConfig[i][3]; // assign metrics server
-				s.trackingServerSecure='smetrics.'+scConfig[i][3]; // assign secure metrics server
-				scInternalDomains=scConfig[i][5].split(',');
-				scBrandTerms=scConfig[i][4];
-			}
-		}
-	}
-	
-	/* Fix for URL changes happening to these sites that would drop portions of page name*/
-	if(window.location.host.indexOf("insuremyride.com.au")>-1 && window.location.pathname.indexOf("/imr/") < 0) s.siteID = 'in:imr:imr';
-	if(window.location.host.indexOf("apia.com.au")>-1 && window.location.pathname.indexOf("/apia/") < 0) s.siteID = 'in:apa:apia';
-	if(window.location.host.indexOf("m.aami.com.au")>-1) s.siteID = 'in:ami:mobile';
-	if(window.location.host.indexOf("suncorpbank.com.au")>-1) s.siteID = 'bk:sun';
+    // Scode version
+    s.prop50 = d.code_version;
+    
+    // Server host
+    s.server=scHost;
+    
+    // set default page for Bingle Facebook App
+    if(s.server.indexOf("binglecomps.com.au") > -1) s.defaultPage="home";
+    
+    // Form analysis
+    if(typeof s.formList != 'undefined') s.setupFormAnalysis();
+    
+    // Config
+    var scInternalDomains = new Array();
+    var scBrandTerms = 'suncorp';
+    if(scCount==0){
+        scSiteID = s.siteID;
+        for(i=0; i<scConfig.length; i++){
+            if(s.un.indexOf(scConfig[i][0]) > -1){
+                if(scSiteID == "none") s.siteID = scConfig[i][2]; // assign site id
+                s.trackingServer='metrics.'+scConfig[i][3]; // assign metrics server
+                s.trackingServerSecure='smetrics.'+scConfig[i][3]; // assign secure metrics server
+                scInternalDomains=scConfig[i][5].split(',');
+                scBrandTerms=scConfig[i][4];
+            }
+        }
+    }
+    
+    /* Fix for URL changes happening to these sites that would drop portions of page name*/
+    if(window.location.host.indexOf("insuremyride.com.au")>-1 && window.location.pathname.indexOf("/imr/") < 0) s.siteID = 'in:imr:imr';
+    if(window.location.host.indexOf("apia.com.au")>-1 && window.location.pathname.indexOf("/apia/") < 0) s.siteID = 'in:apa:apia';
+    if(window.location.host.indexOf("m.aami.com.au")>-1) s.siteID = 'in:ami:mobile';
+    if(window.location.host.indexOf("suncorpbank.com.au")>-1) s.siteID = 'bk:sun';
  
-	// Set the Page Name using the plug-in
-	if(!s.pageType && !s.pageName){
-		s.pageName=s.getPageName();
-		s.pageName=s.pageName.toLowerCase();
-	}
+    // Set the Page Name using the plug-in
+    if(!s.pageType && !s.pageName){
+        s.pageName=s.getPageName();
+        s.pageName=s.pageName.toLowerCase();
+    }
 
-	/* append quote start to the page name */
-	if(scEventExists("event8")){
-		if(s.pageName.indexOf(":quote_started") < 0) s.pageName=s.pageName+":quote_started";
-	}
-	
-	if(typeof(s_doPluginsExtension) == "function"){
-		s_doPluginsExtension(); //when terrischeer is included, will override this function from terrischeer-sitecat.js
-	}
-	
-	/* pagename clean up code */
-	pathArray=s.pageName.split(':');
-	var pathLength=pathArray.length;
-	s.channel=pathArray[0]+":"+pathArray[1]+":"+pathArray[2]; //Site Section
-	if(pathArray[3]){
-		s.prop1=pathArray[0]+":"+pathArray[1]+":"+pathArray[2]+":"+pathArray[3]; //Site Sub Section
-	}else{
-		s.prop1=s.channel;	
-	}
-	s.prop2=pathArray[0]; //Line of Business
-	s.prop3=pathArray[1]; //Brand
-	if(!s.hier1){	
-		s.hier1=s.pageName.replace(new RegExp(/:/g),"|");	
-	}
-	
-	/* Automate events based on page names */
+    /* append quote start to the page name */
+    if(scEventExists("event8")){
+        if(s.pageName.indexOf(":quote_started") < 0) s.pageName=s.pageName+":quote_started";
+    }
+    
+    if(typeof(s_doPluginsExtension) == "function"){
+        s_doPluginsExtension(); //when terrischeer is included, will override this function from terrischeer-sitecat.js
+    }
+    
+    /* pagename clean up code */
+    pathArray=s.pageName.split(':');
+    var pathLength=pathArray.length;
+    s.channel=pathArray[0]+":"+pathArray[1]+":"+pathArray[2]; //Site Section
+    if(pathArray[3]){
+        s.prop1=pathArray[0]+":"+pathArray[1]+":"+pathArray[2]+":"+pathArray[3]; //Site Sub Section
+    }else{
+        s.prop1=s.channel;  
+    }
+    s.prop2=pathArray[0]; //Line of Business
+    s.prop3=pathArray[1]; //Brand
+    if(!s.hier1){   
+        s.hier1=s.pageName.replace(new RegExp(/:/g),"|");   
+    }
+    
+    /* Automate events based on page names */
     if(s.pageName == 'bk:sun:savings:term-deposits:enquiry'){
         s.events=s.apl(s.events,s.serializeEvent("event3"),",",1);
         s.products = ';termdeposit';
     }
-	if(s.pageName == 'bk:sun:secapp:agribusiness_enquiry:form:form_started' || s.pageName == 'bk:sun:secapp:merchants_enquiry:form:form_started'
-		|| s.pageName == 'bk:sun:home-loans:enquiry' || s.pageName == 'bk:sun:business:enquire') {
-		s.events=s.apl(s.events,s.serializeEvent("event3"),",",1);
-	} else if(s.pageName == 'bk:sun:secapp:termdeposit_enquiry:form:form_completed' || s.pageName == 'bk:sun:secapp:agribusiness_enquiry:form:form_completed' || s.pageName == 'bk:sun:secapp:merchants_enquiry:form:form_completed'
-		|| s.pageName == 'bk:sun:home-loans:enquiry:submit' || s.pageName == 'bk:sun:business-banking:thankyou') {
-		s.events=s.apl(s.events,s.serializeEvent("event4"),",",1);
-	}
-	if(s.pageName=='in:gio:workers-compensation-insurance:quote-request'){
-		s.events=s.apl(s.events,s.serializeEvent("event3"),",",1);
-		s.products='workers_compenstation';
-	} else if(s.pageName == 'in:gio:workers-compensation-insurance:quote-request:thank-you') {
-		s.events=s.apl(s.events,s.serializeEvent("event4"),",",1);
-		s.products='workers_compenstation';
-	}
-	if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:landingpage"){
-		s.events=s.apl(s.events,"event46",",",1);
-		s.eVar9="Claim_lodgement";
-	}
-	if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:claimlodged:motor"){
-		s.events=s.apl(s.events,"event1",",",1);
-		s.eVar9="Claim_lodgement";
-	}
-	if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:claimlodged:motorcycle"){
-		s.events=s.apl(s.events,"event1",",",1);
-		s.eVar9="Claim_lodgement";
-	}
-	if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:claimlodged:caravan"){
-		s.events=s.apl(s.events,"event1",",",1);
-		s.eVar9="Claim_lodgement";
-	}
-	if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:claimlodged:home"){
-		s.events=s.apl(s.events,"event1",",",1);
-		s.eVar9="Claim_lodgement";
-	}
-	if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:yourpolicy:motor"){
-		s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
-		s.eVar71="lodged_claim_motor";
-	}
-	if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:yourpolicy:home"){
-		s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
-		s.eVar71="lodged_claim_home";
-	}
-	if(s.pageName=="in:ami:secapp:paymentonline:selfservice:paymentcomplete"){
-		s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
-		s.eVar71="renewal_payment";
-	}
-	if(s.pageName=="in:ami:secapp:selfservice:policy:renew:renewal_payment:car"){
-		s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
-		s.eVar71="renewal_payment_motor";
-	}
-	if(s.pageName=="in:ami:secapp:selfservice:policy:renew:renewal_payment:home"){
-		s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
-		s.eVar71="renewal_payment_home";
-	}
-	if(s.pageName=="in:ami:secapp:selfservice:policy:find_policy:find_policy_completed"){
-		s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
-		s.eVar71="find_policy";
-	}
-	if(s.pageName=="in:ami:secapp:selfservice:policy:dashboard:dashboard"){
-		s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
-		s.eVar71="login_new";
-	}
-	if(s.pageName=="in:ami:secapp:selfservice:authentication:registration:registration_completed"){
-		s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
-		s.eVar71="registration_new";
-	}
-	if(s.pageName=="in:ami:secapp:mypolicymanager:selfservice:login_completed"){
-		s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
-		s.eVar71="login_old";
-	}
-	if(s.pageName=="in:ami:secapp:mypolicymanager:selfservice:registration_enter_policy_number"){
-		s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
-		s.eVar71="registration_old";
-	}
-	if(s.pageName=="in:apa:secapp::selfservice:regoconfirm"){
-		s.events=s.events.replace("event1,","");
-		s.events=s.apl(s.events, s.serializeEvent("event1"), ",",1);
-		s.eVar9="registration";
-	} else if (s.pageName=="in:apa:secapp::selfservice:portfolio"){
-		s.events=s.events.replace("event1,","");
-		s.events=s.apl(s.events, s.serializeEvent("event1"), ",",1);
-		s.eVar9="logon";
-	} 
-	if(scEventExists('event18') && (s.siteID == "in:sun" || s.siteID == "in:ami")
-		&& (s.products.indexOf("home_") > -1 || s.products.indexOf("car_") > -1)){
-		s.events = s.apl(s.events, s.serializeEvent("event1"), ",", 1);
-		s.eVar9 = "in_selfservice_nb_unableregister_3rdparty";
-		var typeMap = {
-			elements: ["registrationOutcomeNew", 
-					"registrationOutcomeExistingMatched", 
-					"registrationOutcomeExistingUnmatched",
-					"registrationOutcomeBusinessCustomerNotRegistered",
-					"registrationOutcomeSystemError"],
-			serviceTypes: ["in_selfservice_nb_register",
-					"in_selfservice_nb_Addpolicy",
-					"in_selfservice_nb_unableregister_notmatched", //TODO unsure
-					"in_selfservice_unableregister_business",
-					"in_selfservice_nb_unableregister"]
-		};
-		for (var i = 0; i < typeMap.elements.length; i++) {
-			var element = document.getElementById(typeMap.elements[i]);
-			if (element && element.getAttribute("class") == "") {
-				s.eVar9 = typeMap.serviceTypes[i];
-				break;
-			}
-		}
-	}
-	// CIL Request a Quote Form Tracking
-	if(s.pageName=="in:cil:request-a-quote"){
-		var sid=s.getQueryParam('sid');
-		s.events=s.apl(s.events,"event47",",",1); // tool start
-		s.events=s.apl(s.events,"event3",",",1); // lead start
-		s.eVar5="request-a-quote";	
-	}
-	//CIL Request a Quote Complete Tracking
-	if(s.pageName=="in:cil:request-a-quote-confirmation") {
-		s.events=s.apl(s.events,"event4",",",1); // lead complete
-		s.prop8="request-a-quote";
-	}
-	// CIL Contact us Form Tracking
-	if(s.pageName=="in:cil:contact-us"){
-		s.events=s.apl(s.events,"event47",",",1); // tool start
-		s.eVar5="contact-us";
-	}
-	if(s.pageName=="in:cil:node:15:done"){
-		s.prop8="contact-us";
-	}
-	// Shannons Club Lead Tracking
-	if(s.pageName=="in:shn:club:club:register"){
-		s.events=s.apl(s.events,"event3",",",1); // lead start
-	}
-	if(s.pageName=="in:shn:club:club:register:thanks"){
-		s.events=s.apl(s.events,"event4",",",1); // lead complete
-	}
-	//Bingle Motor But Start
-	if(s.pageName=="in:bin:secapp:motor:buy:car_summary"){
-		s.events=s.apl(s.events,"event17:" + s.getAndPersistValue(null,'BingleQuoteNumber')+"MOT",",",1);
-	}
-	//Apia Dynamic Numbers Tracking
-	if(s.siteID == 'in:apa:apia') {
-		var telEle = d.getElementsByClassName('dynamic-phone');
-		if(telEle && telEle.length > 0) {
-			s.eVar56 = d.getInnerText(telEle[0]);
-		}
-		var date = new Date();
-		var month = (date.getMonth() + 1).toString();
-		var day = date.getDate().toString();
-		s.prop56 = date.getFullYear().toString() + (month[1] ? month : '0' + month[0]) + (day[1] ? day : '0' + day[0]);
-		s.eVar26 = s.prop42 = s.getSessionID();
-	}	
-	//Fix payment type in LSP Apps
-	if(s.prop26 && s.products != ';business_market_stall_public_liability' && s.products != ';ami_business') {
-		s.prop26 = s.prop26.toLowerCase().indexOf('m') > -1 ? 'monthly' : 'annually';
-	}
-	//Quote counter for LSP
-	if(scEventExists('event9') && /car|motor|home|landlord/i.test(s.products)) {
-		s.events = s.apl(s.events, 'event40', ',', 1);
-		if(s.getAndPersistValue(null, 's_page_refreshed') != s.pageName) s.eVar41 = '+1';
-		s.eVar67 = s.eVar30;
-	}
-	if(s.eVar28) {
-		var payMethod = s.eVar28.toLowerCase();
-		s.eVar28 = (payMethod.indexOf('credit') > -1 || payMethod.indexOf('pay_now') > -1) ? 'credit_card' : payMethod.indexOf('later') > -1 ? 'pay_later' : 'direct_debit';
-	}
-
-    /* Set internal search automatically */	
-	if(s.prop5&&!s.eVar3){
-		s.events=s.apl(s.events,"event2",",",2);
-		s.prop5=s.eVar3=s.prop5.toLowerCase();		
-	}	
-	if(s.pageName=="in:ami:skilled-drivers"){
-		s.events=s.apl(s.events,"event4",",",1);
-		s.eVar4="Skilled Drivers-Info View";
-	}
-
-	/* Capture internal promotion id*/
-	if(!s.eVar2){
-		s.eVar2=s.getQueryParam('intcmp');
+    if(s.pageName == 'bk:sun:secapp:agribusiness_enquiry:form:form_started' || s.pageName == 'bk:sun:secapp:merchants_enquiry:form:form_started'
+        || s.pageName == 'bk:sun:home-loans:enquiry' || s.pageName == 'bk:sun:business:enquire') {
+        s.events=s.apl(s.events,s.serializeEvent("event3"),",",1);
+    } else if(s.pageName == 'bk:sun:secapp:termdeposit_enquiry:form:form_completed' || s.pageName == 'bk:sun:secapp:agribusiness_enquiry:form:form_completed' || s.pageName == 'bk:sun:secapp:merchants_enquiry:form:form_completed'
+        || s.pageName == 'bk:sun:home-loans:enquiry:submit' || s.pageName == 'bk:sun:business-banking:thankyou') {
+        s.events=s.apl(s.events,s.serializeEvent("event4"),",",1);
     }
-	if(s.eVar2){
-		//s.eVar2=s.getValOnce(s.getQueryParam('intcmp'),'s_eVar2',0)
-		s.events=s.apl(s.events,"event35",",",1);
-	}
+    if(s.pageName=='in:gio:workers-compensation-insurance:quote-request'){
+        s.events=s.apl(s.events,s.serializeEvent("event3"),",",1);
+        s.products='workers_compenstation';
+    } else if(s.pageName == 'in:gio:workers-compensation-insurance:quote-request:thank-you') {
+        s.events=s.apl(s.events,s.serializeEvent("event4"),",",1);
+        s.products='workers_compenstation';
+    }
+    if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:landingpage"){
+        s.events=s.apl(s.events,"event46",",",1);
+        s.eVar9="Claim_lodgement";
+    }
+    if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:claimlodged:motor"){
+        s.events=s.apl(s.events,"event1",",",1);
+        s.eVar9="Claim_lodgement";
+    }
+    if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:claimlodged:motorcycle"){
+        s.events=s.apl(s.events,"event1",",",1);
+        s.eVar9="Claim_lodgement";
+    }
+    if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:claimlodged:caravan"){
+        s.events=s.apl(s.events,"event1",",",1);
+        s.eVar9="Claim_lodgement";
+    }
+    if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:claimlodged:home"){
+        s.events=s.apl(s.events,"event1",",",1);
+        s.eVar9="Claim_lodgement";
+    }
+    if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:yourpolicy:motor"){
+        s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
+        s.eVar71="lodged_claim_motor";
+    }
+    if(s.pageName=="in:ami:secapp:selfservice:claim:lodgement:yourpolicy:home"){
+        s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
+        s.eVar71="lodged_claim_home";
+    }
+    if(s.pageName=="in:ami:secapp:paymentonline:selfservice:paymentcomplete"){
+        s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
+        s.eVar71="renewal_payment";
+    }
+    if(s.pageName=="in:ami:secapp:selfservice:policy:renew:renewal_payment:car"){
+        s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
+        s.eVar71="renewal_payment_motor";
+    }
+    if(s.pageName=="in:ami:secapp:selfservice:policy:renew:renewal_payment:home"){
+        s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
+        s.eVar71="renewal_payment_home";
+    }
+    if(s.pageName=="in:ami:secapp:selfservice:policy:find_policy:find_policy_completed"){
+        s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
+        s.eVar71="find_policy";
+    }
+    if(s.pageName=="in:ami:secapp:selfservice:policy:dashboard:dashboard"){
+        s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
+        s.eVar71="login_new";
+    }
+    if(s.pageName=="in:ami:secapp:selfservice:authentication:registration:registration_completed"){
+        s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
+        s.eVar71="registration_new";
+    }
+    if(s.pageName=="in:ami:secapp:mypolicymanager:selfservice:login_completed"){
+        s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
+        s.eVar71="login_old";
+    }
+    if(s.pageName=="in:ami:secapp:mypolicymanager:selfservice:registration_enter_policy_number"){
+        s.events=s.apl(s.events, s.serializeEvent("event71"), ",",1);
+        s.eVar71="registration_old";
+    }
+    if(s.pageName=="in:apa:secapp::selfservice:regoconfirm"){
+        s.events=s.events.replace("event1,","");
+        s.events=s.apl(s.events, s.serializeEvent("event1"), ",",1);
+        s.eVar9="registration";
+    } else if (s.pageName=="in:apa:secapp::selfservice:portfolio"){
+        s.events=s.events.replace("event1,","");
+        s.events=s.apl(s.events, s.serializeEvent("event1"), ",",1);
+        s.eVar9="logon";
+    } 
+    if(scEventExists('event18') && (s.siteID == "in:sun" || s.siteID == "in:ami")
+        && (s.products.indexOf("home_") > -1 || s.products.indexOf("car_") > -1)){
+        s.events = s.apl(s.events, s.serializeEvent("event1"), ",", 1);
+        s.eVar9 = "in_selfservice_nb_unableregister_3rdparty";
+        var typeMap = {
+            elements: ["registrationOutcomeNew", 
+                    "registrationOutcomeExistingMatched", 
+                    "registrationOutcomeExistingUnmatched",
+                    "registrationOutcomeBusinessCustomerNotRegistered",
+                    "registrationOutcomeSystemError"],
+            serviceTypes: ["in_selfservice_nb_register",
+                    "in_selfservice_nb_Addpolicy",
+                    "in_selfservice_nb_unableregister_notmatched", //TODO unsure
+                    "in_selfservice_unableregister_business",
+                    "in_selfservice_nb_unableregister"]
+        };
+        for (var i = 0; i < typeMap.elements.length; i++) {
+            var element = document.getElementById(typeMap.elements[i]);
+            if (element && element.getAttribute("class") == "") {
+                s.eVar9 = typeMap.serviceTypes[i];
+                break;
+            }
+        }
+    }
+    // CIL Request a Quote Form Tracking
+    if(s.pageName=="in:cil:request-a-quote"){
+        var sid=s.getQueryParam('sid');
+        s.events=s.apl(s.events,"event47",",",1); // tool start
+        s.events=s.apl(s.events,"event3",",",1); // lead start
+        s.eVar5="request-a-quote";  
+    }
+    //CIL Request a Quote Complete Tracking
+    if(s.pageName=="in:cil:request-a-quote-confirmation") {
+        s.events=s.apl(s.events,"event4",",",1); // lead complete
+        s.prop8="request-a-quote";
+    }
+    // CIL Contact us Form Tracking
+    if(s.pageName=="in:cil:contact-us"){
+        s.events=s.apl(s.events,"event47",",",1); // tool start
+        s.eVar5="contact-us";
+    }
+    if(s.pageName=="in:cil:node:15:done"){
+        s.prop8="contact-us";
+    }
+    // Shannons Club Lead Tracking
+    if(s.pageName=="in:shn:club:club:register"){
+        s.events=s.apl(s.events,"event3",",",1); // lead start
+    }
+    if(s.pageName=="in:shn:club:club:register:thanks"){
+        s.events=s.apl(s.events,"event4",",",1); // lead complete
+    }
+    //Bingle Motor But Start
+    if(s.pageName=="in:bin:secapp:motor:buy:car_summary"){
+        s.events=s.apl(s.events,"event17:" + s.getAndPersistValue(null,'BingleQuoteNumber')+"MOT",",",1);
+    }
+    //Apia Dynamic Numbers Tracking
+    if(s.siteID == 'in:apa:apia') {
+        var telEle = d.getElementsByClassName('dynamic-phone');
+        if(telEle && telEle.length > 0) {
+            s.eVar56 = d.getInnerText(telEle[0]);
+        }
+        var date = new Date();
+        var month = (date.getMonth() + 1).toString();
+        var day = date.getDate().toString();
+        s.prop56 = date.getFullYear().toString() + (month[1] ? month : '0' + month[0]) + (day[1] ? day : '0' + day[0]);
+        s.eVar26 = s.prop42 = s.getSessionID();
+    }   
+    //Fix payment type in LSP Apps
+    if(s.prop26 && s.products != ';business_market_stall_public_liability' && s.products != ';ami_business') {
+        s.prop26 = s.prop26.toLowerCase().indexOf('m') > -1 ? 'monthly' : 'annually';
+    }
+    //Quote counter for LSP
+    if(scEventExists('event9') && /car|motor|home|landlord/i.test(s.products)) {
+        s.events = s.apl(s.events, 'event40', ',', 1);
+        if(s.getAndPersistValue(null, 's_page_refreshed') != s.pageName) s.eVar41 = '+1';
+        s.eVar67 = s.eVar30;
+    }
+    if(s.eVar28) {
+        var payMethod = s.eVar28.toLowerCase();
+        s.eVar28 = (payMethod.indexOf('credit') > -1 || payMethod.indexOf('pay_now') > -1) ? 'credit_card' : payMethod.indexOf('later') > -1 ? 'pay_later' : 'direct_debit';
+    }
 
-	/* Capture Campaign ID */
-	// Prioritise SEM CMPID, over session value
-	s.campaign=s.getQueryParam('cmpid').toLowerCase();
+    /* Set internal search automatically */ 
+    if(s.prop5&&!s.eVar3){
+        s.events=s.apl(s.events,"event2",",",2);
+        s.prop5=s.eVar3=s.prop5.toLowerCase();      
+    }   
+    if(s.pageName=="in:ami:skilled-drivers"){
+        s.events=s.apl(s.events,"event4",",",1);
+        s.eVar4="Skilled Drivers-Info View";
+    }
 
-	if (s.campaign) {
-    	s.prop4=s.campaign+"|"+s.pageName; //campaign pathing
-	}else{
-		s.prop4= s.pageName;
-	}
+    /* Capture internal promotion id*/
+    if(!s.eVar2){
+        s.eVar2=s.getQueryParam('intcmp');
+    }
+    if(s.eVar2){
+        //s.eVar2=s.getValOnce(s.getQueryParam('intcmp'),'s_eVar2',0)
+        s.events=s.apl(s.events,"event35",",",1);
+    }
 
-	/* s.crossVisitParticipation */
-	/* Campaign Stacking */
-	if(/google|yahoo|bing/i.test(document.referrer) && !s.campaign) {
-		s.seobrand = s.siteID.replace('in', 'SEO');
-		s.eVar1 = s.crossVisitParticipation(s.seobrand,'s_cpm','90','5','>','purchase');
-	} else if(!document.referrer && !s.campaign) {
-		s.eVar1 = s.crossVisitParticipation('DIRECT','s_cpm','90','5','>','purchase');
-	} else if (s.campaign) {
-		s.eVar1 = s.crossVisitParticipation(s.campaign,'s_cpm','90','5','>','purchase');
-	}
-	s.prop28 = s.getValOnce('T', 'prop_28', 0); /*Populate the unified sources flag*/
+    /* Capture Campaign ID */
+    // Prioritise SEM CMPID, over session value
+    s.campaign=s.getQueryParam('cmpid').toLowerCase();
 
-	/* Capture Campaign Email ID */
-	if(s.getQueryParam('cmpid').toLowerCase().indexOf('edm') != -1){
-		s.eVar42=s.getQueryParam('cmpid'); 
-		s.eVar44=s.crossVisitParticipation(s.eVar42,'s_v44','365','5','>');}
-	else if(!document.referrer && !s.campaign){
-		s.eVar44=s.crossVisitParticipation('DIRECT','s_v44','365','5','>');
-	}
+    if (s.campaign) {
+        s.prop4=s.campaign+"|"+s.pageName; //campaign pathing
+    }else{
+        s.prop4= s.pageName;
+    }
 
-	/* getTimeToComplete */
-	if(s.eVar1) s.prop27='start';
-	if(s.events.indexOf('event12')>-1) s.prop27='stop';
-	s.prop27=s.getTimeToComplete(s.prop27,'ttc',0);
+    /* s.crossVisitParticipation */
+    /* Campaign Stacking */
+    if(/google|yahoo|bing/i.test(document.referrer) && !s.campaign) {
+        s.seobrand = s.siteID.replace('in', 'SEO');
+        s.eVar1 = s.crossVisitParticipation(s.seobrand,'s_cpm','90','5','>','purchase');
+    } else if(!document.referrer && !s.campaign) {
+        s.eVar1 = s.crossVisitParticipation('DIRECT','s_cpm','90','5','>','purchase');
+    } else if (s.campaign) {
+        s.eVar1 = s.crossVisitParticipation(s.campaign,'s_cpm','90','5','>','purchase');
+    }
+    s.prop28 = s.getValOnce('T', 'prop_28', 0); /*Populate the unified sources flag*/
 
-	/*Tool Usage*/
-	if(s.prop8){
-		s.events=s.apl(s.events,"event5",",",1);
-		s.eVar5=s.prop8;
-	}
+    /* Capture Campaign Email ID */
+    if(s.getQueryParam('cmpid').toLowerCase().indexOf('edm') != -1){
+        s.eVar42=s.getQueryParam('cmpid'); 
+        s.eVar44=s.crossVisitParticipation(s.eVar42,'s_v44','365','5','>');}
+    else if(!document.referrer && !s.campaign){
+        s.eVar44=s.crossVisitParticipation('DIRECT','s_v44','365','5','>');
+    }
 
-	/*Self Service Transactions*/
-	if(s.prop11){
-		s.events=s.apl(s.events,"event1",",",1);
-		s.eVar9=s.prop11;
-	}
+    /* getTimeToComplete */
+    if(s.eVar1) s.prop27='start';
+    if(s.events.indexOf('event12')>-1) s.prop27='stop';
+    s.prop27=s.getTimeToComplete(s.prop27,'ttc',0);
 
-	/*Branch Search*/
-	if(s.prop20){
-		s.events=s.apl(s.events,"event16",",",1);
-		s.eVar18=s.prop20 //branch location
-	}
+    /*Tool Usage*/
+    if(s.prop8){
+        s.events=s.apl(s.events,"event5",",",1);
+        s.eVar5=s.prop8;
+    }
 
-	/* Time Parting */
-	s.prop9 = s.getTimeParting('s','+10');
-	s.eVar8 = 'D=c9';
+    /*Self Service Transactions*/
+    if(s.prop11){
+        s.events=s.apl(s.events,"event1",",",1);
+        s.eVar9=s.prop11;
+    }
 
-	/*socialPlatforms v1.0 - used for SocialAnalytics*/
-	s.socialPlatforms('eVar68');
+    /*Branch Search*/
+    if(s.prop20){
+        s.events=s.apl(s.events,"event16",",",1);
+        s.eVar18=s.prop20 //branch location
+    }
 
-	/*Jeopardy*/
-	if(s.prop19){
-		s.events=s.apl(s.events,"event15",",",1);
-		s.eVar17=s.prop19
-	}
-	s.prop49='D=g';
-	//automatically set variables
-	s.eVar10=s.prop12; //age
-	s.eVar11=s.prop13; //gender
-	s.eVar12=s.prop14; //Postcode
-	s.eVar13=s.prop15; //State
-	s.eVar14=s.prop16; //Existing Customer
-	s.eVar15=s.prop17; //Year of Manufacture
-	s.eVar16=s.prop18; //Make of Car
-	s.eVar19=s.prop21; //Initial Sum Insured
-	s.eVar20=s.prop22; //Claim History
-	s.eVar21=s.prop23; //Previous Insurer Code
-	s.eVar24=s.prop26; //Payment Term
-	s.eVar32=s.prop32; //Subclass
-	s.eVar33=s.prop33; //Customer Income
-	s.eVar34=s.prop34; //Customer Product Purpose
-	s.eVar36=s.prop24; //Click
-	
-	scInternalRef=false;
-	for(i=0;i<scInternalDomains.length;i++){
-		if(_dGetHostName(document.referrer).toLowerCase().indexOf(scInternalDomains[i].toLowerCase())>=0) scInternalRef=true;
-	}
-	if(scCount==0 && (!scInternalRef)){
-		/* Datalicious PurchasePath */
-		var scSEM = false;
-		var originalCampaign = '';
-		_dBrandTerms = scBrandTerms;
-		if(s.campaign){
-			_dCompaignCode=s.campaign;
-			_dCompaignCode=_dCompaignCode.toLowerCase();
-			if(_dCompaignCode.indexOf(':edm:')>=0) _dCompaignCode = 'em'; // eDM
-			if(_dCompaignCode.indexOf(':dis:')>=0) _dCompaignCode = 'ds'; // Display
-			if(_dCompaignCode.indexOf(':van:')>=0) _dCompaignCode = 'vn'; // Vanity
-			if(_dCompaignCode.indexOf(':van:')>=0) _dCompaignCode = 'vn'; // Vanity
-			if(_dCompaignCode.indexOf(':aff:')>=0) _dCompaignCode = 'af'; // Affiliate
-			if(_dCompaignCode.indexOf(':com:')>=0) _dCompaignCode = 'cm'; // Comparison
-			if(_dCompaignCode.indexOf(':sem:')>=0){
-				originalCampaign = s.campaign;
-				s.campaign = '';
-				_dCompaignCode = '';
-				scSEM = true;
-			}
-		}
-		_dOmniturePurchasePath();
-		if(scSEM){
-			if(s.eVar61.indexOf('seo:') == 0){
-				if(s.eVar64.length==2){
-					if(s.eVar61.indexOf('branded') > -1){
-						s.eVar64 = 'cb';
-					}else{
-						s.eVar64 = 'cg';
-					}
-				}else{
-					var scFirstTouch = s.eVar64.substr(0,3);
-					var scMiddleTouches = '';
-					if(s.eVar64.length>5){
-						scMiddleTouches = s.eVar64.substr(5);
-					}
-					if(s.eVar61.indexOf('branded') > -1){
-						s.eVar64 = scFirstTouch + 'cb' + scMiddleTouches;
-					}else{
-						s.eVar64 = scFirstTouch + 'cg' + scMiddleTouches;
-					}
-				}
-			}else{
-				if(s.eVar64.length==2){
-					s.eVar64 = 'ps'; // paid search without keyword detected
-				}else{
-					var scFirstTouch = s.eVar64.substr(0,3);
-					var scMiddleTouches = '';
-					if(s.eVar64.length>5){
-						scMiddleTouches = s.eVar64.substr(5);
-					}
-					s.eVar64 = scFirstTouch + 'ps' + scMiddleTouches;
-				}
-			}
-			s.campaign=s.eVar61=originalCampaign;
-			_dSetCookie("__ppFullPath", s.eVar64, _dExpireDays);
-		}
-		if(s.eVar62){
-			var scKeywordStack = '';
-			if(scSEM){
-				scKeywordStack = 'paid:';
-			}else{
-				scKeywordStack = 'organic:';
-			}
-			scKeywordStack = scKeywordStack + s.eVar62;
-			s.eVar63=s.crossVisitParticipation(scKeywordStack,'s_evar63','30','10','>',''); // Keyword Stacking
-		}
-	}
+    /* Time Parting */
+    s.prop9 = s.getTimeParting('s','+10');
+    s.eVar8 = 'D=c9';
 
-	/* Product Selection Change */
-	if(scEventExists("event9") && s.un != 'sunbiziprod' && s.un != 'sunbizidev'){
-		var scPSC = d.getCookie("__psc");
-		var quoteNumber = d.getCookie("QuoteNumber");
-		if(scPSC != '' && quoteNumber != ''){
-			if(scPSC!=scGetProducts() && quoteNumber == scGetQuoteNumber()){
-				s.events=d.replaceAll(s.events, "event9", "event54");
-			}
-		}else{
-			scPSC=scGetProducts();
-			d.setCookie("__psc", scPSC);
-			quoteNumber = scGetQuoteNumber();
-			d.setCookie("QuoteNumber", quoteNumber);
-		}
-	}
+    /*socialPlatforms v1.0 - used for SocialAnalytics*/
+    s.socialPlatforms('eVar68');
 
-	/* Bounce Rate */
-	if (s.getAndPersistValue(null, 's_page_refreshed') == s.pageName) {
-		s.events = s.apl(s.events, "event32", ",", 1);
-	} else if (s.eVar61) {
-		s.eVar50 = s.pageName;
-		s.events = s.apl(s.events, "event31", ",", 1);
-	}
-	
-	/* New vs Repeat */
-	s.prop51=s.eVar51=s.getNewRepeat().toLowerCase();
-	
-	/* Time to Complete Quote */
-	if(s.events.indexOf('event8')>-1) s.prop46='start';
-	if(s.events.indexOf('event9')>-1) s.prop46='stop';
-	s.prop46=s.getTimeToComplete(s.prop46,'ttcq',0);
+    /*Jeopardy*/
+    if(s.prop19){
+        s.events=s.apl(s.events,"event15",",",1);
+        s.eVar17=s.prop19
+    }
+    s.prop49='D=g';
+    //automatically set variables
+    s.eVar10=s.prop12; //age
+    s.eVar11=s.prop13; //gender
+    s.eVar12=s.prop14; //Postcode
+    s.eVar13=s.prop15; //State
+    s.eVar14=s.prop16; //Existing Customer
+    s.eVar15=s.prop17; //Year of Manufacture
+    s.eVar16=s.prop18; //Make of Car
+    s.eVar19=s.prop21; //Initial Sum Insured
+    s.eVar20=s.prop22; //Claim History
+    s.eVar21=s.prop23; //Previous Insurer Code
+    s.eVar24=s.prop26; //Payment Term
+    s.eVar32=s.prop32; //Subclass
+    s.eVar33=s.prop33; //Customer Income
+    s.eVar34=s.prop34; //Customer Product Purpose
+    s.eVar36=s.prop24; //Click
+    
+    scInternalRef=false;
+    for(i=0;i<scInternalDomains.length;i++){
+        if(_dGetHostName(document.referrer).toLowerCase().indexOf(scInternalDomains[i].toLowerCase())>=0) scInternalRef=true;
+    }
+    if(scCount==0 && (!scInternalRef)){
+        /* Datalicious PurchasePath */
+        var scSEM = false;
+        var originalCampaign = '';
+        _dBrandTerms = scBrandTerms;
+        if(s.campaign){
+            _dCompaignCode=s.campaign;
+            _dCompaignCode=_dCompaignCode.toLowerCase();
+            if(_dCompaignCode.indexOf(':edm:')>=0) _dCompaignCode = 'em'; // eDM
+            if(_dCompaignCode.indexOf(':dis:')>=0) _dCompaignCode = 'ds'; // Display
+            if(_dCompaignCode.indexOf(':van:')>=0) _dCompaignCode = 'vn'; // Vanity
+            if(_dCompaignCode.indexOf(':van:')>=0) _dCompaignCode = 'vn'; // Vanity
+            if(_dCompaignCode.indexOf(':aff:')>=0) _dCompaignCode = 'af'; // Affiliate
+            if(_dCompaignCode.indexOf(':com:')>=0) _dCompaignCode = 'cm'; // Comparison
+            if(_dCompaignCode.indexOf(':sem:')>=0){
+                originalCampaign = s.campaign;
+                s.campaign = '';
+                _dCompaignCode = '';
+                scSEM = true;
+            }
+        }
+        _dOmniturePurchasePath();
+        if(scSEM){
+            if(s.eVar61.indexOf('seo:') == 0){
+                if(s.eVar64.length==2){
+                    if(s.eVar61.indexOf('branded') > -1){
+                        s.eVar64 = 'cb';
+                    }else{
+                        s.eVar64 = 'cg';
+                    }
+                }else{
+                    var scFirstTouch = s.eVar64.substr(0,3);
+                    var scMiddleTouches = '';
+                    if(s.eVar64.length>5){
+                        scMiddleTouches = s.eVar64.substr(5);
+                    }
+                    if(s.eVar61.indexOf('branded') > -1){
+                        s.eVar64 = scFirstTouch + 'cb' + scMiddleTouches;
+                    }else{
+                        s.eVar64 = scFirstTouch + 'cg' + scMiddleTouches;
+                    }
+                }
+            }else{
+                if(s.eVar64.length==2){
+                    s.eVar64 = 'ps'; // paid search without keyword detected
+                }else{
+                    var scFirstTouch = s.eVar64.substr(0,3);
+                    var scMiddleTouches = '';
+                    if(s.eVar64.length>5){
+                        scMiddleTouches = s.eVar64.substr(5);
+                    }
+                    s.eVar64 = scFirstTouch + 'ps' + scMiddleTouches;
+                }
+            }
+            s.campaign=s.eVar61=originalCampaign;
+            _dSetCookie("__ppFullPath", s.eVar64, _dExpireDays);
+        }
+        if(s.eVar62){
+            var scKeywordStack = '';
+            if(scSEM){
+                scKeywordStack = 'paid:';
+            }else{
+                scKeywordStack = 'organic:';
+            }
+            scKeywordStack = scKeywordStack + s.eVar62;
+            s.eVar63=s.crossVisitParticipation(scKeywordStack,'s_evar63','30','10','>',''); // Keyword Stacking
+        }
+    }
 
-	/* Time to Complete Quote */
-	if(s.events.indexOf('event17')>-1) s.prop47='start';
-	if(s.events.indexOf('event18')>-1) s.prop47='stop';
-	s.prop47=s.getTimeToComplete(s.prop47,'ttcb',0);
-	
-	/* Copy product to prop and define product category */
-	if(s.products && (s.events.indexOf('event9')>-1 || s.events.indexOf('event18')>-1)) s.prop48=scGetProducts();
-	
-	/* For 25k campaign (To be removed after campaign) */
-	var campaignSegment = '';
-	campaignSegment = s.getQueryParam('cst');
-	if(campaignSegment != '') s.eVar73 = campaignSegment;
-	if(s.pageName.indexOf('suncorp:win25k') > 0){
-		cachebuster = Math.floor(Math.random()*11111111111);
-		if(s.pageName.indexOf('win25k:refer') >= 0){
-			// refer page after enter competition
-			s.events=s.apl(s.events,"event29",",",1); // enter competition
-			if(scCount<1) d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco482;ord=1;num='+cachebuster+'?'); // 1046479
-		}else if(s.pageName.indexOf('win25k:thanks') >= 0){
-			// thank you page
-		}else{
-			// email landing page
-			if(scCount<1) d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco437;ord=1;num='+cachebuster+'?'); // 1046478
-		}
-		
-	}
-	
-	/* Add calls to plugins here */
-	s.tnt=s.trackTNT();
-	
-	//SiteCatalyst to Test&Target Integration (Bingle, AAMI, and GIO)
-		var SCPluginSites = {
+    /* Product Selection Change */
+    if(scEventExists("event9") && s.un != 'sunbiziprod' && s.un != 'sunbizidev'){
+        var scPSC = d.getCookie("__psc");
+        var quoteNumber = d.getCookie("QuoteNumber");
+        if(scPSC != '' && quoteNumber != ''){
+            if(scPSC!=scGetProducts() && quoteNumber == scGetQuoteNumber()){
+                s.events=d.replaceAll(s.events, "event9", "event54");
+            }
+        }else{
+            scPSC=scGetProducts();
+            d.setCookie("__psc", scPSC);
+            quoteNumber = scGetQuoteNumber();
+            d.setCookie("QuoteNumber", quoteNumber);
+        }
+    }
+
+    /* Bounce Rate */
+    if (s.getAndPersistValue(null, 's_page_refreshed') == s.pageName) {
+        s.events = s.apl(s.events, "event32", ",", 1);
+    } else if (s.eVar61) {
+        s.eVar50 = s.pageName;
+        s.events = s.apl(s.events, "event31", ",", 1);
+    }
+    
+    /* New vs Repeat */
+    s.prop51=s.eVar51=s.getNewRepeat().toLowerCase();
+    
+    /* Time to Complete Quote */
+    if(s.events.indexOf('event8')>-1) s.prop46='start';
+    if(s.events.indexOf('event9')>-1) s.prop46='stop';
+    s.prop46=s.getTimeToComplete(s.prop46,'ttcq',0);
+
+    /* Time to Complete Quote */
+    if(s.events.indexOf('event17')>-1) s.prop47='start';
+    if(s.events.indexOf('event18')>-1) s.prop47='stop';
+    s.prop47=s.getTimeToComplete(s.prop47,'ttcb',0);
+    
+    /* Copy product to prop and define product category */
+    if(s.products && (s.events.indexOf('event9')>-1 || s.events.indexOf('event18')>-1)) s.prop48=scGetProducts();
+    
+    /* For 25k campaign (To be removed after campaign) */
+    var campaignSegment = '';
+    campaignSegment = s.getQueryParam('cst');
+    if(campaignSegment != '') s.eVar73 = campaignSegment;
+    if(s.pageName.indexOf('suncorp:win25k') > 0){
+        cachebuster = Math.floor(Math.random()*11111111111);
+        if(s.pageName.indexOf('win25k:refer') >= 0){
+            // refer page after enter competition
+            s.events=s.apl(s.events,"event29",",",1); // enter competition
+            if(scCount<1) d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco482;ord=1;num='+cachebuster+'?'); // 1046479
+        }else if(s.pageName.indexOf('win25k:thanks') >= 0){
+            // thank you page
+        }else{
+            // email landing page
+            if(scCount<1) d.iframeTag('//fls.doubleclick.net/activityi;src=848893;type=datalic;cat=sunco437;ord=1;num='+cachebuster+'?'); // 1046478
+        }
+        
+    }
+    
+    /* Add calls to plugins here */
+    s.tnt=s.trackTNT();
+    
+    //SiteCatalyst to Test&Target Integration (Bingle, AAMI, and GIO)
+        var SCPluginSites = {
             aami: true,
             apia: true,
             bingle: true,
@@ -1014,7 +1032,7 @@ function s_doPlugins(s) {
             jci: true,
             sun: true
                 }
-	if (typeof(mboxLoadSCPlugin) != "undefined" && 
+    if (typeof(mboxLoadSCPlugin) != "undefined" && 
         (
         (s.un=="sunaamiprod" && SCPluginSites.aami && s.products != ";ami_business" && (s.prop1.indexOf("in:ami:secapp:business") < 0)) || 
         (s.un=="sunapia" && SCPluginSites.apia) ||
@@ -1025,40 +1043,40 @@ function s_doPlugins(s) {
         (s.un=="sunprod" && SCPluginSites.sun)
              ) && (
             scEventExists("event1") ||
-			scEventExists("event3") ||
-			scEventExists("event4") || 
-			scEventExists("event6") ||
-			scEventExists("event7") ||
-			scEventExists("event8") || 
-			scEventExists("event9") || 
-			scEventExists("event11") || 
-			scEventExists("event12") || 
-			scEventExists("event14") || 
-			scEventExists("event17") ||
-			scEventExists("event18") ||  
-			scEventExists("event19") ||
-			scEventExists("event71") ||
-			s.eVar4 ||
-			s.eVar9 ||
-			s.eVar10 ||
-			s.eVar14 || 
-			s.eVar21 ||
-			s.eVar13 || 
-			s.prop15 ||
-			s.eVar71)) {
-		mboxLoadSCPlugin(s);
-	}
-	
-	
-	//survey
-	if(s.pageName && s.pageName=="in:bin:secapp:motor:quote:car_selection:quote_started"){s.c_w('s_bin_qs',true);}
-	if(s.pageName && s.pageName=="in:bin:secapp:motor:quote:vehicle_accessories"){ s.c_w('s_bin_qs','',-1);} //delete cookie
-	if(s.pageName && s.pageName=="in:bin:secapp:selfservice:claim:lodgement:landingpage"){s.c_w('s_bin_ss',true);}
-	if(s.pageName && s.pageName=="in:bin:secapp:selfservice:claim:lodgement:claimlodged:motor"){s.c_w('s_bin_ss','',-1);} //delete cookie
-	if(s.pageName && s.pageName=="in:ami:secapp:sales:directlife:buy:buy_completed:income_protection"){s.c_w('s_ami_income_qc','',-1);} //delete cookie
-	if(s.pageName && s.pageName=="in:sun:secapp:sales:directlife:buy:buy_completed:life_protect"){s.c_w('s_sun_life_qc','',-1);} //delete cookie
-	if(s.pageName && s.pageName=="in:sun:secapp:motor:quote:quote_completed") s.c_w('s_sun_motor_qs',true);
-	if(s.pageName && s.pageName=="in:sun:secapp:motor:buy:buy_completed") s.c_w('s_sun_motor_qs','',-1);
+            scEventExists("event3") ||
+            scEventExists("event4") || 
+            scEventExists("event6") ||
+            scEventExists("event7") ||
+            scEventExists("event8") || 
+            scEventExists("event9") || 
+            scEventExists("event11") || 
+            scEventExists("event12") || 
+            scEventExists("event14") || 
+            scEventExists("event17") ||
+            scEventExists("event18") ||  
+            scEventExists("event19") ||
+            scEventExists("event71") ||
+            s.eVar4 ||
+            s.eVar9 ||
+            s.eVar10 ||
+            s.eVar14 || 
+            s.eVar21 ||
+            s.eVar13 || 
+            s.prop15 ||
+            s.eVar71)) {
+        mboxLoadSCPlugin(s);
+    }
+    
+    
+    //survey
+    if(s.pageName && s.pageName=="in:bin:secapp:motor:quote:car_selection:quote_started"){s.c_w('s_bin_qs',true);}
+    if(s.pageName && s.pageName=="in:bin:secapp:motor:quote:vehicle_accessories"){ s.c_w('s_bin_qs','',-1);} //delete cookie
+    if(s.pageName && s.pageName=="in:bin:secapp:selfservice:claim:lodgement:landingpage"){s.c_w('s_bin_ss',true);}
+    if(s.pageName && s.pageName=="in:bin:secapp:selfservice:claim:lodgement:claimlodged:motor"){s.c_w('s_bin_ss','',-1);} //delete cookie
+    if(s.pageName && s.pageName=="in:ami:secapp:sales:directlife:buy:buy_completed:income_protection"){s.c_w('s_ami_income_qc','',-1);} //delete cookie
+    if(s.pageName && s.pageName=="in:sun:secapp:sales:directlife:buy:buy_completed:life_protect"){s.c_w('s_sun_life_qc','',-1);} //delete cookie
+    if(s.pageName && s.pageName=="in:sun:secapp:motor:quote:quote_completed") s.c_w('s_sun_motor_qs',true);
+    if(s.pageName && s.pageName=="in:sun:secapp:motor:buy:buy_completed") s.c_w('s_sun_motor_qs','',-1);
     if(s.pageName && s.pageName=="in:gio:secapp:sales:motor:quote:quote_completed:car_comprehensive") s.c_w('s_gio_motor_qsp',true);
     if(s.pageName && s.pageName=="in:gio:secapp:sales:motor:buy:buy_started:car_comprehensive") s.c_w('s_gio_motor_qsp','', -1);
     if(s.pageName && s.pageName=="in:gio:secapp:sales:motor:quote:quote_completed:car_platinum") s.c_w('s_gio_motor_qsp',true);
@@ -1110,56 +1128,94 @@ function s_doPlugins(s) {
     if(s.pageName && s.pageName=="in:ami:secapp:sales:home:quote:quote_completed:home_contents_only") s.c_w('s_ami_home_qsp',true);
     if(s.pageName && s.pageName=="in:ami:secapp:sales:home:buy:buy_started:home_contents_only") s.c_w('s_ami_home_qsp','', -1);
 
+    if(s.pageName && s.pageName == "in:apa:secapp:motor:quote:completed") s.c_w('s_apia_car_bsp',true)
+    if(s.pageName && s.pageName == "in:apa:secapp:motor:buy:buy_started") s.c_w('s_apia_car_bsp','', -1);
 
+    if(s.pageName && s.pageName == "in:apa:secapp:home:quote:completed") s.c_w('s_apia_car_bsp',true)
+    if(s.pageName && s.pageName == "in:apa:secapp:home:buy:buy_started") s.c_w('s_apia_home_bsp','', -1);
 
     //Survey respondent ID
-	if(s.pev3 && s.pev3.indexOf(':')>-1){
-		s.prop53=s.pev3.substring(0,s.pev3.indexOf(':'));
-		s.Survey.trackVars+=',prop53';
-	}
-	
+    if(s.pev3 && s.pev3.indexOf(':')>-1){
+        s.prop53=s.pev3.substring(0,s.pev3.indexOf(':'));
+        s.Survey.trackVars+=',prop53';
+    }
+    
 
-	//seriailized events
+    //seriailized events
 
-	if(scEventExists('event1')){
-		if(s.eVar9){
-			scSelfService = s.eVar9.toLowerCase();
-			if(scSelfService == 'registration' && !scEventExists('event7')){
-				s.events=s.apl(s.events,"event7",",",1);
-			}
-			if(scSelfService == 'login' && !scEventExists('event6')){
-				s.events=s.apl(s.events,"event6",",",1);
-			}
-			if(scSelfService == 'update address' && !scEventExists('event43')){
-				s.events=s.apl(s.events,"event43",",",1);
-			}
-			if(scSelfService == 'online billing' && !scEventExists('event42')){
-				s.events=s.apl(s.events,"event42",",",1);
-			}
-			if(scSelfService == 'online renew' && !scEventExists('event44')){
-				s.events=s.apl(s.events,"event44",",",1);
-			}
-		}
-	}
-	
-	/* bizi tracking code */
-	if(s.pageName=='sg:biz2:wizard'){
-		var leadStartEvent = s.serializeEvent("event3");
-		s.events=s.apl(s.events,leadStartEvent,",",1);
-	}
-	
-	scCount++;
-	s.getAndPersistValue(s.pageName, 's_page_refreshed');
-	
-	// the final page load time function call
-	s.prop57 = s_getLoadTime();
+    if(scEventExists('event1')){
+        if(s.eVar9){
+            scSelfService = s.eVar9.toLowerCase();
+            if(scSelfService == 'registration' && !scEventExists('event7')){
+                s.events=s.apl(s.events,"event7",",",1);
+            }
+            if(scSelfService == 'login' && !scEventExists('event6')){
+                s.events=s.apl(s.events,"event6",",",1);
+            }
+            if(scSelfService == 'update address' && !scEventExists('event43')){
+                s.events=s.apl(s.events,"event43",",",1);
+            }
+            if(scSelfService == 'online billing' && !scEventExists('event42')){
+                s.events=s.apl(s.events,"event42",",",1);
+            }
+            if(scSelfService == 'online renew' && !scEventExists('event44')){
+                s.events=s.apl(s.events,"event44",",",1);
+            }
+        }
+    }
+    
+    /* bizi tracking code */
+    if(s.pageName=='sg:biz2:wizard'){
+        var leadStartEvent = s.serializeEvent("event3");
+        s.events=s.apl(s.events,leadStartEvent,",",1);
+    }
+    
+    scCount++;
+    s.getAndPersistValue(s.pageName, 's_page_refreshed');
+    
+    // the final page load time function call
+    s.prop57 = s_getLoadTime();
+    
+     /* Set transactionID for Shannon and Apia*/
+    if((s.siteID == 'in:shn' || s.siteID == 'in:apa:apia') && s.pageName.indexOf('secapp') == -1 && s.prop42) {
+        s.transactionID = s.prop42;
+    }
 
-    //timestamp tracking
-    s.prop60 = scGetISODateString();
-	 /* Set transactionID for Shannon and Apia*/
-	if((s.siteID == 'in:shn' || s.siteID == 'in:apa:apia') && s.pageName.indexOf('secapp') == -1 && s.prop42) {
-		s.transactionID = s.prop42;
-	}
+    /* DATALICIOUS: event36 or event72 - Fire Datacollector when Quote is Saved  */
+    d.triggerQuoteSaved();
+
+    /* DATALICIOUS: Track Engagement */
+    var dl_pre = false;
+    dl_url = d.getCookie('dl_url').split(',');
+    for (var i = 0; i < dl_url.length; i++) {
+        if(dl_url[i] == s.pageName) {
+            var dl_pre = true;
+            break;
+        }
+    };
+
+    if(d.getCookie('dl_pc') < 4 && dl_pre == false) {
+
+        b = new Date().getTime();
+        a = superT.getCookie('dl_time') || new Date().getTime();
+
+        d.difference = (b - a) / 1000;
+        superT.setCookie('dl_time', a, '', superT.getTopDomain());
+
+        superT.setCookie('dl_url', superT.getCookie('dl_url') + ',' + s.pageName, '', superT.getTopDomain());
+
+        if(superT.getCookie('dl_pc')) {
+            var count = superT.getCookie('dl_pc')            
+        } else {
+            var count = '0';
+        }
+        superT.setCookie('dl_pc', Number(count) + 1, '', superT.getTopDomain());
+    }
+
+    if((superT.getCookie('dl_pc') == 3 || d.difference > 60) && superT.getCookie('dl_fired') !== 'true') {
+        d.triggerDataCollectorAdserver(true, undefined, undefined, s.eVar61, 'engagement');
+        superT.setCookie('dl_fired', 'true', '',superT.getTopDomain());
+    }
 }
 
 
@@ -1175,19 +1231,19 @@ scCount=0;
 
 /* Plugin: Event ID Serialization */
 s.serializeEvent = function(sEvent) {
-	if (sEvent != null && sEvent.indexOf(":") == -1) {
-		s.eVar26 = s.getSessionID();
-		sEvent = sEvent + ":" + s.eVar26;
-	}
-	return sEvent;
+    if (sEvent != null && sEvent.indexOf(":") == -1) {
+        s.eVar26 = s.getSessionID();
+        sEvent = sEvent + ":" + s.eVar26;
+    }
+    return sEvent;
 }
 
 /* Plugin: Session ID */
 s.getSessionID = function() {
-	if (s.getAndPersistValue(null, "s_serialization_id") == "") {
-		s.getAndPersistValue(new Date().getTime() + Math.random(), "s_serialization_id");
-	}
-	return s.getAndPersistValue(null, "s_serialization_id");
+    if (s.getAndPersistValue(null, "s_serialization_id") == "") {
+        s.getAndPersistValue(new Date().getTime() + Math.random(), "s_serialization_id");
+    }
+    return s.getAndPersistValue(null, "s_serialization_id");
 }
 /* Plugin:Internal Search */
 function trackSearchTerm(e,t){if(s&&e&&e.length>0){s.usePlugins=false;var n=new Object;n.linkTrackEvents="event2";n.linkTrackVars="eVar3,prop5,prop6,events";n.events="event2";n.eVar3=n.prop5=e.toLowerCase();n.prop6=t;s.tl(this,"o","Internal Searches",n);s.usePlugins=true}}
@@ -1323,8 +1379,8 @@ s.getTimeParting=new Function("h","z",""
 +"M';H=H-12;}if(H==0){H=12;}D=da[D];tm=H+':'+M+U;return(tm+'|'+D);}");
 
 /*
- *	Plug-in: crossVisitParticipation v1.5 - stacks values from
- *	specified variable in cookie and returns value
+ *  Plug-in: crossVisitParticipation v1.5 - stacks values from
+ *  specified variable in cookie and returns value
  */
 s.crossVisitParticipation=new Function("v","cn","ex","ct","dl","ev","dv",""
 +"var s=this,ce;if(typeof(dv)==='undefined')dv=0;if(s.events&&ev){var"
@@ -1490,9 +1546,9 @@ s.socialPlatforms=new Function("a",""
 s.socPlatList="facebook.com>Facebook|twitter.com>Twitter|t.co/>Twitter|youtube.com>Youtube|clipmarks.com>Clipmarks|dailymotion.com>Dailymotion|delicious.com>Delicious|digg.com>Digg|diigo.com>Diigo|flickr.com>Flickr|flixster.com>Flixster|fotolog.com>Fotolog|friendfeed.com>FriendFeed|google.com/buzz>Google Buzz|buzz.googleapis.com>Google Buzz|plus.google.com>Google+|hulu.com>Hulu|identi.ca>identi.ca|ilike.com>iLike|intensedebate.com>IntenseDebate|myspace.com>MySpace|newsgator.com>Newsgator|photobucket.com>Photobucket|plurk.com>Plurk|slideshare.net>SlideShare|smugmug.com>SmugMug|stumbleupon.com>StumbleUpon|tumblr.com>Tumblr|vimeo.com>Vimeo|wordpress.com>WordPress|xanga.com>Xanga|metacafe.com>Metacafe";
 
 if(screen.width > 768) {
-	s.loadModule("Survey")
-	var s_sv_dynamic_root = "survey.122.2o7.net/survey/dynamic"
-	var s_sv_gather_root = "survey.122.2o7.net/survey/gather"
+    s.loadModule("Survey")
+    var s_sv_dynamic_root = "survey.122.2o7.net/survey/dynamic"
+    var s_sv_gather_root = "survey.122.2o7.net/survey/gather"
 }
 
 s.maxDelay='1000';  //max time to wait for 3rd party api response in milliseconds
@@ -1744,7 +1800,7 @@ var s_code='',s_objectID;function s_gi(un,pg,ss){var c="s.version='H.25.4';s.an=
 +"if(ocb>=0){ocb+=10;while(ocb<oc.length&&(\"= \\t\\r\\n\").indexOf(oc.charAt(ocb))>=0)ocb++;if(ocb<oc.length){oce=ocb;ocq=ocx=0;while(oce<oc.length&&(oc.charAt(oce)!=';'||ocq)){if(ocq){if(oc.charAt("
 +"oce)==ocq&&!ocx)ocq=0;else if(oc.charAt(oce)==\"\\\\\")ocx=!ocx;else ocx=0;}else{ocq=oc.charAt(oce);if(ocq!='\"'&&ocq!=\"'\")ocq=0}oce++;}oc=oc.substring(ocb,oce);if(oc){o.s_soid=new Function('s','"
 +"var e;try{s.wd.s_objectID='+oc+'}catch(e){}');o.s_soid(s)}}}}}if(s.gg('objectID')){n=s.gg('objectID');x=1;i=1}if(p&&n&&t)qs='&pid='+s.ape(s.fl(p,255))+(w?'&pidt='+w:'')+'&oid='+s.ape(s.fl(n,100))+("
-+"x?'&oidt='+x:'')+'&ot='+s.ape(t)+(i?'&oi='+i:'')}}else trk=0}if(trk||qs){s.sampled=s.vs(sed);if(trk){if(s.sampled)code=s.mr(sess,(vt?'&t='+s.ape(vt):'')+s.hav()+q+(qs?qs:s.rq()),0,ta);qs='';s.m_m('"
++"x?'&oidt='+x:'')+'&ot='+s.ape(t)+(i?'&oi='+i:'')}}else trk=0}if(trk||qs){s.sampled=s.vs(sed);if(trk){if(s.sampled)window.s_prop60=scGetISODateString();code=s.mr(sess,(vt?'&t='+s.ape(vt)+'&c60='+s_prop60:'')+s.hav()+q+(qs?qs:s.rq()),0,ta);qs='';s.m_m('"
 +"t');if(s.p_r)s.p_r();s.referrer=s.lightProfileID=s.retrieveLightProfiles=s.deleteLightProfiles=''}s.sq(qs)}}}else s.dl(vo);if(vo)s.voa(vb,1);s.abort=0;s.pageURLRest=s.lnk=s.eo=s.linkName=s.linkType"
 +"=s.wd.s_objectID=s.ppu=s.pe=s.pev1=s.pev2=s.pev3='';if(s.pg)s.wd.s_lnk=s.wd.s_eo=s.wd.s_linkName=s.wd.s_linkType='';return code};s.trackLink=s.tl=function(o,t,n,vo,f){var s=this;s.lnk=o;s.linkType="
 +"t;s.linkName=n;if(f){s.bct=o;s.bcf=f}s.t(vo)};s.trackLight=function(p,ss,i,vo){var s=this;s.lightProfileID=p;s.lightStoreForSeconds=ss;s.lightIncrementBy=i;s.t(vo)};s.setTagContainer=function(n){va"
@@ -1857,19 +1913,19 @@ var suncorpDil = DIL.create({
 var _scDilObj = s_gi(s_account);
 DIL.modules.siteCatalyst.init(_scDilObj, suncorpDil, {
 names: ['pageName', 'channel', 'campaign', 'products', 'events', 'pe', 'referrer', 'server', 'purchaseID', 'zip', 'state'],
-        	iteratedNames: [{
+            iteratedNames: [{
                name: 'eVar',
                maxIndex: 75
-        	}, {
+            }, {
                name: 'prop',
                maxIndex: 75
-        	}, {
+            }, {
                name: 'pev',
                maxIndex: 3
-        	}, {
+            }, {
                name: 'hier',
                maxIndex: 4
-        	}]
+            }]
 });
 
 /* You may give each page an identifying name, server, and channel on
