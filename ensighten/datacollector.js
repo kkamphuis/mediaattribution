@@ -95,15 +95,15 @@ d.iframeTag = function(url) {
 };
 
 d.maTag = function() {
-    var u1 = ';u1=',
-        u2 = ';u2=',
-        u3 = ';u3=',
-        u4 = ';u4=',
-        u5 = ';u5=';
+    var u1 = '',
+        u2 = '',
+        u3 = '',
+        u4 = '',
+        u5 = '';
 
     var eventType = new Array();
     var events = dataLayer.events.join(',');
-    if (/LEAD|QUOTE|BUY/i.test(events)) {
+    if (/LEAD|QUOTE|BUY/i.test(events) || s.eVar61) {
         if (dataLayer.events.indexOf('LEAD_STARTED') > -1) {
             eventType.push('|ls|');
             eventType.push('lead-start');
@@ -128,10 +128,13 @@ d.maTag = function() {
         } else if (dataLayer.events.indexOf("QUOTE_RETRIEVED") > -1) {
             eventType.push('|qr|');
             eventType.push('quote-retrieved');
+        } else if(s.eVar61) {
+            eventType.push('|vs|');
+            eventType.push('visit');
         }
         if(eventType.length == 0) return;
         var pString = s.products || '';
-        u1 += (dataLayer.siteID + eventType[0] + d.replaceAll(pString, ';', ':'));
+        u1 += (dataLayer.siteID + eventType[0] + d.replaceAll(pString, ';', ''));
         if(dataLayer.dataModel.policyNumber) u1 = u1 + '|' + dataLayer.dataModel.policyNumber;
         if(dataLayer.dataModel.premiumAmount) u2 += dataLayer.dataModel.premiumAmount;
         u3 += s.eVar61;
@@ -139,9 +142,9 @@ d.maTag = function() {
         u4 += escape(document.location.href);
         u5 += escape(document.referrer);
         var url = "//fls.doubleclick.net/activityi;src=875382;type=custo866;cat=singl081";
-        url = url + u1 + u2 + u3 + u4 + u5 + ";ord=" + Math.floor(Math.random() * 11111111111) + "?";
+        url = url + ';u1=' + u1 + ';u2=' + u2 + ';u3=' + u3 + ';u4=' + u4 + ';u5=' + u5 + ";ord=" + Math.floor(Math.random() * 11111111111) + "?";
         d.iframeTag(url);
-        d.triggerDataCollector(true, u1, u2, u3, 'MA', eventType[1]);
+        d.triggerDataCollector(true, u1, u2, s.eVar61, eventType[1]);
     } else {
         d.triggerDataCollector(false);
     }
